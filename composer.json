@@ -1,47 +1,22 @@
 {
-    "name": "zendframework/zend-expressive-session-cache",
-    "description": "PSR-6 session persistence adapter for zend-expressive-session.",
+    "name": "mezzio/mezzio-session-cache",
+    "description": "PSR-6 session persistence adapter for mezzio-session.",
     "license": "BSD-3-Clause",
     "keywords": [
-        "expressive",
-        "zf",
-        "zendframework",
+        "laminas",
+        "mezzio",
         "cache",
         "psr-6",
         "session"
     ],
+    "homepage": "https://mezzio.dev",
     "support": {
-        "docs": "https://docs.zendframework.com/zend-expressive-session-cache/",
-        "issues": "https://github.com/zendframework/zend-expressive-session-cache/issues",
-        "source": "https://github.com/zendframework/zend-expressive-session-cache",
-        "rss": "https://github.com/zendframework/zend-expressive-session-cache/releases.atom",
-        "chat": "https://zendframework-slack.herokuapp.com",
-        "forum": "https://discourse.zendframework.com/c/questions/components"
-    },
-    "require": {
-        "php": "^7.1",
-        "dflydev/fig-cookies": "^1.0.2 || ^2.0",
-        "psr/cache": "^1.0",
-        "psr/container": "^1.0",
-        "zendframework/zend-expressive-session": "^1.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^7.1.1",
-        "zendframework/zend-coding-standard": "~1.0.0",
-        "zendframework/zend-diactoros": "^2.0"
-    },
-    "suggest": {
-        "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
-    },
-    "autoload": {
-        "psr-4": {
-            "Zend\\Expressive\\Session\\Cache\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "ZendTest\\Expressive\\Session\\Cache\\": "test/"
-        }
+        "docs": "https://docs.mezzio.dev/mezzio-session-cache/",
+        "issues": "https://github.com/mezzio/mezzio-session-cache/issues",
+        "source": "https://github.com/mezzio/mezzio-session-cache",
+        "rss": "https://github.com/mezzio/mezzio-session-cache/releases.atom",
+        "chat": "https://laminas.dev/chat",
+        "forum": "https://discourse.laminas.dev"
     },
     "config": {
         "sort-packages": true
@@ -51,8 +26,34 @@
             "dev-master": "1.0.x-dev",
             "dev-develop": "1.1.x-dev"
         },
-        "zf": {
-            "config-provider": "Zend\\Expressive\\Session\\Cache\\ConfigProvider"
+        "laminas": {
+            "config-provider": "Mezzio\\Session\\Cache\\ConfigProvider"
+        }
+    },
+    "require": {
+        "php": "^7.1",
+        "dflydev/fig-cookies": "^1.0.2 || ^2.0",
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "mezzio/mezzio-session": "^1.1",
+        "psr/cache": "^1.0",
+        "psr/container": "^1.0"
+    },
+    "require-dev": {
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "laminas/laminas-diactoros": "^2.0",
+        "phpunit/phpunit": "^7.1.1"
+    },
+    "suggest": {
+        "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
+    },
+    "autoload": {
+        "psr-4": {
+            "Mezzio\\Session\\Cache\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MezzioTest\\Session\\Cache\\": "test/"
         }
     },
     "scripts": {
@@ -64,5 +65,8 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+    },
+    "replace": {
+        "zendframework/zend-expressive-session-cache": "self.version"
     }
 }

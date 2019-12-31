@@ -1,20 +1,21 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-session-cache for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-session-cache/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-session-cache for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-session-cache/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-session-cache/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace ZendTest\Expressive\Session\Cache;
+namespace MezzioTest\Session\Cache;
 
+use Mezzio\Session\Cache\CacheSessionPersistence;
+use Mezzio\Session\Cache\CacheSessionPersistenceFactory;
+use Mezzio\Session\Cache\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Session\Cache\CacheSessionPersistence;
-use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
-use Zend\Expressive\Session\Cache\Exception;
 
 class CacheSessionPersistenceFactoryTest extends TestCase
 {
@@ -68,7 +69,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([
-            'zend-expressive-session-cache' => [
+            'mezzio-session-cache' => [
                 'cookie_name'   => 'TESTING',
                 'cookie_path'   => '/api',
                 'cache_limiter' => 'public',
@@ -101,7 +102,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([
-            'zend-expressive-session-cache' => [
+            'mezzio-session-cache' => [
                 'cache_item_pool_service' => 'CacheService',
             ],
         ]);
@@ -120,11 +121,12 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([
-            'zend-expressive-session-cache' => [
+            'mezzio-session-cache' => [
                 'cache_item_pool_service' => CacheSessionPersistence::class,
             ],
         ]);
         $this->container->has(CacheSessionPersistence::class)->willReturn(false);
+        $this->container->has(\Zend\Expressive\Session\Cache\CacheSessionPersistence::class)->willReturn(false);
 
         $this->expectException(Exception\MissingDependencyException::class);
         $this->expectExceptionMessage(CacheSessionPersistence::class);

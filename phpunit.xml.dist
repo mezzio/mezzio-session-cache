@@ -4,7 +4,7 @@
          bootstrap="vendor/autoload.php"
          colors="true">
     <testsuites>
-        <testsuite name="zend-expressive-session-cache">
+        <testsuite name="mezzio-session-cache">
             <directory>./test</directory>
         </testsuite>
     </testsuites>
