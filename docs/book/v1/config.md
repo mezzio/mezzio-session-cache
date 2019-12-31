@@ -17,12 +17,12 @@ This document details how to configure each of these items.
 
 This package looks for a service named `config` that returns an array or
 array-like value. Inside this value, it looks for a key named
-`zend-expressive-session-cache`, which is expected to be an associative array or
+`mezzio-session-cache`, which is expected to be an associative array or
 object that acts like an associative array.
 
 ```php
 return [
-    'zend-expressive-session-cache' => [
+    'mezzio-session-cache' => [
         // key/value pairs
     ],
 ];
@@ -67,7 +67,7 @@ return [
             'MoreSpecificPool' => FactoryProvidingACachePool::class,
         ],
     ],
-    'zend-expressive-session-cache' => [
+    'mezzio-session-cache' => [
         'cache_item_pool_service' => 'MoreSpecificPool',
     ],
 ];
@@ -83,7 +83,7 @@ comments detailing expected and default values.
 use Psr\Cache\CacheItemPoolInterface;
 
 return [
-    'zend-expressive-session-cache' => [
+    'mezzio-session-cache' => [
         // Detailed in the above section; allows using a different
         // cache item pool than the global one.
         'cache_item_pool_service' => CacheItemPoolInterface::class,
@@ -126,12 +126,12 @@ return [
 
 ## Using the service
 
-By default, this package define the service `Zend\Expressive\Session\Cache\CacheSessionPersistence`, 
-assigning it to the factory `Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory`.
+By default, this package define the service `Mezzio\Session\Cache\CacheSessionPersistence`, 
+assigning it to the factory `Mezzio\Session\Cache\CacheSessionPersistenceFactory`.
 After you have installed the package, you will need to tell your application to
 use this service when using the `SessionMiddleware`.
 
-The `SessionMiddleware` looks for the service `Zend\Expressive\Session\SessionPersistenceInterface`.
+The `SessionMiddleware` looks for the service `Mezzio\Session\SessionPersistenceInterface`.
 You can tell your container to use the `CacheSessionPersistence` in two
 different ways.
 
@@ -139,8 +139,8 @@ First, you can _alias_ it:
 
 ```php
 // in config/autoload/dependencies.global.php:
-use Zend\Expressive\Session\Cache\CacheSessionPersistence;
-use Zend\Expressive\Session\SessionPersistenceInterface;
+use Mezzio\Session\Cache\CacheSessionPersistence;
+use Mezzio\Session\SessionPersistenceInterface;
 
 return [
     'dependencies' => [
@@ -156,8 +156,8 @@ factory for the `CacheSessionPersistence` implementation:
 
 ```php
 // in config/autoload/dependencies.global.php:
-use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
-use Zend\Expressive\Session\SessionPersistenceInterface;
+use Mezzio\Session\Cache\CacheSessionPersistenceFactory;
+use Mezzio\Session\SessionPersistenceInterface;
 
 return [
     'dependencies' => [
