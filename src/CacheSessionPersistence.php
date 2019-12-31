@@ -1,30 +1,31 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-session-cache for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-session-cache/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-session-cache for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-session-cache/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-session-cache/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\Expressive\Session\Cache;
+namespace Mezzio\Session\Cache;
 
 use DateInterval;
 use DateTimeImmutable;
 use Dflydev\FigCookies\FigRequestCookies;
 use Dflydev\FigCookies\FigResponseCookies;
 use Dflydev\FigCookies\SetCookie;
+use Mezzio\Session\Session;
+use Mezzio\Session\SessionCookiePersistenceInterface;
+use Mezzio\Session\SessionInterface;
+use Mezzio\Session\SessionPersistenceInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Session\Session;
-use Zend\Expressive\Session\SessionCookiePersistenceInterface;
-use Zend\Expressive\Session\SessionInterface;
-use Zend\Expressive\Session\SessionPersistenceInterface;
 
 use function bin2hex;
-use function filemtime;
 use function file_exists;
+use function filemtime;
 use function getcwd;
 use function gmdate;
 use function in_array;
