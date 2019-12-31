@@ -1,25 +1,26 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-session-cache for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-session-cache/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-session-cache for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-session-cache/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-session-cache/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace ZendTest\Expressive\Session\Cache;
+namespace MezzioTest\Session\Cache;
 
 use DateInterval;
 use DateTimeImmutable;
+use Laminas\Diactoros\Response;
+use Mezzio\Session\Cache\CacheSessionPersistence;
+use Mezzio\Session\Cache\Exception;
+use Mezzio\Session\Session;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Expressive\Session\Cache\CacheSessionPersistence;
-use Zend\Expressive\Session\Cache\Exception;
-use Zend\Expressive\Session\Session;
 
 class CacheSessionPersistenceTest extends TestCase
 {

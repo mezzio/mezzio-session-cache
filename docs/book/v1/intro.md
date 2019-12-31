@@ -1,7 +1,7 @@
 # Introduction
 
 This component provides a [PSR-6](https://www.php-fig.org/psr/psr-6/) session
-persistence adapter for use with [zend-expressive-session](https://docs.zendframework.com/zend-expressive-session/).
+persistence adapter for use with [mezzio-session](https://docs.mezzio.dev/mezzio-session/).
 
 PSR-6 defines cache items and cache item pools. This package uses a cache item
 pool in which to store and retrieve sessions. PSR-6 was chosen over the simpler
@@ -10,10 +10,10 @@ functionality around _expiry_, which allows us to expire sessions.
 
 ## Installation
 
-Install zend-expressive-session-cache via [Composer](https://getcomposer.org/):
+Install mezzio-session-cache via [Composer](https://getcomposer.org/):
 
 ```bash
-$ composer require zendframework/zend-expressive-session-cache
+$ composer require mezzio/mezzio-session-cache
 ```
 
 You will also need to install a package that provides a PSR-6
@@ -25,5 +25,5 @@ project](http://www.php-cache.com/en/latest/).
 ## Usage
 
 Generally, you will only provide configuration for this service, including
-configuring a PSR-6 `CacheItemPoolInterface` service; zend-expressive-session
-will then consume it via its [SessionMiddleware](https://docs.zendframework.com/zend-expressive-session/middleware/).
+configuring a PSR-6 `CacheItemPoolInterface` service; mezzio-session
+will then consume it via its [SessionMiddleware](https://docs.mezzio.dev/mezzio-session/middleware/).

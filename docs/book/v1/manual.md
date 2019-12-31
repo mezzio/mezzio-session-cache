@@ -1,6 +1,6 @@
 # Manual usage
 
-The following details the constructor of the `Zend\Expressive\Session\Cache\CacheSessionPersistence` class:
+The following details the constructor of the `Mezzio\Session\Cache\CacheSessionPersistence` class:
 
 ```php
 /**
@@ -38,8 +38,8 @@ Pass all required values and any optional values when creating an instance:
 
 ```php
 use Cache\Adapter\Predis\PredisCachePool;
-use Zend\Expressive\Session\Cache\CacheSessionPersistence;
-use Zend\Expressive\Session\SessionMiddleware;
+use Mezzio\Session\Cache\CacheSessionPersistence;
+use Mezzio\Session\SessionMiddleware;
 
 $cachePool = new PredisCachePool('tcp://localhost:6379');
 $persistence = new CacheSessionPersistence(

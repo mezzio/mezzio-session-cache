@@ -1,16 +1,17 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-session-cache for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-session-cache/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-session-cache for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-session-cache/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-session-cache/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace ZendTest\Expressive\Session\Cache;
+namespace MezzioTest\Session\Cache;
 
+use Mezzio\Session\Cache\ConfigProvider;
 use PHPUnit\Framework\TestCase;
-use Zend\Expressive\Session\Cache\ConfigProvider;
 
 class ConfigProviderTest extends TestCase
 {

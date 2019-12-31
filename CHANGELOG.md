@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- [#4](https://github.com/zendframework/zend-expressive-session-cache/pull/4) modifies the behavior when setting a persistent cookie. Previously,
+- [zendframework/zend-expressive-session-cache#4](https://github.com/zendframework/zend-expressive-session-cache/pull/4) modifies the behavior when setting a persistent cookie. Previously,
   it would set a Max-Age directive on the cookie; however, this is not supported
   in all browsers or SAPIs. As such, it now creates an Expires directive, which
   will have essentially the same effect for users.
@@ -31,10 +31,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#3](https://github.com/zendframework/zend-expressive-session-cache/pull/3) adds a new constructor argument, `bool $persistent = false`. When
+- [zendframework/zend-expressive-session-cache#3](https://github.com/zendframework/zend-expressive-session-cache/pull/3) adds a new constructor argument, `bool $persistent = false`. When
   this is toggled to `true`, a `Max-Age` directive will be added with a value
   equivalent to the `$cacheExpire` value. You can configure this value using the
-  `zend-expressive-session-cache.persistent` configuration key.
+  `mezzio-session-cache.persistent` configuration key.
 
 ### Changed
 
