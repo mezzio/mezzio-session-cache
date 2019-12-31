@@ -1,17 +1,18 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-session-cache for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-session-cache/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-session-cache for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-session-cache/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-session-cache/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\Expressive\Session\Cache\Exception;
+namespace Mezzio\Session\Cache\Exception;
 
+use Mezzio\Session\Cache\CacheSessionPersistence;
+use Mezzio\Session\Cache\CacheSessionPersistenceFactory;
 use RuntimeException;
-use Zend\Expressive\Session\Cache\CacheSessionPersistence;
-use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
 
 class MissingDependencyException extends RuntimeException implements ExceptionInterface
 {
