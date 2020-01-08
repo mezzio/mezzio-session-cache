@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PSR-6 session persistence adapter for mezzio-session.">  
-    <link rel="canonical" href="https://docs.mezzio.dev/v1/config/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
-    <title>Configuration - mezzio-session-cache - Laminas Docs</title>
+    <title>mezzio-session-cache - Laminas Docs</title>
 
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -20,7 +19,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../../img/laminas-foundation-white.svg" height="28" alt="Laminas">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -59,7 +58,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">mezzio-session-cache</a>
+            <a href="../.">mezzio-session-cache</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -74,21 +73,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../intro/" class="subnavigation__link">Introduction</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item subnavigation__list-item--active">
-                                <a href="./" class="subnavigation__link">Configuration</a>
+                                <a href="../v1/intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -102,7 +87,21 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../manual/" class="subnavigation__link">Manual Usage</a>
+                                <a href="../v1/config/" class="subnavigation__link">Configuration</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../v1/manual/" class="subnavigation__link">Manual Usage</a>
                             </li>
                         
                     
@@ -167,262 +166,21 @@
         <div class="row">
             <div class="col-md-2 col-sm-12">
                 
-    
-
-    
-    
-        <div class="toc">
-            <h6 class="toc__headline">On this page</h6>
-            <ul class="toc__list">
-                
-                    <li class="toc__entry">
-                        <a href="#config-service" class="toc__link">Config service</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#cacheitempoolinterface" class="toc__link">CacheItemPoolInterface</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#non-pool-configuration" class="toc__link">Non-Pool configuration</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#using-the-service" class="toc__link">Using the service</a>
-                    </li>
-                
-            </ul>
-        </div>
-    
-
             </div>
             <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
                 
-                    <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        
-            <li class="breadcrumb-item"><a href="">Overview</a></li>
 
-            
-                <li class="breadcrumb-item"><a href="../..">mezzio-session-cache</a></li>
+<h1 class="content__title">404</h1>
+<blockquote>
+    <h3>Something went wrong!</h3>
+    <p>
+        We're sorry, but the page you are looking for does not exist.
+    </p>
+</blockquote>
 
-                
-
-                <li class="breadcrumb-item active" aria-current="page">Configuration</li>
-            
-        
-    </ol>
-</nav>
+<a href="../." class="btn btn-default" role="button">Go to homepage</a>
 
 
-
-
-
-
-    
-    
-
-    <h1 id="configuration">Configuration</h1>
-<p>This package allows configuring the following items:</p>
-<ul>
-<li>The PSR-6 <code>CacheItemPoolInterface</code> service to use.</li>
-<li>The session cookie name.</li>
-<li>The session cookie domain.</li>
-<li>The session cookie path.</li>
-<li>The session cookie secure option.</li>
-<li>The session cookie httponly option.</li>
-<li>The cache limiter (which controls how resources using sessions are cached by the browser).</li>
-<li>When the session expires.</li>
-<li>When the resource using a session was last modified.</li>
-<li>Whether or not to create a <em>persistent</em> session cookie (i.e., one that will
-  not expire when the browser is closed).</li>
-</ul>
-<p>This document details how to configure each of these items.</p>
-<h2 id="config-service">Config service</h2>
-<p>This package looks for a service named <code>config</code> that returns an array or
-array-like value. Inside this value, it looks for a key named
-<code>mezzio-session-cache</code>, which is expected to be an associative array or
-object that acts like an associative array.</p>
-<pre class=codehilite><code class=language-php>return [
-    'mezzio-session-cache' =&gt; [
-        // key/value pairs
-    ],
-];</code></pre>
-<h2 id="cacheitempoolinterface">CacheItemPoolInterface</h2>
-<p>By default, the factory will look for a service named
-<code>Psr\Cache\CacheItemPoolInterface</code>. If found, that service will be used to seed
-the persistence adapter.</p>
-<p>You may also provide a <code>cache_item_pool_service</code> configuration value. If
-present, this service name will be queried instead.</p>
-<h3>Using a global pool</h3>
-<p>To use a global cache item pool, configure the PSR-6 <code>CacheItemPoolInterface</code>
-service in your dependency configuration:</p>
-<pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
-
-return [
-    'dependencies' =&gt; [
-        'factories' =&gt; [
-            CacheItemPoolInterface::class =&gt; FactoryProvidingACachePool::class,
-        ],
-    ],
-];</code></pre>
-<h3>Using a named pool</h3>
-<p>To use a specific cache item pool:</p>
-<pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
-
-return [
-    'dependencies' =&gt; [
-        'factories' =&gt; [
-            'MoreSpecificPool' =&gt; FactoryProvidingACachePool::class,
-        ],
-    ],
-    'mezzio-session-cache' =&gt; [
-        'cache_item_pool_service' =&gt; 'MoreSpecificPool',
-    ],
-];</code></pre>
-<h2 id="non-pool-configuration">Non-Pool configuration</h2>
-<p>As noted earlier, you may configure a number of other values to customize your
-persistence adapter. The following is example configuration, with inline
-comments detailing expected and default values.</p>
-<pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
-
-return [
-    'mezzio-session-cache' =&gt; [
-        // Detailed in the above section; allows using a different
-        // cache item pool than the global one.
-        'cache_item_pool_service' =&gt; CacheItemPoolInterface::class,
-
-        // The name of the session cookie. This name must comply with
-        // the syntax outlined in https://tools.ietf.org/html/rfc6265.html
-        'cookie_name' =&gt; 'PHPSESSION',
-
-        // The (sub)domain that the cookie is available to. Setting this
-        // to a subdomain (such as 'www.example.com') will make the cookie
-        // available to that subdomain and all other sub-domains of it
-        // (i.e. w2.www.example.com). To make the cookie available to the
-        // whole domain (including all subdomains of it), simply set the
-        // value to the domain name ('example.com', in this case).
-        // Leave this null to use browser default (current hostname).
-        'cookie_domain' =&gt; null,
-
-        // The path prefix of the cookie domain to which it applies.
-        'cookie_path' =&gt; '/',
-
-        // Indicates that the cookie should only be transmitted over a
-        // secure HTTPS connection from the client. When set to TRUE, the
-        // cookie will only be set if a secure connection exists.
-        'cookie_secure' =&gt; false,
-
-        // When TRUE the cookie will be made accessible only through the
-        // HTTP protocol. This means that the cookie won't be accessible
-        // by scripting languages, such as JavaScript.
-        'cookie_http_only' =&gt; false,
-
-        // Governs the various cache control headers emitted when
-        // a session cookie is provided to the client. Value may be one
-        // of &quot;nocache&quot;, &quot;public&quot;, &quot;private&quot;, or &quot;private_no_expire&quot;;
-        // semantics are the same as outlined in
-        // http://php.net/session_cache_limiter
-        'cache_limiter' =&gt; 'nocache',
-
-        // When the cache and the cookie should expire, in seconds. Defaults
-        // to 180 minutes.
-        'cache_expire' =&gt; 10800,
-
-        // An integer value indicating when the resource to which the session
-        // applies was last modified. If not provided, it uses the last
-        // modified time of, in order,
-        // - the public/index.php file of the current working directory
-        // - the index.php file of the current working directory
-        // - the current working directory
-        'last_modified' =&gt; null,
-
-        // A boolean value indicating whether or not the session cookie
-        // should persist. By default, this is disabled (false); passing
-        // a boolean true value will enable the feature. When enabled, the
-        // cookie will be generated with an Expires directive equal to the
-        // the current time plus the cache_expire value as noted above.
-        //
-        // As of 1.2.0, developers may define the session TTL by calling the
-        // session instance's `persistSessionFor(int $duration)` method. When
-        // that method has been called, the engine will use that value even if
-        // the below flag is toggled off.
-        'persistent' =&gt; false,
-    ],
-];</code></pre>
-<h2 id="using-the-service">Using the service</h2>
-<p>By default, this package define the service <code>Mezzio\Session\Cache\CacheSessionPersistence</code>,
-assigning it to the factory <code>Mezzio\Session\Cache\CacheSessionPersistenceFactory</code>.
-After you have installed the package, you will need to tell your application to
-use this service when using the <code>SessionMiddleware</code>.</p>
-<p>The <code>SessionMiddleware</code> looks for the service <code>Mezzio\Session\SessionPersistenceInterface</code>.
-You can tell your container to use the <code>CacheSessionPersistence</code> in two
-different ways.</p>
-<p>First, you can <em>alias</em> it:</p>
-<pre class=codehilite><code class=language-php>// in config/autoload/dependencies.global.php:
-use Mezzio\Session\Cache\CacheSessionPersistence;
-use Mezzio\Session\SessionPersistenceInterface;
-
-return [
-    'dependencies' =&gt; [
-        'aliases' =&gt; [
-            SessionPersistenceInterface::class =&gt; CacheSessionPersistence::class,
-        ],
-    ],
-];</code></pre>
-<p>Second, you can instead assign the <code>SessionPersistenceInterface</code> service to the
-factory for the <code>CacheSessionPersistence</code> implementation:</p>
-<pre class=codehilite><code class=language-php>// in config/autoload/dependencies.global.php:
-use Mezzio\Session\Cache\CacheSessionPersistenceFactory;
-use Mezzio\Session\SessionPersistenceInterface;
-
-return [
-    'dependencies' =&gt; [
-        'factories' =&gt; [
-            SessionPersistenceInterface::class =&gt; CacheSessionPersistenceFactory::class,
-        ],
-    ],
-];</code></pre>
-
-
-
-
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../intro/">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../manual/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
-            
-        </li>
-    </ul>
-</nav>
-
-
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/mezzio/mezzio-session-cache/edit/master/docs/book/v1/config.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
-
-                
             </div>
             <div class="col-md-3 col-sm-12 sidebar">
                 
@@ -437,7 +195,7 @@ return [
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">mezzio-session-cache</a>
+            <a href="../.">mezzio-session-cache</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -452,21 +210,7 @@ return [
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../intro/" class="subnavigation__link">Introduction</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item subnavigation__list-item--active">
-                                <a href="./" class="subnavigation__link">Configuration</a>
+                                <a href="../v1/intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -480,7 +224,21 @@ return [
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../manual/" class="subnavigation__link">Manual Usage</a>
+                                <a href="../v1/config/" class="subnavigation__link">Configuration</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../v1/manual/" class="subnavigation__link">Manual Usage</a>
                             </li>
                         
                     
@@ -567,12 +325,12 @@ return [
 </footer>
 
     <script>
-        let base_url = '../..',
+        let base_url = '..',
             project  = "mezzio",
             siteName = 'mezzio-session-cache';
     </script>
     <script src="/js/scripts.js"></script>
-        <script src="../../search/main.js"></script>
+        <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
