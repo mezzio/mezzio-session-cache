@@ -1,6 +1,6 @@
 # mezzio-session-cache
 
-[![Build Status](https://travis-ci.org/mezzio/mezzio-session-cache.svg?branch=master)](https://travis-ci.org/mezzio/mezzio-session-cache)
+[![Build Status](https://travis-ci.com/mezzio/mezzio-session-cache.svg?branch=master)](https://travis-ci.com/mezzio/mezzio-session-cache)
 [![Coverage Status](https://coveralls.io/repos/github/mezzio/mezzio-session-cache/badge.svg?branch=master)](https://coveralls.io/github/mezzio/mezzio-session-cache?branch=master)
 
 This library provides a [PSR-6](https://www.php-fig.org/psr/psr-6/) session
