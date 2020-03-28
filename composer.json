@@ -67,6 +67,6 @@
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     },
     "replace": {
-        "zendframework/zend-expressive-session-cache": "self.version"
+        "zendframework/zend-expressive-session-cache": "^1.3.1"
     }
 }
