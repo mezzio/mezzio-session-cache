@@ -260,7 +260,7 @@
 
     <h1 id="manual-usage">Manual usage</h1>
 <p>The following details the constructor of the <code>Mezzio\Session\Cache\CacheSessionPersistence</code> class:</p>
-<pre class=codehilite><code class=language-php>/**
+<pre class="highlight"><code class="language-php">/**
  * Prepare session cache and default HTTP caching headers.
  *
  * @param CacheItemPoolInterface $cache The cache pool instance
@@ -306,8 +306,9 @@ public function __construct(
     bool $cookieSecure = false,
     bool $cookieHttpOnly = false
 ) {</code></pre>
+
 <p>Pass all required values and any optional values when creating an instance:</p>
-<pre class=codehilite><code class=language-php>use Cache\Adapter\Predis\PredisCachePool;
+<pre class="highlight"><code class="language-php">use Cache\Adapter\Predis\PredisCachePool;
 use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\SessionMiddleware;
 
