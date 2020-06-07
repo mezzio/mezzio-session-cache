@@ -31,8 +31,8 @@
         }
     },
     "require": {
-        "php": "^7.2",
-        "dflydev/fig-cookies": "^2.0",
+        "php": "^7.3",
+        "dflydev/fig-cookies": "^2.0.1",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "mezzio/mezzio-session": "^1.2",
         "psr/cache": "^1.0",
