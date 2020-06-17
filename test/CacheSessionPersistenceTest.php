@@ -12,6 +12,7 @@ namespace MezzioTest\Session\Cache;
 
 use DateInterval;
 use DateTimeImmutable;
+use Dflydev\FigCookies\Modifier\SameSite;
 use Laminas\Diactoros\Response;
 use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\Cache\Exception;
@@ -275,6 +276,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeSame('/', 'cookiePath', $persistence);
         $this->assertAttributeSame(false, 'cookieSecure', $persistence);
         $this->assertAttributeSame(false, 'cookieHttpOnly', $persistence);
+        $this->assertAttributeSame('Lax', 'cookieSameSite', $persistence);
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
         $this->assertAttributeNotEmpty('lastModified', $persistence);
@@ -307,7 +309,8 @@ class CacheSessionPersistenceTest extends TestCase
             false,
             'example.com',
             true,
-            true
+            true,
+            'None'
         );
 
         $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
@@ -316,6 +319,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
         $this->assertAttributeSame(true, 'cookieSecure', $persistence);
         $this->assertAttributeSame(true, 'cookieHttpOnly', $persistence);
+        $this->assertAttributeSame('None', 'cookieSameSite', $persistence);
         $this->assertAttributeSame($cacheLimiter, 'cacheLimiter', $persistence);
         $this->assertAttributeSame(100, 'cacheExpire', $persistence);
         $this->assertAttributeSame(

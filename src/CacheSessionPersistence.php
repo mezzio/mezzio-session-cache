@@ -14,6 +14,7 @@ use DateInterval;
 use DateTimeImmutable;
 use Dflydev\FigCookies\FigRequestCookies;
 use Dflydev\FigCookies\FigResponseCookies;
+use Dflydev\FigCookies\Modifier\SameSite;
 use Dflydev\FigCookies\SetCookie;
 use Mezzio\Session\Session;
 use Mezzio\Session\SessionCookiePersistenceInterface;
@@ -85,6 +86,9 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     /** @var bool */
     private $cookieHttpOnly;
 
+    /** @var string */
+    private $cookieSameSite;
+
     /** @var false|string */
     private $lastModified;
 
@@ -121,6 +125,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      * @param bool $cookieHttpOnly Whether or not the cookie may be accessed
      *     by client-side apis (e.g., Javascript). An http-only cookie cannot
      *     be accessed by client-side apis.
+     * @param string $cookieSameSite The same-site rule to apply to the persisted
+     *    cookie. Options include "Lax", "Strict", and "None".
      *
      * @todo reorder the constructor arguments
      */
@@ -134,7 +140,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         bool $persistent = false,
         string $cookieDomain = null,
         bool $cookieSecure = false,
-        bool $cookieHttpOnly = false
+        bool $cookieHttpOnly = false,
+        string $cookieSameSite = 'Lax'
     ) {
         $this->cache = $cache;
 
@@ -150,6 +157,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         $this->cookieSecure = $cookieSecure;
 
         $this->cookieHttpOnly = $cookieHttpOnly;
+
+        $this->cookieSameSite = $cookieSameSite;
 
         $this->cacheLimiter = in_array($cacheLimiter, self::SUPPORTED_CACHE_LIMITERS, true)
             ? $cacheLimiter
@@ -197,7 +206,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             ->withDomain($this->cookieDomain)
             ->withPath($this->cookiePath)
             ->withSecure($this->cookieSecure)
-            ->withHttpOnly($this->cookieHttpOnly);
+            ->withHttpOnly($this->cookieHttpOnly)
+            ->withSameSite(SameSite::fromString($this->cookieSameSite));
 
         $persistenceDuration = $this->getPersistenceDuration($session);
         if ($persistenceDuration) {

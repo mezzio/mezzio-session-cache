@@ -59,6 +59,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame(null, 'cookieDomain', $persistence);
         $this->assertAttributeSame(false, 'cookieSecure', $persistence);
         $this->assertAttributeSame(false, 'cookieHttpOnly', $persistence);
+        $this->assertAttributeSame('Lax', 'cookieSameSite', $persistence);
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
         $this->assertAttributeNotEmpty('lastModified', $persistence);
@@ -79,6 +80,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
                 'cookie_path'      => '/api',
                 'cookie_secure'    => true,
                 'cookie_http_only' => true,
+                'cookie_same_site' => 'None',
                 'cache_limiter'    => 'public',
                 'cache_expire'     => 300,
                 'last_modified'    => $lastModified,
@@ -97,6 +99,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
         $this->assertAttributeSame(true, 'cookieSecure', $persistence);
         $this->assertAttributeSame(true, 'cookieHttpOnly', $persistence);
+        $this->assertAttributeSame('None', 'cookieSameSite', $persistence);
         $this->assertAttributeSame('public', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(300, 'cacheExpire', $persistence);
         $this->assertAttributeSame(

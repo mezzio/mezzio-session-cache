@@ -31,6 +31,7 @@ class CacheSessionPersistenceFactory
         $cookiePath     = $config['cookie_path'] ?? '/';
         $cookieSecure   = $config['cookie_secure'] ?? false;
         $cookieHttpOnly = $config['cookie_http_only'] ?? false;
+        $cookieSameSite = $config['cookie_same_site'] ?? 'Lax';
         $cacheLimiter   = $config['cache_limiter'] ?? 'nocache';
         $cacheExpire    = $config['cache_expire'] ?? 10800;
         $lastModified   = $config['last_modified'] ?? null;
@@ -46,7 +47,8 @@ class CacheSessionPersistenceFactory
             $persistent,
             $cookieDomain,
             $cookieSecure,
-            $cookieHttpOnly
+            $cookieHttpOnly,
+            $cookieSameSite
         );
     }
 }
