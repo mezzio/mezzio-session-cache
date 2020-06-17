@@ -290,6 +290,7 @@
 <li>The session cookie path.</li>
 <li>The session cookie secure option.</li>
 <li>The session cookie httponly option.</li>
+<li>The session cookie SameSite attribute (since 1.4.0).</li>
 <li>The cache limiter (which controls how resources using sessions are cached by the browser).</li>
 <li>When the session expires.</li>
 <li>When the resource using a session was last modified.</li>
@@ -379,6 +380,23 @@ return [
         // HTTP protocol. This means that the cookie won't be accessible
         // by scripting languages, such as JavaScript.
         'cookie_http_only' =&gt; false,
+
+        // Available since 1.4.0
+        //
+        // Asserts that a cookie must not be sent with cross-origin requests,
+        // providing some protection against cross-site request forgery attacks (CSRF).
+        //
+        // Allowed values:
+        // - Strict: The browser sends the cookie only for same-site requests
+        //   (that is, requests originating from the same site that set the cookie).
+        //   If the request originated from a different URL than the current one,
+        //   no cookies with the SameSite=Strict attribute are sent.
+        // - Lax: The cookie is withheld on cross-site subrequests, such as calls
+        //   to load images or frames, but is sent when a user navigates to the URL
+        //   from an external site, such as by following a link.
+        // - None: The browser sends the cookie with both cross-site and same-site
+        //   requests.
+        'cookie_same_site' =&gt; 'Lax',
 
         // Governs the various cache control headers emitted when
         // a session cookie is provided to the client. Value may be one

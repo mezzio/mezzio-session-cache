@@ -290,6 +290,9 @@
  * @param bool $cookieHttpOnly Whether or not the cookie may be accessed
  *     by client-side apis (e.g., Javascript). An http-only cookie cannot
  *     be accessed by client-side apis.
+ * @param string $cookieSameSite The same-site rule to apply to the persisted
+ *    cookie. Options include "Lax", "Strict", and "None".
+ *    Available since 1.4.0
  *
  * @todo reorder these arguments so they make more sense and are in an
  *     order of importance
@@ -304,7 +307,8 @@ public function __construct(
     bool $persistent = false,
     string $cookieDomain = null,
     bool $cookieSecure = false,
-    bool $cookieHttpOnly = false
+    bool $cookieHttpOnly = false,
+    string $cookieSameSite = 'Lax'
 ) {</code></pre>
 
 <p>Pass all required values and any optional values when creating an instance:</p>
