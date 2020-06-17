@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#3](https://github.com/mezzio/mezzio-session-cache/pull/3) adds support for SameSite cookies. By default, the SameSite attribute will be set to "Lax", but the value can be configured via the mezzio-session-cache.cookie_same_site configuration setting.
 
 ### Changed
 
