@@ -10,14 +10,10 @@ declare(strict_types=1);
 
 namespace Mezzio\Session\Cache;
 
-use DateInterval;
-use DateTimeImmutable;
-use Dflydev\FigCookies\FigRequestCookies;
-use Dflydev\FigCookies\FigResponseCookies;
-use Dflydev\FigCookies\Modifier\SameSite;
-use Dflydev\FigCookies\SetCookie;
+use Mezzio\Session\Persistence\CacheHeadersGeneratorTrait;
+use Mezzio\Session\Persistence\Http;
+use Mezzio\Session\Persistence\SessionCookieAwareTrait;
 use Mezzio\Session\Session;
-use Mezzio\Session\SessionCookiePersistenceInterface;
 use Mezzio\Session\SessionInterface;
 use Mezzio\Session\SessionPersistenceInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -25,14 +21,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 use function bin2hex;
-use function file_exists;
-use function filemtime;
-use function getcwd;
 use function gmdate;
-use function in_array;
 use function random_bytes;
-use function sprintf;
-use function time;
 
 /**
  * Session persistence using a PSR-16 cache adapter.
@@ -43,54 +33,11 @@ use function time;
  */
 class CacheSessionPersistence implements SessionPersistenceInterface
 {
-    /**
-     * This unusual past date value is taken from the php-engine source code and
-     * used "as is" for consistency.
-     */
-    public const CACHE_PAST_DATE  = 'Thu, 19 Nov 1981 08:52:00 GMT';
-
-    public const HTTP_DATE_FORMAT = 'D, d M Y H:i:s T';
-
-    /** @var array */
-    private const SUPPORTED_CACHE_LIMITERS = [
-        'nocache',
-        'public',
-        'private',
-        'private_no_expire',
-    ];
+    use CacheHeadersGeneratorTrait;
+    use SessionCookieAwareTrait;
 
     /** @var CacheItemPoolInterface */
     private $cache;
-
-    /** @var int */
-    private $cacheExpire;
-
-    /** @var string */
-    private $cacheLimiter;
-
-    /** @var string|null */
-    private $cookie;
-
-    /** @var string */
-    private $cookieName;
-
-    /** @var string|null */
-    private $cookieDomain;
-
-    /** @var string */
-    private $cookiePath;
-
-    /** @var bool */
-    private $cookieSecure;
-
-    /** @var bool */
-    private $cookieHttpOnly;
-
-    /** @var string */
-    private $cookieSameSite;
-
-    /** @var false|string */
-    private $lastModified;
 
     /** @var bool */
     private $persistent;
@@ -150,6 +97,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         }
         $this->cookieName = $cookieName;
 
+        $this->cookieLifetime = $persistent ? $cacheExpire : 0;
+
         $this->cookieDomain = $cookieDomain;
 
         $this->cookiePath = $cookiePath;
@@ -160,22 +109,22 @@ class CacheSessionPersistence implements SessionPersistenceInterface
 
         $this->cookieSameSite = $cookieSameSite;
 
-        $this->cacheLimiter = in_array($cacheLimiter, self::SUPPORTED_CACHE_LIMITERS, true)
+        $this->cacheLimiter = isset(self::$supportedCacheLimiters[$cacheLimiter])
             ? $cacheLimiter
             : 'nocache';
 
         $this->cacheExpire = $cacheExpire;
 
         $this->lastModified = $lastModified
-            ? gmdate(self::HTTP_DATE_FORMAT, $lastModified)
-            : $this->determineLastModifiedValue();
+            ? gmdate(Http::DATE_FORMAT, $lastModified)
+            : $this->getLastModified();
 
         $this->persistent = $persistent;
     }
 
     public function initializeSessionFromRequest(ServerRequestInterface $request) : SessionInterface
     {
-        $id = $this->getCookieFromRequest($request);
+        $id = $this->getSessionCookieValueFromRequest($request);
         $sessionData = $id ? $this->getSessionDataFromCache($id) : [];
         return new Session($sessionData, $id);
     }
@@ -201,32 +150,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
 
         $this->persistSessionDataToCache($id, $session->toArray());
 
-        $sessionCookie = SetCookie::create($this->cookieName)
-            ->withValue($id)
-            ->withDomain($this->cookieDomain)
-            ->withPath($this->cookiePath)
-            ->withSecure($this->cookieSecure)
-            ->withHttpOnly($this->cookieHttpOnly)
-            ->withSameSite(SameSite::fromString($this->cookieSameSite));
-
-        $persistenceDuration = $this->getPersistenceDuration($session);
-        if ($persistenceDuration) {
-            $sessionCookie = $sessionCookie->withExpires(
-                (new DateTimeImmutable())->add(new DateInterval(sprintf('PT%dS', $persistenceDuration)))
-            );
-        }
-
-        $response = FigResponseCookies::set($response, $sessionCookie);
-
-        if ($this->responseAlreadyHasCacheHeaders($response)) {
-            return $response;
-        }
-
-        foreach ($this->generateCacheHeaders() as $name => $value) {
-            if (false !== $value) {
-                $response = $response->withHeader($name, $value);
-            }
-        }
+        $response = $this->addSessionCookieHeaderToResponse($response, $id, $session);
+        $response = $this->addCacheHeadersToResponse($response);
 
         return $response;
     }
@@ -254,89 +179,6 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         return bin2hex(random_bytes(16));
     }
 
-    /**
-     * Generate cache http headers for this instance's session cache_limiter and
-     * cache_expire values
-     */
-    private function generateCacheHeaders() : array
-    {
-        // cache_limiter: 'nocache'
-        if ('nocache' === $this->cacheLimiter) {
-            return [
-                'Expires'       => self::CACHE_PAST_DATE,
-                'Cache-Control' => 'no-store, no-cache, must-revalidate',
-                'Pragma'        => 'no-cache',
-            ];
-        }
-
-        // cache_limiter: 'public'
-        if ('public' === $this->cacheLimiter) {
-            return [
-                'Expires'       => gmdate(self::HTTP_DATE_FORMAT, time() + $this->cacheExpire),
-                'Cache-Control' => sprintf('public, max-age=%d', $this->cacheExpire),
-                'Last-Modified' => $this->lastModified,
-            ];
-        }
-
-        // cache_limiter: 'private'
-        if ('private' === $this->cacheLimiter) {
-            return [
-                'Expires'       => self::CACHE_PAST_DATE,
-                'Cache-Control' => sprintf('private, max-age=%d', $this->cacheExpire),
-                'Last-Modified' => $this->lastModified,
-            ];
-        }
-
-        // last possible case, cache_limiter = 'private_no_expire'
-        return [
-            'Cache-Control' => sprintf('private, max-age=%d', $this->cacheExpire),
-            'Last-Modified' => $this->lastModified,
-        ];
-    }
-
-    /**
-     * Return the Last-Modified header line based on the request's script file
-     * modified time. If no script file could be derived from the request we use
-     * the file modification time of the current working directory as a fallback.
-     *
-     * @return string
-     */
-    private function determineLastModifiedValue() : string
-    {
-        $cwd = getcwd();
-        foreach (['public/index.php', 'index.php'] as $filename) {
-            $path = sprintf('%s/%s', $cwd, $filename);
-            if (! file_exists($path)) {
-                continue;
-            }
-
-            return gmdate(self::HTTP_DATE_FORMAT, filemtime($path));
-        }
-
-        return gmdate(self::HTTP_DATE_FORMAT, filemtime($cwd));
-    }
-
-    /**
-     * Retrieve the session cookie value.
-     *
-     * Cookie headers may or may not be present, based on SAPI.  For instance,
-     * under Swoole, they are omitted, but the cookie parameters are present.
-     * As such, this method uses FigRequestCookies to retrieve the cookie value
-     * only if the Cookie header is present. Otherwise, it falls back to the
-     * request cookie parameters.
-     *
-     * In each case, if the value is not found, it falls back to generating a
-     * new session identifier.
-     */
-    private function getCookieFromRequest(ServerRequestInterface $request) : string
-    {
-        if ('' !== $request->getHeaderLine('Cookie')) {
-            return FigRequestCookies::get($request, $this->cookieName)->getValue() ?? '';
-        }
-
-        return $request->getCookieParams()[$this->cookieName] ?? '';
-    }
-
     private function getSessionDataFromCache(string $id) : array
     {
         $item = $this->cache->getItem($id);
@@ -352,29 +194,5 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         $item->set($data);
         $item->expiresAfter($this->cacheExpire);
         $this->cache->save($item);
-    }
-
-    /**
-     * Check if the response already carries cache headers
-     */
-    private function responseAlreadyHasCacheHeaders(ResponseInterface $response) : bool
-    {
-        return (
-            $response->hasHeader('Expires')
-            || $response->hasHeader('Last-Modified')
-            || $response->hasHeader('Cache-Control')
-            || $response->hasHeader('Pragma')
-        );
-    }
-
-    private function getPersistenceDuration(SessionInterface $session) : int
-    {
-        $duration = $this->persistent ? $this->cacheExpire : 0;
-        if ($session instanceof SessionCookiePersistenceInterface
-            && $session->has(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY)
-        ) {
-            $duration = $session->getSessionLifetime();
-        }
-        return $duration < 0 ? 0 : $duration;
     }
 }
