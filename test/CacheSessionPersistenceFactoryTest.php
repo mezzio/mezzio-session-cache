@@ -13,6 +13,7 @@ namespace MezzioTest\Session\Cache;
 use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\Cache\CacheSessionPersistenceFactory;
 use Mezzio\Session\Cache\Exception;
+use Mezzio\Session\Persistence\Http;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
@@ -103,7 +104,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame('public', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(300, 'cacheExpire', $persistence);
         $this->assertAttributeSame(
-            gmdate(CacheSessionPersistence::HTTP_DATE_FORMAT, $lastModified),
+            gmdate(Http::DATE_FORMAT, $lastModified),
             'lastModified',
             $persistence
         );

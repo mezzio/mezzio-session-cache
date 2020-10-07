@@ -12,10 +12,10 @@ namespace MezzioTest\Session\Cache;
 
 use DateInterval;
 use DateTimeImmutable;
-use Dflydev\FigCookies\Modifier\SameSite;
 use Laminas\Diactoros\Response;
 use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\Cache\Exception;
+use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Session;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use PHPUnit\Framework\TestCase;
@@ -148,7 +148,7 @@ class CacheSessionPersistenceTest extends TestCase
     public function assertNoCache(Response $response)
     {
         $this->assertSame(
-            CacheSessionPersistence::CACHE_PAST_DATE,
+            Http::CACHE_PAST_DATE,
             $response->getHeaderLine('Expires'),
             sprintf(
                 'Expected Expires header set to distant past; received "%s"',
@@ -204,7 +204,7 @@ class CacheSessionPersistenceTest extends TestCase
     public function assertCachePrivate(Response $response)
     {
         $this->assertSame(
-            CacheSessionPersistence::CACHE_PAST_DATE,
+            Http::CACHE_PAST_DATE,
             $response->getHeaderLine('Expires'),
             sprintf(
                 'Expected Expires header set to distant past; received "%s"',
@@ -323,7 +323,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeSame($cacheLimiter, 'cacheLimiter', $persistence);
         $this->assertAttributeSame(100, 'cacheExpire', $persistence);
         $this->assertAttributeSame(
-            gmdate(CacheSessionPersistence::HTTP_DATE_FORMAT, $lastModified),
+            gmdate(Http::DATE_FORMAT, $lastModified),
             'lastModified',
             $persistence
         );
