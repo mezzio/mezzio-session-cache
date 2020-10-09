@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.5.0 - TBD
+
+### Added
+
+- [#8](https://github.com/mezzio/mezzio-session-cache/pull/8) adds support for PHP 8.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 1.4.0 - 2020-06-17
 
 ### Added
