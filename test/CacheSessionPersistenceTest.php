@@ -69,7 +69,7 @@ class CacheSessionPersistenceTest extends TestCase
     public function setUp(): void
     {
         $this->cachePool   = $this->createMock(CacheItemPoolInterface::class);
-        $this->currentTime = new DateTimeImmutable();
+        $this->currentTime = new DateTimeImmutable(gmdate(Http::DATE_FORMAT));
     }
 
     /** @param mixed $expected */
