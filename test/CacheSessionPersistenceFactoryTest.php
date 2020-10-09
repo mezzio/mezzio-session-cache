@@ -21,6 +21,9 @@ use Psr\Container\ContainerInterface;
 use ReflectionProperty;
 use Zend\Expressive\Session\Cache\CacheSessionPersistence as LegacyCacheSessionPersistence;
 
+use function gmdate;
+use function time;
+
 class CacheSessionPersistenceFactoryTest extends TestCase
 {
     /** @var ContainerInterface|MockObject */
@@ -39,7 +42,6 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertSame($expected, $r->getValue($instance));
     }
 
-    /** @param mixed $expected */
     private function assertAttributeNotEmpty(string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
@@ -125,18 +127,18 @@ class CacheSessionPersistenceFactoryTest extends TestCase
              )
              ->willReturnOnConsecutiveCalls(
                  [
-                    'mezzio-session-cache' => [
-                        'cookie_name'      => 'TESTING',
-                        'cookie_domain'    => 'example.com',
-                        'cookie_path'      => '/api',
-                        'cookie_secure'    => true,
-                        'cookie_http_only' => true,
-                        'cookie_same_site' => 'None',
-                        'cache_limiter'    => 'public',
-                        'cache_expire'     => 300,
-                        'last_modified'    => $lastModified,
-                        'persistent'       => true,
-                    ],
+                     'mezzio-session-cache' => [
+                         'cookie_name'      => 'TESTING',
+                         'cookie_domain'    => 'example.com',
+                         'cookie_path'      => '/api',
+                         'cookie_secure'    => true,
+                         'cookie_http_only' => true,
+                         'cookie_same_site' => 'None',
+                         'cache_limiter'    => 'public',
+                         'cache_expire'     => 300,
+                         'last_modified'    => $lastModified,
+                         'persistent'       => true,
+                     ],
                  ],
                  $cachePool
              );
@@ -182,9 +184,9 @@ class CacheSessionPersistenceFactoryTest extends TestCase
              )
              ->willReturnOnConsecutiveCalls(
                  [
-                    'mezzio-session-cache' => [
-                        'cache_item_pool_service' => 'CacheService',
-                    ],
+                     'mezzio-session-cache' => [
+                         'cache_item_pool_service' => 'CacheService',
+                     ],
                  ],
                  $cachePool
              );

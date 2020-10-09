@@ -10,21 +10,23 @@ declare(strict_types=1);
 
 namespace Mezzio\Session\Cache;
 
+use Zend\Expressive\Session\Cache\CacheSessionPersistence as LegacyCacheSessionPersistence;
+
 class ConfigProvider
 {
-    public function __invoke() : array
+    public function __invoke(): array
     {
         return [
             'dependencies' => $this->getDependencies(),
         ];
     }
 
-    public function getDependencies() : array
+    public function getDependencies(): array
     {
         return [
             // Legacy Zend Framework aliases
-            'aliases' => [
-                \Zend\Expressive\Session\Cache\CacheSessionPersistence::class => CacheSessionPersistence::class,
+            'aliases'   => [
+                LegacyCacheSessionPersistence::class => CacheSessionPersistence::class,
             ],
             'factories' => [
                 CacheSessionPersistence::class => CacheSessionPersistenceFactory::class,

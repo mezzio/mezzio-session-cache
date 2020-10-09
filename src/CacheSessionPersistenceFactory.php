@@ -15,6 +15,10 @@ use Psr\Container\ContainerInterface;
 
 class CacheSessionPersistenceFactory
 {
+    /**
+     * @todo Use explicit return type hint for 2.0
+     * @return CacheSessionPersistence
+     */
     public function __invoke(ContainerInterface $container)
     {
         $config = $container->has('config') ? $container->get('config') : [];

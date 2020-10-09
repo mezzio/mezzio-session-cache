@@ -46,35 +46,34 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      * Prepare session cache and default HTTP caching headers.
      *
      * @param CacheItemPoolInterface $cache The cache pool instance
-     * @param string $cookieName The name of the cookie
-     * @param string $cacheLimiter The cache limiter setting is used to
-     *     determine how to send HTTP client-side caching headers. Those
-     *     headers will be added programmatically to the response along with
-     *     the session set-cookie header when the session data is persisted.
-     * @param int $cacheExpire Number of seconds until the session cookie
-     *     should expire; defaults to 180 minutes (180m * 60s/m = 10800s),
-     *     which is the default of the PHP session.cache_expire setting. This
-     *     is also used to set the TTL for session data.
-     * @param null|int $lastModified Timestamp when the application was last
-     *     modified. If not provided, this will look for each of
-     *     public/index.php, index.php, and finally the current working
-     *     directory, using the filemtime() of the first found.
-     * @param bool $persistent Whether or not to create a persistent cookie. If
-     *     provided, this sets the Expires directive for the cookie based on
-     *     the value of $cacheExpire. Developers can also set the expiry at
-     *     runtime via the Session instance, using its persistSessionFor()
-     *     method; that value will be honored even if global persistence
-     *     is toggled true here.
-     * @param string|null $cookieDomain The domain for the cookie. If not set,
-     *     the current domain is used.
-     * @param bool $cookieSecure Whether or not the cookie should be required
-     *     to be set over an encrypted connection
-     * @param bool $cookieHttpOnly Whether or not the cookie may be accessed
-     *     by client-side apis (e.g., Javascript). An http-only cookie cannot
-     *     be accessed by client-side apis.
-     * @param string $cookieSameSite The same-site rule to apply to the persisted
-     *    cookie. Options include "Lax", "Strict", and "None".
-     *
+     * @param string                 $cookieName The name of the cookie
+     * @param string                 $cacheLimiter The cache limiter setting is used to
+     *                     determine how to send HTTP client-side caching headers. Those
+     *                     headers will be added programmatically to the response along with
+     *                     the session set-cookie header when the session data is persisted.
+     * @param int                    $cacheExpire Number of seconds until the session cookie
+     *                        should expire; defaults to 180 minutes (180m * 60s/m = 10800s),
+     *                        which is the default of the PHP session.cache_expire setting. This
+     *                        is also used to set the TTL for session data.
+     * @param null|int               $lastModified Timestamp when the application was last
+     *                   modified. If not provided, this will look for each of
+     *                   public/index.php, index.php, and finally the current working
+     *                   directory, using the filemtime() of the first found.
+     * @param bool                   $persistent Whether or not to create a persistent cookie. If
+     *                       provided, this sets the Expires directive for the cookie based on
+     *                       the value of $cacheExpire. Developers can also set the expiry at
+     *                       runtime via the Session instance, using its persistSessionFor()
+     *                       method; that value will be honored even if global persistence
+     *                       is toggled true here.
+     * @param string|null            $cookieDomain The domain for the cookie. If not set,
+     *                the current domain is used.
+     * @param bool                   $cookieSecure Whether or not the cookie should be required
+     *                       to be set over an encrypted connection
+     * @param bool                   $cookieHttpOnly Whether or not the cookie may be accessed
+     *                       by client-side apis (e.g., Javascript). An http-only cookie cannot
+     *                       be accessed by client-side apis.
+     * @param string                 $cookieSameSite The same-site rule to apply to the persisted
+     *                    cookie. Options include "Lax", "Strict", and "None".
      * @todo reorder the constructor arguments
      */
     public function __construct(
@@ -85,7 +84,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         int $cacheExpire = 10800,
         ?int $lastModified = null,
         bool $persistent = false,
-        string $cookieDomain = null,
+        ?string $cookieDomain = null,
         bool $cookieSecure = false,
         bool $cookieHttpOnly = false,
         string $cookieSameSite = 'Lax'
@@ -122,19 +121,20 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         $this->persistent = $persistent;
     }
 
-    public function initializeSessionFromRequest(ServerRequestInterface $request) : SessionInterface
+    public function initializeSessionFromRequest(ServerRequestInterface $request): SessionInterface
     {
-        $id = $this->getSessionCookieValueFromRequest($request);
+        $id          = $this->getSessionCookieValueFromRequest($request);
         $sessionData = $id ? $this->getSessionDataFromCache($id) : [];
         return new Session($sessionData, $id);
     }
 
-    public function persistSession(SessionInterface $session, ResponseInterface $response) : ResponseInterface
+    public function persistSession(SessionInterface $session, ResponseInterface $response): ResponseInterface
     {
         $id = $session->getId();
 
         // New session? No data? Nothing to do.
-        if ('' === $id
+        if (
+            '' === $id
             && ([] === $session->toArray() || ! $session->hasChanged())
         ) {
             return $response;
@@ -163,7 +163,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      *
      * Regardless, it generates and returns a new session identifier.
      */
-    private function regenerateSession(string $id) : string
+    private function regenerateSession(string $id): string
     {
         if ('' !== $id && $this->cache->hasItem($id)) {
             $this->cache->deleteItem($id);
@@ -174,12 +174,12 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     /**
      * Generate a session identifier.
      */
-    private function generateSessionId() : string
+    private function generateSessionId(): string
     {
         return bin2hex(random_bytes(16));
     }
 
-    private function getSessionDataFromCache(string $id) : array
+    private function getSessionDataFromCache(string $id): array
     {
         $item = $this->cache->getItem($id);
         if (! $item->isHit()) {
@@ -188,7 +188,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         return $item->get() ?: [];
     }
 
-    private function persistSessionDataToCache(string $id, array $data) : void
+    private function persistSessionDataToCache(string $id, array $data): void
     {
         $item = $this->cache->getItem($id);
         $item->set($data);
