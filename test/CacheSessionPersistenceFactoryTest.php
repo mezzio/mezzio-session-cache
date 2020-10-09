@@ -14,41 +14,77 @@ use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\Cache\CacheSessionPersistenceFactory;
 use Mezzio\Session\Cache\Exception;
 use Mezzio\Session\Persistence\Http;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use ReflectionProperty;
+use Zend\Expressive\Session\Cache\CacheSessionPersistence as LegacyCacheSessionPersistence;
 
 class CacheSessionPersistenceFactoryTest extends TestCase
 {
-    public function setUp()
+    /** @var ContainerInterface|MockObject */
+    private $container;
+
+    public function setUp(): void
     {
-        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->container = $this->createMock(ContainerInterface::class);
+    }
+
+    /** @param mixed $expected */
+    private function assertAttributeSame($expected, string $property, object $instance): void
+    {
+        $r = new ReflectionProperty($instance, $property);
+        $r->setAccessible(true);
+        $this->assertSame($expected, $r->getValue($instance));
+    }
+
+    /** @param mixed $expected */
+    private function assertAttributeNotEmpty(string $property, object $instance): void
+    {
+        $r = new ReflectionProperty($instance, $property);
+        $r->setAccessible(true);
+        $this->assertNotEmpty($r->getValue($instance));
     }
 
     public function testFactoryRaisesExceptionIfNoCacheAdapterAvailable()
     {
         $factory = new CacheSessionPersistenceFactory();
 
-        $this->container->has('config')->willReturn(false);
-        $this->container->has(CacheItemPoolInterface::class)->willReturn(false);
+        $this->container
+             ->method('has')
+             ->withConsecutive(
+                 ['config'],
+                 [CacheItemPoolInterface::class]
+             )
+             ->willReturn(false);
 
         $this->expectException(Exception\MissingDependencyException::class);
         $this->expectExceptionMessage(CacheItemPoolInterface::class);
 
-        $factory($this->container->reveal());
+        $factory($this->container);
     }
 
     public function testFactoryUsesSaneDefaultsForConstructorArguments()
     {
         $factory = new CacheSessionPersistenceFactory();
 
-        $cachePool = $this->prophesize(CacheItemPoolInterface::class)->reveal();
+        $cachePool = $this->createMock(CacheItemPoolInterface::class);
 
-        $this->container->has('config')->willReturn(false);
-        $this->container->has(CacheItemPoolInterface::class)->willReturn(true);
-        $this->container->get(CacheItemPoolInterface::class)->willReturn($cachePool);
+        $this->container
+             ->method('has')
+             ->withConsecutive(
+                 ['config'],
+                 [CacheItemPoolInterface::class]
+             )
+             ->willReturnOnConsecutiveCalls(
+                 false,
+                 true
+             );
 
-        $persistence = $factory($this->container->reveal());
+        $this->container->method('get')->with(CacheItemPoolInterface::class)->willReturn($cachePool);
+
+        $persistence = $factory($this->container);
 
         $this->assertInstanceOf(CacheSessionPersistence::class, $persistence);
         // This we provided
@@ -71,27 +107,41 @@ class CacheSessionPersistenceFactoryTest extends TestCase
     {
         $factory      = new CacheSessionPersistenceFactory();
         $lastModified = time();
-        $cachePool    = $this->prophesize(CacheItemPoolInterface::class)->reveal();
+        $cachePool    = $this->createMock(CacheItemPoolInterface::class);
 
-        $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([
-            'mezzio-session-cache' => [
-                'cookie_name'      => 'TESTING',
-                'cookie_domain'    => 'example.com',
-                'cookie_path'      => '/api',
-                'cookie_secure'    => true,
-                'cookie_http_only' => true,
-                'cookie_same_site' => 'None',
-                'cache_limiter'    => 'public',
-                'cache_expire'     => 300,
-                'last_modified'    => $lastModified,
-                'persistent'       => true,
-            ],
-        ]);
-        $this->container->has(CacheItemPoolInterface::class)->willReturn(true);
-        $this->container->get(CacheItemPoolInterface::class)->willReturn($cachePool);
+        $this->container
+             ->method('has')
+             ->withConsecutive(
+                 ['config'],
+                 [CacheItemPoolInterface::class]
+             )
+             ->willReturn(true);
 
-        $persistence = $factory($this->container->reveal());
+        $this->container
+             ->method('get')
+             ->withConsecutive(
+                 ['config'],
+                 [CacheItemPoolInterface::class]
+             )
+             ->willReturnOnConsecutiveCalls(
+                 [
+                    'mezzio-session-cache' => [
+                        'cookie_name'      => 'TESTING',
+                        'cookie_domain'    => 'example.com',
+                        'cookie_path'      => '/api',
+                        'cookie_secure'    => true,
+                        'cookie_http_only' => true,
+                        'cookie_same_site' => 'None',
+                        'cache_limiter'    => 'public',
+                        'cache_expire'     => 300,
+                        'last_modified'    => $lastModified,
+                        'persistent'       => true,
+                    ],
+                 ],
+                 $cachePool
+             );
+
+        $persistence = $factory($this->container);
 
         $this->assertInstanceOf(CacheSessionPersistence::class, $persistence);
         $this->assertAttributeSame($cachePool, 'cache', $persistence);
@@ -114,18 +164,32 @@ class CacheSessionPersistenceFactoryTest extends TestCase
     public function testFactoryAllowsConfiguringCacheAdapterServiceName()
     {
         $factory   = new CacheSessionPersistenceFactory();
-        $cachePool = $this->prophesize(CacheItemPoolInterface::class)->reveal();
+        $cachePool = $this->createMock(CacheItemPoolInterface::class);
 
-        $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([
-            'mezzio-session-cache' => [
-                'cache_item_pool_service' => 'CacheService',
-            ],
-        ]);
-        $this->container->has('CacheService')->willReturn(true);
-        $this->container->get('CacheService')->willReturn($cachePool);
+        $this->container
+             ->method('has')
+             ->withConsecutive(
+                 ['config'],
+                 ['CacheService']
+             )
+             ->willReturn(true);
 
-        $persistence = $factory($this->container->reveal());
+        $this->container
+             ->method('get')
+             ->withConsecutive(
+                 ['config'],
+                 ['CacheService']
+             )
+             ->willReturnOnConsecutiveCalls(
+                 [
+                    'mezzio-session-cache' => [
+                        'cache_item_pool_service' => 'CacheService',
+                    ],
+                 ],
+                 $cachePool
+             );
+
+        $persistence = $factory($this->container);
 
         $this->assertInstanceOf(CacheSessionPersistence::class, $persistence);
         $this->assertAttributeSame($cachePool, 'cache', $persistence);
@@ -135,18 +199,31 @@ class CacheSessionPersistenceFactoryTest extends TestCase
     {
         $factory = new CacheSessionPersistenceFactory();
 
-        $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn([
-            'mezzio-session-cache' => [
-                'cache_item_pool_service' => CacheSessionPersistence::class,
-            ],
-        ]);
-        $this->container->has(CacheSessionPersistence::class)->willReturn(false);
-        $this->container->has(\Zend\Expressive\Session\Cache\CacheSessionPersistence::class)->willReturn(false);
+        $this->container
+             ->method('has')
+             ->withConsecutive(
+                 ['config'],
+                 [CacheSessionPersistence::class],
+                 [LegacyCacheSessionPersistence::class]
+             )
+             ->willReturnOnConsecutiveCalls(
+                 true,
+                 false,
+                 false
+             );
+
+        $this->container
+            ->method('get')
+            ->with('config')
+            ->willReturn([
+                'mezzio-session-cache' => [
+                    'cache_item_pool_service' => CacheSessionPersistence::class,
+                ],
+            ]);
 
         $this->expectException(Exception\MissingDependencyException::class);
         $this->expectExceptionMessage(CacheSessionPersistence::class);
 
-        $factory($this->container->reveal());
+        $factory($this->container);
     }
 }

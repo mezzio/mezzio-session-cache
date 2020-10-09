@@ -19,10 +19,10 @@ use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Session;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use ReflectionProperty;
 
 class CacheSessionPersistenceTest extends TestCase
 {
@@ -35,16 +35,32 @@ class CacheSessionPersistenceTest extends TestCase
         'pragma',
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->cachePool = $this->prophesize(CacheItemPoolInterface::class);
+        $this->cachePool = $this->createMock(CacheItemPoolInterface::class);
         $this->currentTime = new DateTimeImmutable();
+    }
+
+    /** @param mixed $expected */
+    private function assertAttributeSame($expected, string $property, object $instance): void
+    {
+        $r = new ReflectionProperty($instance, $property);
+        $r->setAccessible(true);
+        $this->assertSame($expected, $r->getValue($instance));
+    }
+
+    /** @param mixed $expected */
+    private function assertAttributeNotEmpty(string $property, object $instance): void
+    {
+        $r = new ReflectionProperty($instance, $property);
+        $r->setAccessible(true);
+        $this->assertNotEmpty($r->getValue($instance));
     }
 
     public function assertSetCookieUsesIdentifier(string $identifier, Response $response)
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/test\=' . preg_quote($identifier, '/') . '/',
             $setCookie,
             sprintf(
@@ -58,7 +74,7 @@ class CacheSessionPersistenceTest extends TestCase
     public function assertSetCookieUsesNewIdentifier(string $identifier, Response $response)
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
-        $this->assertNotRegExp(
+        $this->assertDoesNotMatchRegularExpression(
             '/test=' . preg_quote($identifier, '/') . ';/',
             $setCookie,
             sprintf(
@@ -175,7 +191,7 @@ class CacheSessionPersistenceTest extends TestCase
 
     public function assertCachePublic(Response $response)
     {
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             self::GMDATE_REGEXP,
             $response->getHeaderLine('Expires'),
             sprintf(
@@ -183,7 +199,7 @@ class CacheSessionPersistenceTest extends TestCase
                 $response->getHeaderLine('Expires')
             )
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/^public, max-age=\d+$/',
             $response->getHeaderLine('Cache-Control'),
             sprintf(
@@ -191,7 +207,7 @@ class CacheSessionPersistenceTest extends TestCase
                 $response->getHeaderLine('Cache-Control')
             )
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             self::GMDATE_REGEXP,
             $response->getHeaderLine('Last-Modified'),
             sprintf(
@@ -211,7 +227,7 @@ class CacheSessionPersistenceTest extends TestCase
                 $response->getHeaderLine('Expires')
             )
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/^private, max-age=\d+$/',
             $response->getHeaderLine('Cache-Control'),
             sprintf(
@@ -219,7 +235,7 @@ class CacheSessionPersistenceTest extends TestCase
                 $response->getHeaderLine('Cache-Control')
             )
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             self::GMDATE_REGEXP,
             $response->getHeaderLine('Last-Modified'),
             sprintf(
@@ -239,7 +255,7 @@ class CacheSessionPersistenceTest extends TestCase
                 $response->getHeaderLine('Expires')
             )
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '/^private, max-age=\d+$/',
             $response->getHeaderLine('Cache-Control'),
             sprintf(
@@ -247,7 +263,7 @@ class CacheSessionPersistenceTest extends TestCase
                 $response->getHeaderLine('Cache-Control')
             )
         );
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             self::GMDATE_REGEXP,
             $response->getHeaderLine('Last-Modified'),
             sprintf(
@@ -260,15 +276,15 @@ class CacheSessionPersistenceTest extends TestCase
     public function testConstructorRaisesExceptionForEmptyCookieName()
     {
         $this->expectException(Exception\InvalidArgumentException::class);
-        new CacheSessionPersistence($this->cachePool->reveal(), '');
+        new CacheSessionPersistence($this->cachePool, '');
     }
 
     public function testConstructorUsesDefaultsForOptionalArguments()
     {
-        $persistence = new CacheSessionPersistence($this->cachePool->reveal(), 'test');
+        $persistence = new CacheSessionPersistence($this->cachePool, 'test');
 
         // These are what we provided
-        $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
+        $this->assertAttributeSame($this->cachePool, 'cache', $persistence);
         $this->assertAttributeSame('test', 'cookieName', $persistence);
 
         // These we did not
@@ -300,7 +316,7 @@ class CacheSessionPersistenceTest extends TestCase
         $lastModified = time() - 3600;
 
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/api',
             $cacheLimiter,
@@ -313,7 +329,7 @@ class CacheSessionPersistenceTest extends TestCase
             'None'
         );
 
-        $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
+        $this->assertAttributeSame($this->cachePool, 'cache', $persistence);
         $this->assertAttributeSame('test', 'cookieName', $persistence);
         $this->assertAttributeSame('/api', 'cookiePath', $persistence);
         $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
@@ -332,7 +348,7 @@ class CacheSessionPersistenceTest extends TestCase
     public function testDefaultsToNocacheIfInvalidCacheLimiterProvided()
     {
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/api',
             'not-valid',
@@ -344,7 +360,7 @@ class CacheSessionPersistenceTest extends TestCase
             true
         );
 
-        $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
+        $this->assertAttributeSame($this->cachePool, 'cache', $persistence);
         $this->assertAttributeSame('test', 'cookieName', $persistence);
         $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
         $this->assertAttributeSame('/api', 'cookiePath', $persistence);
@@ -355,17 +371,17 @@ class CacheSessionPersistenceTest extends TestCase
 
     public function testInitializeSessionFromRequestReturnsSessionWithEmptyIdentifierAndDataIfNoCookieFound()
     {
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getHeaderLine('Cookie')->willReturn('');
-        $request->getCookieParams()->willReturn([]);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getHeaderLine')->with('Cookie')->willReturn('');
+        $request->method('getCookieParams')->willReturn([]);
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->isHit()->willReturn(false);
-        $this->cachePool->getItem('')->will([$cacheItem, 'reveal']);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->method('isHit')->willReturn(false);
+        $this->cachePool->method('getItem')->with('')->willReturn($cacheItem);
 
-        $persistence = new CacheSessionPersistence($this->cachePool->reveal(), 'test');
+        $persistence = new CacheSessionPersistence($this->cachePool, 'test');
 
-        $session = $persistence->initializeSessionFromRequest($request->reveal());
+        $session = $persistence->initializeSessionFromRequest($request);
 
         $this->assertInstanceOf(Session::class, $session);
         $this->assertSame('', $session->getId());
@@ -374,18 +390,18 @@ class CacheSessionPersistenceTest extends TestCase
 
     public function testInitializeSessionFromRequestReturnsSessionDataUsingCookieHeaderValue()
     {
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getHeaderLine('Cookie')->willReturn('test=identifier');
-        $request->getCookieParams()->shouldNotBeCalled([]);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getHeaderLine')->with('Cookie')->willReturn('test=identifier');
+        $request->expects($this->never())->method('getCookieParams');
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->isHit()->willReturn(true);
-        $cacheItem->get()->willReturn(['foo' => 'bar']);
-        $this->cachePool->getItem('identifier')->will([$cacheItem, 'reveal']);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->method('isHit')->willReturn(true);
+        $cacheItem->method('get')->willReturn(['foo' => 'bar']);
+        $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
 
-        $persistence = new CacheSessionPersistence($this->cachePool->reveal(), 'test');
+        $persistence = new CacheSessionPersistence($this->cachePool, 'test');
 
-        $session = $persistence->initializeSessionFromRequest($request->reveal());
+        $session = $persistence->initializeSessionFromRequest($request);
 
         $this->assertInstanceOf(Session::class, $session);
         $this->assertSame('identifier', $session->getId());
@@ -394,18 +410,18 @@ class CacheSessionPersistenceTest extends TestCase
 
     public function testInitializeSessionFromRequestReturnsSessionDataUsingCookieParamsWhenHeaderNotFound()
     {
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getHeaderLine('Cookie')->willReturn('');
-        $request->getCookieParams()->willReturn(['test' => 'identifier']);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getHeaderLine')->with('Cookie')->willReturn('');
+        $request->method('getCookieParams')->willReturn(['test' => 'identifier']);
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->isHit()->willReturn(true);
-        $cacheItem->get()->willReturn(['foo' => 'bar']);
-        $this->cachePool->getItem('identifier')->will([$cacheItem, 'reveal']);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->method('isHit')->willReturn(true);
+        $cacheItem->method('get')->willReturn(['foo' => 'bar']);
+        $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
 
-        $persistence = new CacheSessionPersistence($this->cachePool->reveal(), 'test');
+        $persistence = new CacheSessionPersistence($this->cachePool, 'test');
 
-        $session = $persistence->initializeSessionFromRequest($request->reveal());
+        $session = $persistence->initializeSessionFromRequest($request);
 
         $this->assertInstanceOf(Session::class, $session);
         $this->assertSame('identifier', $session->getId());
@@ -416,12 +432,12 @@ class CacheSessionPersistenceTest extends TestCase
     {
         $session = new Session([], '');
         $response = new Response();
-        $persistence = new CacheSessionPersistence($this->cachePool->reveal(), 'test');
+        $persistence = new CacheSessionPersistence($this->cachePool, 'test');
 
         $result = $persistence->persistSession($session, $response);
 
-        $this->cachePool->getItem(Argument::any())->shouldNotHaveBeenCalled();
-        $this->cachePool->save(Argument::any())->shouldNotHaveBeenCalled();
+        $this->cachePool->expects($this->never())->method('getItem');
+        $this->cachePool->expects($this->never())->method('save');
         $this->assertSame($response, $result);
     }
 
@@ -434,7 +450,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session->set('foo', 'bar');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             $cacheLimiter,
@@ -442,16 +458,14 @@ class CacheSessionPersistenceTest extends TestCase
             time()
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'bar'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'bar']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->method('getItem')
+            ->with($this->matchesRegularExpression('/^[a-f0-9]{32}$/'))
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -468,7 +482,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session = new Session(['foo' => 'bar'], 'identifier');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             $cacheLimiter,
@@ -476,11 +490,11 @@ class CacheSessionPersistenceTest extends TestCase
             time()
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'bar'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool->getItem('identifier')->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'bar']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -498,7 +512,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session = $session->regenerate();
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             $cacheLimiter,
@@ -506,22 +520,22 @@ class CacheSessionPersistenceTest extends TestCase
             time()
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'bar'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'bar']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
 
         // This emulates a scenario when the session does not exist in the cache
-        $this->cachePool->hasItem('identifier')->willReturn(false);
-        $this->cachePool->deleteItem(Argument::any())->shouldNotBeCalled();
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
+        $this->cachePool->expects($this->never())->method('deleteItem');
 
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertNotSame('identifier', $value);
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
+            ->method('getItem')
+            ->with($this->callback(function ($value) {
+                return $value !== 'identifier'
+                    && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -539,7 +553,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session = $session->regenerate();
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             $cacheLimiter,
@@ -547,22 +561,22 @@ class CacheSessionPersistenceTest extends TestCase
             time()
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'bar'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'bar']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
 
         // This emulates an existing session existing.
-        $this->cachePool->hasItem('identifier')->willReturn(true);
-        $this->cachePool->deleteItem(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(true);
+        $this->cachePool->expects($this->atLeastOnce())->method('deleteItem')->with('identifier');
 
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertNotSame('identifier', $value);
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
+            ->method('getItem')
+            ->with($this->callback(function ($value) {
+                return $value !== 'identifier'
+                    && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -580,7 +594,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session->set('foo', 'baz');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             $cacheLimiter,
@@ -588,22 +602,22 @@ class CacheSessionPersistenceTest extends TestCase
             time()
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'baz'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'baz']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
 
         // This emulates a scenario when the session does not exist in the cache
-        $this->cachePool->hasItem('identifier')->willReturn(false);
-        $this->cachePool->deleteItem(Argument::any())->shouldNotBeCalled();
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
+        $this->cachePool->expects($this->never())->method('deleteItem');
 
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertNotSame('identifier', $value);
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
+            ->method('getItem')
+            ->with($this->callback(function ($value) {
+                return $value !== 'identifier'
+                    && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -621,7 +635,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session->set('foo', 'baz');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             $cacheLimiter,
@@ -629,22 +643,22 @@ class CacheSessionPersistenceTest extends TestCase
             time()
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'baz'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'baz']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
 
         // This emulates an existing session existing.
-        $this->cachePool->hasItem('identifier')->willReturn(true);
-        $this->cachePool->deleteItem(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(true);
+        $this->cachePool->expects($this->atLeastOnce())->method('deleteItem')->with('identifier');
 
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertNotSame('identifier', $value);
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
+            ->method('getItem')
+            ->with($this->callback(function ($value) {
+                return $value !== 'identifier'
+                    && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -672,20 +686,18 @@ class CacheSessionPersistenceTest extends TestCase
         $response = $response->withHeader($header, 'some value');
 
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test'
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'bar'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'bar']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->method('getItem')
+            ->with($this->matchesRegularExpression('/^[a-f0-9]{32}$/'))
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -699,7 +711,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session = new Session(['foo' => 'bar'], 'identifier');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             'nocache',
@@ -708,13 +720,11 @@ class CacheSessionPersistenceTest extends TestCase
             true // mark session cookie as persistent
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
-        $cacheItem->set(['foo' => 'bar'])->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool
-            ->getItem('identifier')
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+        $cacheItem = $this->createMock(CacheItemInterface::class);
+        $cacheItem->expects($this->atLeastOnce())->method('set')->with(['foo' => 'bar']);
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -729,30 +739,28 @@ class CacheSessionPersistenceTest extends TestCase
 
         // Engine created with defaults, which means no cookie persistence
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test'
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem
-            ->set(Argument::that(function ($value) {
-                TestCase::assertInternalType('array', $value);
-                TestCase::assertArrayHasKey('foo', $value);
-                TestCase::assertSame('bar', $value['foo']);
-                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
-                TestCase::assertSame(1200, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
-                return $value;
-            }))
-            ->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool->hasItem('identifier')->willReturn(false);
+            ->expects($this->atLeastOnce())
+            ->method('set')
+            ->with($this->callback(function ($value) {
+                return is_array($value)
+                    && array_key_exists('foo', $value)
+                    && $value['foo'] === 'bar'
+                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200;
+            }));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->method('getItem')
+            ->with($this->matchesRegularExpression('/^[a-f0-9]{32}$/'))
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $session->persistSessionFor(1200);
         $result = $persistence->persistSession($session, $response);
@@ -766,7 +774,7 @@ class CacheSessionPersistenceTest extends TestCase
         $session = new Session(['foo' => 'bar'], 'identifier');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             'nocache',
@@ -775,26 +783,24 @@ class CacheSessionPersistenceTest extends TestCase
             true // mark session cookie as persistent
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem
-            ->set(Argument::that(function ($value) {
-                TestCase::assertInternalType('array', $value);
-                TestCase::assertArrayHasKey('foo', $value);
-                TestCase::assertSame('bar', $value['foo']);
-                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
-                TestCase::assertSame(1200, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
-                return $value;
-            }))
-            ->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool->hasItem('identifier')->willReturn(false);
+            ->expects($this->atLeastOnce())
+            ->method('set')
+            ->with($this->callback(function ($value) {
+                return is_array($value)
+                    && array_key_exists('foo', $value)
+                    && $value['foo'] === 'bar'
+                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200;
+            }));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->method('getItem')
+            ->with($this->matchesRegularExpression('/^[a-f0-9]{32}$/'))
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $session->persistSessionFor(1200);
         $result = $persistence->persistSession($session, $response);
@@ -811,30 +817,28 @@ class CacheSessionPersistenceTest extends TestCase
         ], 'identifier');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test'
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem
-            ->set(Argument::that(function ($value) {
-                TestCase::assertInternalType('array', $value);
-                TestCase::assertArrayHasKey('foo', $value);
-                TestCase::assertSame('bar', $value['foo']);
-                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
-                TestCase::assertSame(0, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
-                return $value;
-            }))
-            ->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool->hasItem('identifier')->willReturn(false);
+            ->expects($this->atLeastOnce())
+            ->method('set')
+            ->with($this->callback(function ($value) {
+                return is_array($value)
+                    && array_key_exists('foo', $value)
+                    && $value['foo'] === 'bar'
+                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
+            }));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->method('getItem')
+            ->with($this->matchesRegularExpression('/^[a-f0-9]{32}$/'))
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $session->persistSessionFor(0);
         $result = $persistence->persistSession($session, $response);
@@ -851,7 +855,7 @@ class CacheSessionPersistenceTest extends TestCase
         ], 'identifier');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             'nocache',
@@ -860,25 +864,20 @@ class CacheSessionPersistenceTest extends TestCase
             true // mark session cookie as persistent
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem
-            ->set(Argument::that(function ($value) {
-                TestCase::assertInternalType('array', $value);
-                TestCase::assertArrayHasKey('foo', $value);
-                TestCase::assertSame('bar', $value['foo']);
-                TestCase::assertArrayNotHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
-                return $value;
-            }))
-            ->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool->hasItem('identifier')->willReturn(false);
-        $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertSame('identifier', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->expects($this->atLeastOnce())
+            ->method('set')
+            ->with($this->callback(function ($value) {
+                return is_array($value)
+                    && array_key_exists('foo', $value)
+                    && $value['foo'] === 'bar'
+                    && ! array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
+            }));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
+        $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         $result = $persistence->persistSession($session, $response);
 
@@ -894,7 +893,7 @@ class CacheSessionPersistenceTest extends TestCase
         ], 'identifier');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             'nocache',
@@ -903,26 +902,24 @@ class CacheSessionPersistenceTest extends TestCase
             true // mark session cookie as persistent
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem
-            ->set(Argument::that(function ($value) {
-                TestCase::assertInternalType('array', $value);
-                TestCase::assertArrayHasKey('foo', $value);
-                TestCase::assertSame('bar', $value['foo']);
-                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
-                TestCase::assertSame(0, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
-                return $value;
-            }))
-            ->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool->hasItem('identifier')->willReturn(false);
+            ->expects($this->atLeastOnce())
+            ->method('set')
+            ->with($this->callback(function ($value) {
+                return is_array($value)
+                    && array_key_exists('foo', $value)
+                    && $value['foo'] === 'bar'
+                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
+            }));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->method('getItem')
+            ->with($this->matchesRegularExpression('/^[a-f0-9]{32}$/'))
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         // Calling persistSessionFor sets the session lifetime key in the data,
         // which allows us to override the value.
@@ -941,7 +938,7 @@ class CacheSessionPersistenceTest extends TestCase
         ], 'identifier');
         $response = new Response();
         $persistence = new CacheSessionPersistence(
-            $this->cachePool->reveal(),
+            $this->cachePool,
             'test',
             '/',
             'nocache',
@@ -950,26 +947,24 @@ class CacheSessionPersistenceTest extends TestCase
             true // mark session cookie as persistent
         );
 
-        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem
-            ->set(Argument::that(function ($value) {
-                TestCase::assertInternalType('array', $value);
-                TestCase::assertArrayHasKey('foo', $value);
-                TestCase::assertSame('baz', $value['foo']);
-                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
-                TestCase::assertSame(0, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
-                return $value;
-            }))
-            ->shouldBeCalled();
-        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
-        $this->cachePool->hasItem('identifier')->willReturn(false);
+            ->expects($this->atLeastOnce())
+            ->method('set')
+            ->with($this->callback(function ($value) {
+                return is_array($value)
+                    && array_key_exists('foo', $value)
+                    && $value['foo'] === 'baz'
+                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
+            }));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
-            ->getItem(Argument::that(function ($value) {
-                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
-                return $value;
-            }))
-            ->will([$cacheItem, 'reveal']);
-        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+            ->method('getItem')
+            ->with($this->matchesRegularExpression('/^[a-f0-9]{32}$/'))
+            ->willReturn($cacheItem);
+        $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
         // Changing the data, to ensure we trigger a new session cookie
         $session->set('foo', 'baz');

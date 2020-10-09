@@ -27,7 +27,7 @@
         }
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.3 || ~8.0.0",
         "dflydev/fig-cookies": "^2.0.1",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "mezzio/mezzio-session": "^1.4",
@@ -37,7 +37,7 @@
     "require-dev": {
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-diactoros": "^2.0",
-        "phpunit/phpunit": "^7.1.1"
+        "phpunit/phpunit": "^9.3"
     },
     "suggest": {
         "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
