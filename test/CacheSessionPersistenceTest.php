@@ -46,17 +46,6 @@ use function trim;
 
 use const CASE_LOWER;
 
-use function array_map;
-use function array_shift;
-use function count;
-use function explode;
-use function gmdate;
-use function preg_match;
-use function preg_quote;
-use function sprintf;
-use function time;
-use function trim;
-
 class CacheSessionPersistenceTest extends TestCase
 {
     public const GMDATE_REGEXP = '/[a-z]{3}, \d+ [a-z]{3} \d{4} \d{2}:\d{2}:\d{2} \w+$/i';
