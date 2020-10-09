@@ -202,7 +202,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -308,7 +308,6 @@ object that acts like an associative array.</p>
         // key/value pairs
     ],
 ];</code></pre>
-
 <h2 id="cacheitempoolinterface">CacheItemPoolInterface</h2>
 <p>By default, the factory will look for a service named
 <code>Psr\Cache\CacheItemPoolInterface</code>. If found, that service will be used to seed
@@ -327,7 +326,6 @@ return [
         ],
     ],
 ];</code></pre>
-
 <h3>Using a named pool</h3>
 <p>To use a specific cache item pool:</p>
 <pre class="highlight"><code class="language-php">use Psr\Cache\CacheItemPoolInterface;
@@ -342,7 +340,6 @@ return [
         'cache_item_pool_service' =&gt; 'MoreSpecificPool',
     ],
 ];</code></pre>
-
 <h2 id="non-pool-configuration">Non-Pool configuration</h2>
 <p>As noted earlier, you may configure a number of other values to customize your
 persistence adapter. The following is example configuration, with inline
@@ -430,7 +427,6 @@ return [
         'persistent' =&gt; false,
     ],
 ];</code></pre>
-
 <h2 id="using-the-service">Using the service</h2>
 <p>By default, this package define the service <code>Mezzio\Session\Cache\CacheSessionPersistence</code>,
 assigning it to the factory <code>Mezzio\Session\Cache\CacheSessionPersistenceFactory</code>.
@@ -451,7 +447,6 @@ return [
         ],
     ],
 ];</code></pre>
-
 <p>Second, you can instead assign the <code>SessionPersistenceInterface</code> service to the
 factory for the <code>CacheSessionPersistence</code> implementation:</p>
 <pre class="highlight"><code class="language-php">// in config/autoload/dependencies.global.php:
