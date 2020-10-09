@@ -146,8 +146,8 @@ class CacheSessionPersistenceTest extends TestCase
         $expiresDate = new DateTimeImmutable($expires);
 
         $this->assertGreaterThanOrEqual(
-            $expiresDate,
             $compare,
+            $expiresDate,
             sprintf('Cookie expiry "%s" is not at least "%s"', $expiresDate->format('r'), $compare->format('r'))
         );
     }
