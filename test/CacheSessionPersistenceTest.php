@@ -18,9 +18,11 @@ use Mezzio\Session\Cache\Exception;
 use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Session;
 use Mezzio\Session\SessionCookiePersistenceInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionProperty;
 
@@ -36,7 +38,6 @@ use function count;
 use function explode;
 use function gmdate;
 use function implode;
-use function is_array;
 use function preg_match;
 use function preg_quote;
 use function sprintf;
@@ -55,6 +56,15 @@ class CacheSessionPersistenceTest extends TestCase
         'last-modified',
         'pragma',
     ];
+
+    /**
+     * @var CacheItemPoolInterface|MockObject
+     * @psalm-var CacheItemPoolInterface&MockObject
+     */
+    private $cachePool;
+
+    /** @var DateTimeImmutable */
+    private $currentTime;
 
     public function setUp(): void
     {
@@ -77,7 +87,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertNotEmpty($r->getValue($instance));
     }
 
-    public function assertSetCookieUsesIdentifier(string $identifier, Response $response): void
+    public function assertSetCookieUsesIdentifier(string $identifier, ResponseInterface $response): void
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
         $this->assertMatchesRegularExpression(
@@ -91,7 +101,7 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertSetCookieUsesNewIdentifier(string $identifier, Response $response): void
+    public function assertSetCookieUsesNewIdentifier(string $identifier, ResponseInterface $response): void
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
         $this->assertDoesNotMatchRegularExpression(
@@ -105,14 +115,14 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertCookieExpiryMirrorsExpiry(int $expiry, Response $response): void
+    public function assertCookieExpiryMirrorsExpiry(int $expiry, ResponseInterface $response): void
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
         $parts     = explode(';', $setCookie);
         $parts     = array_map(function ($value) {
             return trim($value);
         }, $parts);
-        $parts     = array_filter($parts, function ($value) {
+        $parts     = array_filter($parts, function (string $value) {
             return (bool) preg_match('/^Expires=/', $value);
         });
 
@@ -131,14 +141,14 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertCookieHasNoExpiryDirective(Response $response): void
+    public function assertCookieHasNoExpiryDirective(ResponseInterface $response): void
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
         $parts     = explode(';', $setCookie);
         $parts     = array_map(function ($value) {
             return trim($value);
         }, $parts);
-        $parts     = array_filter($parts, function ($value) {
+        $parts     = array_filter($parts, function (string $value) {
             return (bool) preg_match('/^Expires=/', $value);
         });
 
@@ -149,7 +159,7 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertCacheHeaders(string $cacheLimiter, Response $response): void
+    public function assertCacheHeaders(string $cacheLimiter, ResponseInterface $response): void
     {
         switch ($cacheLimiter) {
             case 'nocache':
@@ -169,7 +179,7 @@ class CacheSessionPersistenceTest extends TestCase
         }
     }
 
-    public function assertNotCacheHeaders(array $allowed, Response $response): void
+    public function assertNotCacheHeaders(array $allowed, ResponseInterface $response): void
     {
         $found = array_intersect(
             // headers that should not be present
@@ -187,7 +197,7 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertNoCache(Response $response): void
+    public function assertNoCache(ResponseInterface $response): void
     {
         $this->assertSame(
             Http::CACHE_PAST_DATE,
@@ -215,7 +225,7 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertCachePublic(Response $response): void
+    public function assertCachePublic(ResponseInterface $response): void
     {
         $this->assertMatchesRegularExpression(
             self::GMDATE_REGEXP,
@@ -243,7 +253,7 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertCachePrivate(Response $response): void
+    public function assertCachePrivate(ResponseInterface $response): void
     {
         $this->assertSame(
             Http::CACHE_PAST_DATE,
@@ -271,7 +281,7 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertCachePrivateNoExpire(Response $response): void
+    public function assertCachePrivateNoExpire(ResponseInterface $response): void
     {
         $this->assertSame(
             '',
@@ -299,13 +309,13 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function testConstructorRaisesExceptionForEmptyCookieName()
+    public function testConstructorRaisesExceptionForEmptyCookieName(): void
     {
         $this->expectException(Exception\InvalidArgumentException::class);
         new CacheSessionPersistence($this->cachePool, '');
     }
 
-    public function testConstructorUsesDefaultsForOptionalArguments()
+    public function testConstructorUsesDefaultsForOptionalArguments(): void
     {
         $persistence = new CacheSessionPersistence($this->cachePool, 'test');
 
@@ -324,6 +334,9 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeNotEmpty('lastModified', $persistence);
     }
 
+    /**
+     * @psalm-return array<string, list<string>>
+     */
     public function validCacheLimiters(): array
     {
         return [
@@ -337,7 +350,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider validCacheLimiters
      */
-    public function testConstructorAllowsProvidingAllArguments(string $cacheLimiter)
+    public function testConstructorAllowsProvidingAllArguments(string $cacheLimiter): void
     {
         $lastModified = time() - 3600;
 
@@ -371,7 +384,7 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function testDefaultsToNocacheIfInvalidCacheLimiterProvided()
+    public function testDefaultsToNocacheIfInvalidCacheLimiterProvided(): void
     {
         $persistence = new CacheSessionPersistence(
             $this->cachePool,
@@ -395,7 +408,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
     }
 
-    public function testInitializeSessionFromRequestReturnsSessionWithEmptyIdentifierAndDataIfNoCookieFound()
+    public function testInitializeSessionFromRequestReturnsSessionWithEmptyIdentifierAndDataIfNoCookieFound(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getHeaderLine')->with('Cookie')->willReturn('');
@@ -414,7 +427,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertSame([], $session->toArray());
     }
 
-    public function testInitializeSessionFromRequestReturnsSessionDataUsingCookieHeaderValue()
+    public function testInitializeSessionFromRequestReturnsSessionDataUsingCookieHeaderValue(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getHeaderLine')->with('Cookie')->willReturn('test=identifier');
@@ -434,7 +447,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertSame(['foo' => 'bar'], $session->toArray());
     }
 
-    public function testInitializeSessionFromRequestReturnsSessionDataUsingCookieParamsWhenHeaderNotFound()
+    public function testInitializeSessionFromRequestReturnsSessionDataUsingCookieParamsWhenHeaderNotFound(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getHeaderLine')->with('Cookie')->willReturn('');
@@ -454,7 +467,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertSame(['foo' => 'bar'], $session->toArray());
     }
 
-    public function testPersistSessionWithNoIdentifierAndNoDataReturnsResponseVerbatim()
+    public function testPersistSessionWithNoIdentifierAndNoDataReturnsResponseVerbatim(): void
     {
         $session     = new Session([], '');
         $response    = new Response();
@@ -470,7 +483,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider validCacheLimiters
      */
-    public function testPersistSessionWithNoIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter)
+    public function testPersistSessionWithNoIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session([], '');
         $session->set('foo', 'bar');
@@ -503,7 +516,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider validCacheLimiters
      */
-    public function testPersistSessionWithIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter)
+    public function testPersistSessionWithIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session     = new Session(['foo' => 'bar'], 'identifier');
         $response    = new Response();
@@ -532,7 +545,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider validCacheLimiters
      */
-    public function testPersistSessionRequestingRegenerationPersistsDataAndSetsHeaders(string $cacheLimiter)
+    public function testPersistSessionRequestingRegenerationPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session     = new Session(['foo' => 'bar'], 'identifier');
         $session     = $session->regenerate();
@@ -556,7 +569,7 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function ($value) {
+            ->with($this->callback(function (string $value) {
                 return $value !== 'identifier'
                     && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
@@ -573,7 +586,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider validCacheLimiters
      */
-    public function testPersistSessionRequestingRegenerationRemovesPreviousSession(string $cacheLimiter)
+    public function testPersistSessionRequestingRegenerationRemovesPreviousSession(string $cacheLimiter): void
     {
         $session     = new Session(['foo' => 'bar'], 'identifier');
         $session     = $session->regenerate();
@@ -597,7 +610,7 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function ($value) {
+            ->with($this->callback(function (string $value) {
                 return $value !== 'identifier'
                     && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
@@ -614,7 +627,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider validCacheLimiters
      */
-    public function testPersistSessionWithIdentifierAndChangedDataPersistsDataAndSetsHeaders(string $cacheLimiter)
+    public function testPersistSessionWithIdentifierAndChangedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
         $session->set('foo', 'baz');
@@ -638,7 +651,7 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function ($value) {
+            ->with($this->callback(function (string $value) {
                 return $value !== 'identifier'
                     && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
@@ -655,7 +668,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider validCacheLimiters
      */
-    public function testPersistSessionDeletesPreviousSessionIfItExists(string $cacheLimiter)
+    public function testPersistSessionDeletesPreviousSessionIfItExists(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
         $session->set('foo', 'baz');
@@ -679,7 +692,7 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function ($value) {
+            ->with($this->callback(function (string $value) {
                 return $value !== 'identifier'
                     && preg_match('/^[a-f0-9]{32}$/', $value);
             }))
@@ -693,6 +706,9 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
+    /**
+     * @psalm-return iterable<string, list<string>>
+     */
     public function cacheHeaders(): iterable
     {
         foreach (self::CACHE_HEADERS as $header) {
@@ -703,7 +719,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @dataProvider cacheHeaders
      */
-    public function testPersistSessionWithAnyExistingCacheHeadersDoesNotRepopulateCacheHeaders(string $header)
+    public function testPersistSessionWithAnyExistingCacheHeadersDoesNotRepopulateCacheHeaders(string $header): void
     {
         $session = new Session([], '');
         $session->set('foo', 'bar');
@@ -732,7 +748,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertNotCacheHeaders([$header], $result);
     }
 
-    public function testPersistentSessionCookieIncludesExpiration()
+    public function testPersistentSessionCookieIncludesExpiration(): void
     {
         $session     = new Session(['foo' => 'bar'], 'identifier');
         $response    = new Response();
@@ -758,7 +774,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCookieExpiryMirrorsExpiry(600, $result);
     }
 
-    public function testPersistenceDurationSpecifiedInSessionUsedWhenPresentEvenWhenEngineDoesNotSpecifyPersistence()
+    public function testPersistenceDurationSpecifiedInSessionUsedWhenPresentEvenWhenEngineDoesNotSpecifyPersistence(): void
     {
         $session  = new Session(['foo' => 'bar'], 'identifier');
         $response = new Response();
@@ -773,9 +789,8 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function ($value) {
-                return is_array($value)
-                    && array_key_exists('foo', $value)
+            ->with($this->callback(function (array $value) {
+                return array_key_exists('foo', $value)
                     && $value['foo'] === 'bar'
                     && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                     && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200;
@@ -795,7 +810,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCookieExpiryMirrorsExpiry(1200, $result);
     }
 
-    public function testPersistenceDurationSpecifiedInSessionOverridesExpiryWhenSessionPersistenceIsEnabled()
+    public function testPersistenceDurationSpecifiedInSessionOverridesExpiryWhenSessionPersistenceIsEnabled(): void
     {
         $session     = new Session(['foo' => 'bar'], 'identifier');
         $response    = new Response();
@@ -813,9 +828,8 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function ($value) {
-                return is_array($value)
-                    && array_key_exists('foo', $value)
+            ->with($this->callback(function (array $value) {
+                return array_key_exists('foo', $value)
                     && $value['foo'] === 'bar'
                     && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                     && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200;
@@ -835,7 +849,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCookieExpiryMirrorsExpiry(1200, $result);
     }
 
-    public function testPersistenceDurationOfZeroSpecifiedInSessionDisablesPersistence()
+    public function testPersistenceDurationOfZeroSpecifiedInSessionDisablesPersistence(): void
     {
         $session     = new Session([
             'foo'                                                   => 'bar',
@@ -851,9 +865,8 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function ($value) {
-                return is_array($value)
-                    && array_key_exists('foo', $value)
+            ->with($this->callback(function (array $value) {
+                return array_key_exists('foo', $value)
                     && $value['foo'] === 'bar'
                     && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                     && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
@@ -873,7 +886,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCookieHasNoExpiryDirective($result);
     }
 
-    public function testPersistenceDurationOfZeroWithoutSessionLifetimeKeyInDataResultsInGlobalPersistenceExpiry()
+    public function testPersistenceDurationOfZeroWithoutSessionLifetimeKeyInDataResultsInGlobalPersistenceExpiry(): void
     {
         // No previous session lifetime set
         $session     = new Session([
@@ -894,9 +907,8 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function ($value) {
-                return is_array($value)
-                    && array_key_exists('foo', $value)
+            ->with($this->callback(function (array $value) {
+                return array_key_exists('foo', $value)
                     && $value['foo'] === 'bar'
                     && ! array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
             }));
@@ -912,7 +924,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCookieExpiryMirrorsExpiry(600, $result);
     }
 
-    public function testPersistenceDurationOfZeroIgnoresGlobalPersistenceExpiry()
+    public function testPersistenceDurationOfZeroIgnoresGlobalPersistenceExpiry(): void
     {
         $session     = new Session([
             'foo' => 'bar',
@@ -932,9 +944,8 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function ($value) {
-                return is_array($value)
-                    && array_key_exists('foo', $value)
+            ->with($this->callback(function (array $value) {
+                return array_key_exists('foo', $value)
                     && $value['foo'] === 'bar'
                     && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                     && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
@@ -956,7 +967,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCookieHasNoExpiryDirective($result);
     }
 
-    public function testPersistenceDurationInSessionDataWithValueOfZeroIgnoresGlobalPersistenceExpiry()
+    public function testPersistenceDurationInSessionDataWithValueOfZeroIgnoresGlobalPersistenceExpiry(): void
     {
         $session     = new Session([
             'foo'                                                   => 'bar',
@@ -977,9 +988,8 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function ($value) {
-                return is_array($value)
-                    && array_key_exists('foo', $value)
+            ->with($this->callback(function (array $value) {
+                return array_key_exists('foo', $value)
                     && $value['foo'] === 'baz'
                     && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                     && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;

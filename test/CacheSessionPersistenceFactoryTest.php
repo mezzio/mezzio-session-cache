@@ -26,7 +26,10 @@ use function time;
 
 class CacheSessionPersistenceFactoryTest extends TestCase
 {
-    /** @var ContainerInterface|MockObject */
+    /**
+     * @var ContainerInterface|MockObject
+     * @psalm-var ContainerInterface&MockObject
+     */
     private $container;
 
     public function setUp(): void
@@ -49,7 +52,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertNotEmpty($r->getValue($instance));
     }
 
-    public function testFactoryRaisesExceptionIfNoCacheAdapterAvailable()
+    public function testFactoryRaisesExceptionIfNoCacheAdapterAvailable(): void
     {
         $factory = new CacheSessionPersistenceFactory();
 
@@ -67,7 +70,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $factory($this->container);
     }
 
-    public function testFactoryUsesSaneDefaultsForConstructorArguments()
+    public function testFactoryUsesSaneDefaultsForConstructorArguments(): void
     {
         $factory = new CacheSessionPersistenceFactory();
 
@@ -88,7 +91,6 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $persistence = $factory($this->container);
 
-        $this->assertInstanceOf(CacheSessionPersistence::class, $persistence);
         // This we provided
         $this->assertAttributeSame($cachePool, 'cache', $persistence);
 
@@ -105,7 +107,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame(false, 'persistent', $persistence);
     }
 
-    public function testFactoryAllowsConfiguringAllConstructorArguments()
+    public function testFactoryAllowsConfiguringAllConstructorArguments(): void
     {
         $factory      = new CacheSessionPersistenceFactory();
         $lastModified = time();
@@ -145,7 +147,6 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $persistence = $factory($this->container);
 
-        $this->assertInstanceOf(CacheSessionPersistence::class, $persistence);
         $this->assertAttributeSame($cachePool, 'cache', $persistence);
         $this->assertAttributeSame('TESTING', 'cookieName', $persistence);
         $this->assertAttributeSame('/api', 'cookiePath', $persistence);
@@ -163,7 +164,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame(true, 'persistent', $persistence);
     }
 
-    public function testFactoryAllowsConfiguringCacheAdapterServiceName()
+    public function testFactoryAllowsConfiguringCacheAdapterServiceName(): void
     {
         $factory   = new CacheSessionPersistenceFactory();
         $cachePool = $this->createMock(CacheItemPoolInterface::class);
@@ -193,11 +194,10 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $persistence = $factory($this->container);
 
-        $this->assertInstanceOf(CacheSessionPersistence::class, $persistence);
         $this->assertAttributeSame($cachePool, 'cache', $persistence);
     }
 
-    public function testFactoryRaisesExceptionIfNamedCacheAdapterServiceIsUnavailable()
+    public function testFactoryRaisesExceptionIfNamedCacheAdapterServiceIsUnavailable(): void
     {
         $factory = new CacheSessionPersistenceFactory();
 

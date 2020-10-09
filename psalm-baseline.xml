@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.16@d03e5ef057d6adc656c0ff7e166c50b73b4f48f3">
+  <file src="src/CacheSessionPersistence.php">
+    <MixedArgument occurrences="2">
+      <code>$id</code>
+      <code>$id</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$id</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="1">
+      <code>array</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement occurrences="1">
+      <code>$item-&gt;get() ?: []</code>
+    </MixedReturnStatement>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getId</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/CacheSessionPersistenceFactory.php">
+    <MixedArgument occurrences="14">
+      <code>$cacheExpire</code>
+      <code>$cacheLimiter</code>
+      <code>$cacheService</code>
+      <code>$cacheService</code>
+      <code>$cacheService</code>
+      <code>$container-&gt;get($cacheService)</code>
+      <code>$cookieDomain</code>
+      <code>$cookieHttpOnly</code>
+      <code>$cookieName</code>
+      <code>$cookiePath</code>
+      <code>$cookieSameSite</code>
+      <code>$cookieSecure</code>
+      <code>$lastModified</code>
+      <code>$persistent</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="13">
+      <code>$cacheExpire</code>
+      <code>$cacheLimiter</code>
+      <code>$cacheService</code>
+      <code>$config</code>
+      <code>$config</code>
+      <code>$cookieDomain</code>
+      <code>$cookieHttpOnly</code>
+      <code>$cookieName</code>
+      <code>$cookiePath</code>
+      <code>$cookieSameSite</code>
+      <code>$cookieSecure</code>
+      <code>$lastModified</code>
+      <code>$persistent</code>
+    </MixedAssignment>
+  </file>
+</files>

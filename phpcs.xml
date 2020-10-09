@@ -17,7 +17,12 @@
 
     <!-- Include all rules from the Laminas Coding Standard -->
     <rule ref="LaminasCodingStandard"/>
+
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty">
         <exclude-pattern>src/CacheSessionPersistence.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <exclude-pattern>test/CacheSessionPersistenceTest.php</exclude-pattern>
     </rule>
 </ruleset>
