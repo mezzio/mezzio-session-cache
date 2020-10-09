@@ -2,27 +2,31 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.5.0 - TBD
+## 1.5.0 - 2020-10-09
 
 ### Added
 
 - [#8](https://github.com/mezzio/mezzio-session-cache/pull/8) adds support for PHP 8.
 
-### Changed
 
-- Nothing.
+-----
 
-### Deprecated
+### Release Notes for [1.5.0](https://github.com/mezzio/mezzio-session-cache/milestone/2)
 
-- Nothing.
 
-### Removed
 
-- Nothing.
+### 1.5.0
 
-### Fixed
+- Total issues resolved: **1**
+- Total pull requests resolved: **4**
+- Total contributors: **3**
 
-- Nothing.
+#### Enhancement
+
+ - [9: Add Psalm integration](https://github.com/mezzio/mezzio-session-cache/pull/9) thanks to @weierophinney and @boesing
+ - [8: Add PHP 8 Support](https://github.com/mezzio/mezzio-session-cache/pull/8) thanks to @weierophinney
+ - [7: init test-suite current time using gmdate](https://github.com/mezzio/mezzio-session-cache/pull/7) thanks to @pine3ree
+ - [6: Use persistence traits](https://github.com/mezzio/mezzio-session-cache/pull/6) thanks to @pine3ree
 
 ## 1.4.0 - 2020-06-17
 
