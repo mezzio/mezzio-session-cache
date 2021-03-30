@@ -1,5 +1,5 @@
 {
-    "name": "mezzio/mezzio-session-cache",
+    "name": "farums/mezzio-session-cache",
     "description": "PSR-6 session persistence adapter for mezzio-session.",
     "license": "BSD-3-Clause",
     "keywords": [
