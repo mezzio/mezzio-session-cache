@@ -1,7 +1,7 @@
 {
-    "name": "farums/mezzio-session-cache",
+    "name": "mezzio/mezzio-session-cache",
     "description": "PSR-6 session persistence adapter for mezzio-session.",
-    "license": "BSD-3-Clause",
+    "version": "2.0.0",
     "keywords": [
         "laminas",
         "mezzio",
@@ -9,15 +9,6 @@
         "psr-6",
         "session"
     ],
-    "homepage": "https://mezzio.dev",
-    "support": {
-        "docs": "https://docs.mezzio.dev/mezzio-session-cache/",
-        "issues": "https://github.com/mezzio/mezzio-session-cache/issues",
-        "source": "https://github.com/mezzio/mezzio-session-cache",
-        "rss": "https://github.com/mezzio/mezzio-session-cache/releases.atom",
-        "chat": "https://laminas.dev/chat",
-        "forum": "https://discourse.laminas.dev"
-    },
     "config": {
         "sort-packages": true
     },
@@ -53,19 +44,5 @@
         "psr-4": {
             "MezzioTest\\Session\\Cache\\": "test/"
         }
-    },
-    "scripts": {
-        "check": [
-            "@cs-check",
-            "@test"
-        ],
-        "cs-check": "phpcs",
-        "cs-fix": "phpcbf",
-        "static-analysis": "psalm --shepherd --stats",
-        "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
-    },
-    "replace": {
-        "zendframework/zend-expressive-session-cache": "^1.3.1"
     }
 }
