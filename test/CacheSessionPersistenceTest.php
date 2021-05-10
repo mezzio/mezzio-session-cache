@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @see       https://github.com/mezzio/mezzio-session-cache for the canonical source repository
- * @copyright https://github.com/mezzio/mezzio-session-cache/blob/master/COPYRIGHT.md
- * @license   https://github.com/mezzio/mezzio-session-cache/blob/master/LICENSE.md New BSD License
- */
-
 declare(strict_types=1);
 
 namespace MezzioTest\Session\Cache;
