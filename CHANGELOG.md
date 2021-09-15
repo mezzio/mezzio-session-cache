@@ -24,27 +24,28 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 1.4.0 - 2020-06-17
+## 1.4.0 - 2021-09-15
 
 ### Added
 
 - [#3](https://github.com/mezzio/mezzio-session-cache/pull/3) adds support for SameSite cookies. By default, the SameSite attribute will be set to "Lax", but the value can be configured via the mezzio-session-cache.cookie_same_site configuration setting.
 
-### Changed
 
-- Nothing.
+-----
 
-### Deprecated
+### Release Notes for [1.4.0](https://github.com/mezzio/mezzio-session-cache/milestone/1)
 
-- Nothing.
 
-### Removed
 
-- Nothing.
+### 1.4.0
 
-### Fixed
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
 
-- Nothing.
+#### Enhancement
+
+ - [3: Implement SameSite Support (Fixes #1)](https://github.com/mezzio/mezzio-session-cache/pull/3) thanks to @SlvrEagle23
 
 ## 1.3.1 - 2019-06-24
 
