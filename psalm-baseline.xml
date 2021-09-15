@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.16@d03e5ef057d6adc656c0ff7e166c50b73b4f48f3">
+<files psalm-version="4.10.0@916b098b008f6de4543892b1e0651c1c3b92cbfa">
   <file src="src/CacheSessionPersistence.php">
     <MixedArgument occurrences="2">
       <code>$id</code>
@@ -19,11 +19,9 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/CacheSessionPersistenceFactory.php">
-    <MixedArgument occurrences="14">
+    <MixedArgument occurrences="12">
       <code>$cacheExpire</code>
       <code>$cacheLimiter</code>
-      <code>$cacheService</code>
-      <code>$cacheService</code>
       <code>$cacheService</code>
       <code>$container-&gt;get($cacheService)</code>
       <code>$cookieDomain</code>
@@ -35,6 +33,20 @@
       <code>$lastModified</code>
       <code>$persistent</code>
     </MixedArgument>
+    <MixedArrayAccess occurrences="12">
+      <code>$config['cache_expire']</code>
+      <code>$config['cache_item_pool_service']</code>
+      <code>$config['cache_limiter']</code>
+      <code>$config['cookie_domain']</code>
+      <code>$config['cookie_http_only']</code>
+      <code>$config['cookie_name']</code>
+      <code>$config['cookie_path']</code>
+      <code>$config['cookie_same_site']</code>
+      <code>$config['cookie_secure']</code>
+      <code>$config['last_modified']</code>
+      <code>$config['mezzio-session-cache']</code>
+      <code>$config['persistent']</code>
+    </MixedArrayAccess>
     <MixedAssignment occurrences="13">
       <code>$cacheExpire</code>
       <code>$cacheLimiter</code>
