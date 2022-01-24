@@ -99,6 +99,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
         $this->assertAttributeNotEmpty('lastModified', $persistence);
         $this->assertAttributeSame(false, 'persistent', $persistence);
+        $this->assertAttributeSame(true, 'regenerateOnChange', $persistence);
     }
 
     public function testFactoryAllowsConfiguringAllConstructorArguments(): void
@@ -124,16 +125,17 @@ class CacheSessionPersistenceFactoryTest extends TestCase
              ->willReturnOnConsecutiveCalls(
                  [
                      'mezzio-session-cache' => [
-                         'cookie_name'      => 'TESTING',
-                         'cookie_domain'    => 'example.com',
-                         'cookie_path'      => '/api',
-                         'cookie_secure'    => true,
-                         'cookie_http_only' => true,
-                         'cookie_same_site' => 'None',
-                         'cache_limiter'    => 'public',
-                         'cache_expire'     => 300,
-                         'last_modified'    => $lastModified,
-                         'persistent'       => true,
+                         'cookie_name'        => 'TESTING',
+                         'cookie_domain'      => 'example.com',
+                         'cookie_path'        => '/api',
+                         'cookie_secure'      => true,
+                         'cookie_http_only'   => true,
+                         'cookie_same_site'   => 'None',
+                         'cache_limiter'      => 'public',
+                         'cache_expire'       => 300,
+                         'last_modified'      => $lastModified,
+                         'persistent'         => true,
+                         'regenerateOnChange' => true,
                      ],
                  ],
                  $cachePool
@@ -156,6 +158,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
             $persistence
         );
         $this->assertAttributeSame(true, 'persistent', $persistence);
+        $this->assertAttributeSame(true, 'regenerateOnChange', $persistence);
     }
 
     public function testFactoryAllowsConfiguringCacheAdapterServiceName(): void
