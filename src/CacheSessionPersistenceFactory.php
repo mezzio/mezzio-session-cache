@@ -24,16 +24,17 @@ class CacheSessionPersistenceFactory
             throw Exception\MissingDependencyException::forService($cacheService);
         }
 
-        $cookieName     = $config['cookie_name'] ?? 'PHPSESSION';
-        $cookieDomain   = $config['cookie_domain'] ?? null;
-        $cookiePath     = $config['cookie_path'] ?? '/';
-        $cookieSecure   = $config['cookie_secure'] ?? false;
-        $cookieHttpOnly = $config['cookie_http_only'] ?? false;
-        $cookieSameSite = $config['cookie_same_site'] ?? 'Lax';
-        $cacheLimiter   = $config['cache_limiter'] ?? 'nocache';
-        $cacheExpire    = $config['cache_expire'] ?? 10800;
-        $lastModified   = $config['last_modified'] ?? null;
-        $persistent     = $config['persistent'] ?? false;
+        $cookieName         = $config['cookie_name'] ?? 'PHPSESSION';
+        $cookieDomain       = $config['cookie_domain'] ?? null;
+        $cookiePath         = $config['cookie_path'] ?? '/';
+        $cookieSecure       = $config['cookie_secure'] ?? false;
+        $cookieHttpOnly     = $config['cookie_http_only'] ?? false;
+        $cookieSameSite     = $config['cookie_same_site'] ?? 'Lax';
+        $cacheLimiter       = $config['cache_limiter'] ?? 'nocache';
+        $cacheExpire        = $config['cache_expire'] ?? 10800;
+        $lastModified       = $config['last_modified'] ?? null;
+        $persistent         = $config['persistent'] ?? false;
+        $regenerateOnChange = $config['regenerate_on_change'] ?? true;
 
         return new CacheSessionPersistence(
             $container->get($cacheService),
@@ -46,7 +47,8 @@ class CacheSessionPersistenceFactory
             $cookieDomain,
             $cookieSecure,
             $cookieHttpOnly,
-            $cookieSameSite
+            $cookieSameSite,
+            $regenerateOnChange
         );
     }
 }
