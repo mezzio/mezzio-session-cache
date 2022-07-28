@@ -1,6 +1,7 @@
 # mezzio-session-cache
 
 [![Build Status](https://github.com/mezzio/mezzio-session-cache/workflows/Continuous%20Integration/badge.svg)](https://github.com/mezzio/mezzio-session-cache/actions?query=workflow%3A"Continuous+Integration")
+[![Type Coverage](https://shepherd.dev/github/mezzio/mezzio-session-cache/coverage.svg)](https://shepherd.dev/github/mezzio/mezzio-session-cache)
 
 > ## 🇷🇺 Русским гражданам
 >
