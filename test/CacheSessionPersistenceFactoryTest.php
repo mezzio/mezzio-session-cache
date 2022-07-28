@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 use ReflectionProperty;
-use Zend\Expressive\Session\Cache\CacheSessionPersistence as LegacyCacheSessionPersistence;
 
 use function gmdate;
 use function time;
@@ -200,7 +199,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
              ->withConsecutive(
                  ['config'],
                  [CacheSessionPersistence::class],
-                 [LegacyCacheSessionPersistence::class]
+                 ['Zend\Expressive\Session\Cache\CacheSessionPersistence']
              )
              ->willReturnOnConsecutiveCalls(
                  true,
