@@ -8,6 +8,7 @@ use Mezzio\Session\Persistence\CacheHeadersGeneratorTrait;
 use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Persistence\SessionCookieAwareTrait;
 use Mezzio\Session\Session;
+use Mezzio\Session\SessionIdentifierAwareInterface;
 use Mezzio\Session\SessionInterface;
 use Mezzio\Session\SessionPersistenceInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -122,6 +123,9 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         return new Session($sessionData, $id);
     }
 
+    /**
+     * @param SessionInterface&SessionIdentifierAwareInterface $session
+     */
     public function persistSession(SessionInterface $session, ResponseInterface $response): ResponseInterface
     {
         $id = $session->getId();
