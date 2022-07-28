@@ -12,6 +12,7 @@ use Mezzio\Session\Cache\Exception;
 use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Session;
 use Mezzio\Session\SessionCookiePersistenceInterface;
+use Mezzio\Session\SessionIdentifierAwareInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
@@ -541,8 +542,9 @@ class CacheSessionPersistenceTest extends TestCase
      */
     public function testPersistSessionRequestingRegenerationPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
-        $session     = new Session(['foo' => 'bar'], 'identifier');
-        $session     = $session->regenerate();
+        $session = new Session(['foo' => 'bar'], 'identifier');
+        $session = $session->regenerate();
+        self::assertInstanceOf(SessionIdentifierAwareInterface::class, $session);
         $response    = new Response();
         $persistence = new CacheSessionPersistence(
             $this->cachePool,
@@ -582,8 +584,9 @@ class CacheSessionPersistenceTest extends TestCase
      */
     public function testPersistSessionRequestingRegenerationRemovesPreviousSession(string $cacheLimiter): void
     {
-        $session     = new Session(['foo' => 'bar'], 'identifier');
-        $session     = $session->regenerate();
+        $session = new Session(['foo' => 'bar'], 'identifier');
+        $session = $session->regenerate();
+        self::assertInstanceOf(SessionIdentifierAwareInterface::class, $session);
         $response    = new Response();
         $persistence = new CacheSessionPersistence(
             $this->cachePool,
