@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace MezzioTest\Session\Cache\Asset;
 
 use Laminas\Diactoros\Response\TextResponse;
-use Mezzio\Session\RetrieveSession;
+use Mezzio\Session\SessionInterface;
+use Mezzio\Session\SessionMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
+
+use function assert;
 
 final class TestHandler implements RequestHandlerInterface
 {
@@ -38,7 +41,8 @@ final class TestHandler implements RequestHandlerInterface
         $this->request = $request;
 
         if ($this->sessionVariable !== null && $this->sessionValue !== null) {
-            $session = RetrieveSession::fromRequest($request);
+            $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+            assert($session instanceof SessionInterface);
             $session->set($this->sessionVariable, $this->sessionValue);
         }
 
