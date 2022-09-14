@@ -19,11 +19,8 @@ use function time;
 
 class CacheSessionPersistenceFactoryTest extends TestCase
 {
-    /**
-     * @var ContainerInterface|MockObject
-     * @psalm-var ContainerInterface&MockObject
-     */
-    private $container;
+    /** @var ContainerInterface&MockObject */
+    private ContainerInterface $container;
 
     public function setUp(): void
     {

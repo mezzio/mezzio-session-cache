@@ -52,14 +52,10 @@ class CacheSessionPersistenceTest extends TestCase
         'pragma',
     ];
 
-    /**
-     * @var CacheItemPoolInterface|MockObject
-     * @psalm-var CacheItemPoolInterface&MockObject
-     */
-    private $cachePool;
+    /** @var CacheItemPoolInterface&MockObject */
+    private CacheItemPoolInterface $cachePool;
 
-    /** @var DateTimeImmutable */
-    private $currentTime;
+    private DateTimeImmutable $currentTime;
 
     public function setUp(): void
     {
