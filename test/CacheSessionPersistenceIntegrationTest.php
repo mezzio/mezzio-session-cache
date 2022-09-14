@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace MezzioTest\Session\Cache;
 
 use Dflydev\FigCookies\SetCookies;
+use Laminas\Cache\Psr\CacheItemPool\CacheItemPoolDecorator;
+use Laminas\Cache\Storage\Adapter\Apcu;
 use Laminas\Diactoros\ServerRequest;
 use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\SessionMiddleware;
 use MezzioTest\Session\Cache\Asset\TestHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CacheSessionPersistenceIntegrationTest extends TestCase
 {
@@ -24,7 +25,7 @@ final class CacheSessionPersistenceIntegrationTest extends TestCase
     {
         parent::setUp();
 
-        $this->cache   = new ArrayAdapter();
+        $this->cache   = new CacheItemPoolDecorator(new Apcu());
         $this->storage = new CacheSessionPersistence(
             $this->cache,
             'Session',
