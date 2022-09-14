@@ -16,10 +16,8 @@ use Psr\Cache\CacheItemPoolInterface;
 
 final class CacheSessionPersistenceIntegrationTest extends TestCase
 {
-    /** @var CacheItemPoolInterface */
-    private $cache;
-    /** @var CacheSessionPersistence */
-    private $storage;
+    private CacheItemPoolInterface $cache;
+    private CacheSessionPersistence $storage;
 
     protected function setUp(): void
     {

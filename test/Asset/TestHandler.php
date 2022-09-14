@@ -16,14 +16,10 @@ use function assert;
 
 final class TestHandler implements RequestHandlerInterface
 {
-    /** @var ServerRequestInterface|null */
-    public $request;
-    /** @var ResponseInterface */
-    public $response;
-    /** @var string|null */
-    private $sessionVariable;
-    /** @var string|null */
-    private $sessionValue;
+    public ?ServerRequestInterface $request = null;
+    public ResponseInterface $response;
+    private ?string $sessionVariable = null;
+    private ?string $sessionValue    = null;
 
     public function __construct(?ResponseInterface $response = null)
     {
