@@ -31,11 +31,9 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     use CacheHeadersGeneratorTrait;
     use SessionCookieAwareTrait;
 
-    /** @var CacheItemPoolInterface */
-    private $cache;
+    private CacheItemPoolInterface $cache;
 
-    /** @var bool */
-    private $persistent;
+    private bool $persistent;
 
     /**
      * Prepare session cache and default HTTP caching headers.

@@ -110,12 +110,8 @@ class CacheSessionPersistenceTest extends TestCase
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
         $parts     = explode(';', $setCookie);
-        $parts     = array_map(function ($value) {
-            return trim($value);
-        }, $parts);
-        $parts     = array_filter($parts, function (string $value) {
-            return (bool) preg_match('/^Expires=/', $value);
-        });
+        $parts     = array_map(static fn($value) => trim($value), $parts);
+        $parts     = array_filter($parts, static fn(string $value) => (bool) preg_match('/^Expires=/', $value));
 
         $this->assertSame(1, count($parts), 'No Expires directive found in cookie: ' . $setCookie);
 
@@ -136,12 +132,8 @@ class CacheSessionPersistenceTest extends TestCase
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
         $parts     = explode(';', $setCookie);
-        $parts     = array_map(function ($value) {
-            return trim($value);
-        }, $parts);
-        $parts     = array_filter($parts, function (string $value) {
-            return (bool) preg_match('/^Expires=/', $value);
-        });
+        $parts     = array_map(static fn($value) => trim($value), $parts);
+        $parts     = array_filter($parts, static fn(string $value) => (bool) preg_match('/^Expires=/', $value));
 
         $this->assertSame(
             0,
@@ -561,10 +553,8 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function (string $value) {
-                return $value !== 'identifier'
-                    && preg_match('/^[a-f0-9]{32}$/', $value);
-            }))
+            ->with($this->callback(static fn(string $value) => $value !== 'identifier'
+                && preg_match('/^[a-f0-9]{32}$/', $value)))
             ->willReturn($cacheItem);
         $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
@@ -603,10 +593,8 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function (string $value) {
-                return $value !== 'identifier'
-                    && preg_match('/^[a-f0-9]{32}$/', $value);
-            }))
+            ->with($this->callback(static fn(string $value) => $value !== 'identifier'
+                && preg_match('/^[a-f0-9]{32}$/', $value)))
             ->willReturn($cacheItem);
         $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
@@ -644,10 +632,8 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function (string $value) {
-                return $value !== 'identifier'
-                    && preg_match('/^[a-f0-9]{32}$/', $value);
-            }))
+            ->with($this->callback(static fn(string $value) => $value !== 'identifier'
+                && preg_match('/^[a-f0-9]{32}$/', $value)))
             ->willReturn($cacheItem);
         $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
@@ -685,10 +671,8 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->cachePool
             ->method('getItem')
-            ->with($this->callback(function (string $value) {
-                return $value !== 'identifier'
-                    && preg_match('/^[a-f0-9]{32}$/', $value);
-            }))
+            ->with($this->callback(static fn(string $value) => $value !== 'identifier'
+                && preg_match('/^[a-f0-9]{32}$/', $value)))
             ->willReturn($cacheItem);
         $this->cachePool->expects($this->atLeastOnce())->method('save')->with($cacheItem);
 
@@ -782,12 +766,10 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function (array $value) {
-                return array_key_exists('foo', $value)
-                    && $value['foo'] === 'bar'
-                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
-                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200;
-            }));
+            ->with($this->callback(static fn(array $value) => array_key_exists('foo', $value)
+                && $value['foo'] === 'bar'
+                && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200));
         $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
@@ -821,12 +803,10 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function (array $value) {
-                return array_key_exists('foo', $value)
-                    && $value['foo'] === 'bar'
-                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
-                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200;
-            }));
+            ->with($this->callback(static fn(array $value) => array_key_exists('foo', $value)
+                && $value['foo'] === 'bar'
+                && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200));
         $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
@@ -858,12 +838,10 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function (array $value) {
-                return array_key_exists('foo', $value)
-                    && $value['foo'] === 'bar'
-                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
-                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
-            }));
+            ->with($this->callback(static fn(array $value) => array_key_exists('foo', $value)
+                && $value['foo'] === 'bar'
+                && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0));
         $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
@@ -900,11 +878,9 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function (array $value) {
-                return array_key_exists('foo', $value)
-                    && $value['foo'] === 'bar'
-                    && ! array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
-            }));
+            ->with($this->callback(static fn(array $value) => array_key_exists('foo', $value)
+                && $value['foo'] === 'bar'
+                && ! array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)));
         $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
@@ -937,12 +913,10 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function (array $value) {
-                return array_key_exists('foo', $value)
-                    && $value['foo'] === 'bar'
-                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
-                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
-            }));
+            ->with($this->callback(static fn(array $value) => array_key_exists('foo', $value)
+                && $value['foo'] === 'bar'
+                && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0));
         $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
@@ -981,12 +955,10 @@ class CacheSessionPersistenceTest extends TestCase
         $cacheItem
             ->expects($this->atLeastOnce())
             ->method('set')
-            ->with($this->callback(function (array $value) {
-                return array_key_exists('foo', $value)
-                    && $value['foo'] === 'baz'
-                    && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
-                    && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0;
-            }));
+            ->with($this->callback(static fn(array $value) => array_key_exists('foo', $value)
+                && $value['foo'] === 'baz'
+                && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
+                && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0));
         $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
