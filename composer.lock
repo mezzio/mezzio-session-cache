@@ -1157,16 +1157,16 @@
         },
         {
             "name": "laminas/laminas-cache",
-            "version": "3.5.0",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache.git",
-                "reference": "3eda7c84a2803ee88ac67b23bb50dbf46871b307"
+                "reference": "4929dea8c0d5468701fa5073cd6ef7efe5ff0043"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/3eda7c84a2803ee88ac67b23bb50dbf46871b307",
-                "reference": "3eda7c84a2803ee88ac67b23bb50dbf46871b307",
+                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/4929dea8c0d5468701fa5073cd6ef7efe5ff0043",
+                "reference": "4929dea8c0d5468701fa5073cd6ef7efe5ff0043",
                 "shasum": ""
             },
             "require": {
@@ -1253,20 +1253,20 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-09-14T17:57:53+00:00"
+            "time": "2022-09-19T21:06:59+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-apcu",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-apcu.git",
-                "reference": "344aa69ff029788bd340a3bda63754d24623bd85"
+                "reference": "c717b679466d51d369784dde5af8d33b39698f86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-apcu/zipball/344aa69ff029788bd340a3bda63754d24623bd85",
-                "reference": "344aa69ff029788bd340a3bda63754d24623bd85",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-apcu/zipball/c717b679466d51d369784dde5af8d33b39698f86",
+                "reference": "c717b679466d51d369784dde5af8d33b39698f86",
                 "shasum": ""
             },
             "require": {
@@ -1318,7 +1318,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-08-31T08:12:20+00:00"
+            "time": "2022-09-20T10:21:48+00:00"
         },
         {
             "name": "laminas/laminas-coding-standard",
