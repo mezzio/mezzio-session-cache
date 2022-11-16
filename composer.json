@@ -40,13 +40,13 @@
         "psr/container": "^1.0 || ^2.0 || ^3.0"
     },
     "require-dev": {
-        "laminas/laminas-cache": "^3.6",
-        "laminas/laminas-cache-storage-adapter-apcu": "^2.2",
+        "laminas/laminas-cache": "^3.8",
+        "laminas/laminas-cache-storage-adapter-apcu": "^2.3",
         "laminas/laminas-coding-standard": "~2.4.0",
-        "laminas/laminas-diactoros": "^2.20",
+        "laminas/laminas-diactoros": "^2.21",
         "phpunit/phpunit": "^9.5.26",
-        "psalm/plugin-phpunit": "^0.17.0",
-        "vimeo/psalm": "^4.29"
+        "psalm/plugin-phpunit": "^0.18.3",
+        "vimeo/psalm": "^4.30"
     },
     "suggest": {
         "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
