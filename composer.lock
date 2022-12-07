@@ -1157,16 +1157,16 @@
         },
         {
             "name": "laminas/laminas-cache",
-            "version": "3.8.0",
+            "version": "3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache.git",
-                "reference": "b756eb5905f499695c09ab4f3a3e2bafeece8d88"
+                "reference": "e3bdbd056da4ceb1a41d66a8f6aee4a7bcce9b47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/b756eb5905f499695c09ab4f3a3e2bafeece8d88",
-                "reference": "b756eb5905f499695c09ab4f3a3e2bafeece8d88",
+                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/e3bdbd056da4ceb1a41d66a8f6aee4a7bcce9b47",
+                "reference": "e3bdbd056da4ceb1a41d66a8f6aee4a7bcce9b47",
                 "shasum": ""
             },
             "require": {
@@ -1201,7 +1201,7 @@
                 "phpbench/phpbench": "^1.0",
                 "phpunit/phpunit": "^9.5.23",
                 "psalm/plugin-phpunit": "^0.18.0",
-                "vimeo/psalm": "^4.24"
+                "vimeo/psalm": "^5.0"
             },
             "suggest": {
                 "laminas/laminas-cache-storage-adapter-apcu": "APCu implementation",
@@ -1253,20 +1253,20 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-11-08T15:24:00+00:00"
+            "time": "2022-12-05T14:38:48+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-apcu",
-            "version": "2.3.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-apcu.git",
-                "reference": "e68fbbc382128a7695352426415ab2cbe3ec0bb3"
+                "reference": "89561dee942fbdb76647ec939f0dfa6a1db6f9f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-apcu/zipball/e68fbbc382128a7695352426415ab2cbe3ec0bb3",
-                "reference": "e68fbbc382128a7695352426415ab2cbe3ec0bb3",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-apcu/zipball/89561dee942fbdb76647ec939f0dfa6a1db6f9f4",
+                "reference": "89561dee942fbdb76647ec939f0dfa6a1db6f9f4",
                 "shasum": ""
             },
             "require": {
@@ -1281,7 +1281,7 @@
                 "laminas/laminas-cache-storage-adapter-test": "^2.0",
                 "laminas/laminas-coding-standard": "~2.4.0",
                 "psalm/plugin-phpunit": "^0.18.0",
-                "vimeo/psalm": "^4.29.0"
+                "vimeo/psalm": "^5.0.0"
             },
             "type": "library",
             "extra": {
@@ -1317,7 +1317,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-11-08T09:28:34+00:00"
+            "time": "2022-12-05T11:22:35+00:00"
         },
         {
             "name": "laminas/laminas-coding-standard",
@@ -2650,16 +2650,16 @@
         },
         {
             "name": "psalm/plugin-phpunit",
-            "version": "0.18.3",
+            "version": "0.18.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/psalm-plugin-phpunit.git",
-                "reference": "057c1cdf7546c1e427f6fd83b635d0cc18c252bf"
+                "reference": "e4ab3096653d9eb6f6d0ea5f4461898d59ae4dbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/psalm-plugin-phpunit/zipball/057c1cdf7546c1e427f6fd83b635d0cc18c252bf",
-                "reference": "057c1cdf7546c1e427f6fd83b635d0cc18c252bf",
+                "url": "https://api.github.com/repos/psalm/psalm-plugin-phpunit/zipball/e4ab3096653d9eb6f6d0ea5f4461898d59ae4dbc",
+                "reference": "e4ab3096653d9eb6f6d0ea5f4461898d59ae4dbc",
                 "shasum": ""
             },
             "require": {
@@ -2667,7 +2667,7 @@
                 "composer/semver": "^1.4 || ^2.0 || ^3.0",
                 "ext-simplexml": "*",
                 "php": "^7.1 || ^8.0",
-                "vimeo/psalm": "dev-master || dev-4.x || ^4.5 || ^5@beta"
+                "vimeo/psalm": "dev-master || dev-4.x || ^4.7.1 || ^5@beta || ^5.0"
             },
             "conflict": {
                 "phpunit/phpunit": "<7.5"
@@ -2704,9 +2704,9 @@
             "description": "Psalm plugin for PHPUnit",
             "support": {
                 "issues": "https://github.com/psalm/psalm-plugin-phpunit/issues",
-                "source": "https://github.com/psalm/psalm-plugin-phpunit/tree/0.18.3"
+                "source": "https://github.com/psalm/psalm-plugin-phpunit/tree/0.18.4"
             },
-            "time": "2022-11-03T18:17:28+00:00"
+            "time": "2022-12-03T07:47:07+00:00"
         },
         {
             "name": "psr/clock",
