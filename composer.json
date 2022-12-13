@@ -46,7 +46,7 @@
         "laminas/laminas-diactoros": "^2.21",
         "phpunit/phpunit": "^9.5.26",
         "psalm/plugin-phpunit": "^0.18.3",
-        "vimeo/psalm": "^4.30"
+        "vimeo/psalm": "^5.0"
     },
     "suggest": {
         "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
