@@ -318,7 +318,7 @@ class CacheSessionPersistenceTest extends TestCase
     }
 
     /**
-     * @psalm-return array<string, list<string>>
+     * @psalm-return array<string, array{string}>
      */
     public function validCacheLimiters(): array
     {
@@ -684,7 +684,7 @@ class CacheSessionPersistenceTest extends TestCase
     }
 
     /**
-     * @psalm-return iterable<string, list<string>>
+     * @psalm-return iterable<string, array{string}>
      */
     public function cacheHeaders(): iterable
     {
