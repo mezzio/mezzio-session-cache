@@ -13,6 +13,7 @@ use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Session;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Mezzio\Session\SessionIdentifierAwareInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
@@ -63,18 +64,15 @@ class CacheSessionPersistenceTest extends TestCase
         $this->currentTime = new DateTimeImmutable(gmdate(Http::DATE_FORMAT));
     }
 
-    /** @param mixed $expected */
-    private function assertAttributeSame($expected, string $property, object $instance): void
+    private function assertAttributeSame(mixed $expected, string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $r->setAccessible(true);
         $this->assertSame($expected, $r->getValue($instance));
     }
 
     private function assertAttributeNotEmpty(string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $r->setAccessible(true);
         $this->assertNotEmpty($r->getValue($instance));
     }
 
@@ -320,7 +318,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @psalm-return array<string, array{string}>
      */
-    public function validCacheLimiters(): array
+    public static function validCacheLimiters(): array
     {
         return [
             'nocache'           => ['nocache'],
@@ -330,9 +328,7 @@ class CacheSessionPersistenceTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testConstructorAllowsProvidingAllArguments(string $cacheLimiter): void
     {
         $lastModified = time() - 3600;
@@ -463,9 +459,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionWithNoIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session([], '');
@@ -496,9 +490,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionWithIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session     = new Session(['foo' => 'bar'], 'identifier');
@@ -525,9 +517,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionRequestingRegenerationPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -565,9 +555,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionRequestingRegenerationRemovesPreviousSession(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -605,9 +593,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionWithIdentifierAndChangedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -644,9 +630,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionDeletesPreviousSessionIfItExists(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -686,16 +670,14 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @psalm-return iterable<string, array{string}>
      */
-    public function cacheHeaders(): iterable
+    public static function cacheHeaders(): iterable
     {
         foreach (self::CACHE_HEADERS as $header) {
             yield $header => [$header];
         }
     }
 
-    /**
-     * @dataProvider cacheHeaders
-     */
+    #[DataProvider('cacheHeaders')]
     public function testPersistSessionWithAnyExistingCacheHeadersDoesNotRepopulateCacheHeaders(string $header): void
     {
         $session = new Session([], '');
