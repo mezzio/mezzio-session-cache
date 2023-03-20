@@ -31,14 +31,12 @@ class CacheSessionPersistenceFactoryTest extends TestCase
     private function assertAttributeSame($expected, string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $r->setAccessible(true);
         $this->assertSame($expected, $r->getValue($instance));
     }
 
     private function assertAttributeNotEmpty(string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $r->setAccessible(true);
         $this->assertNotEmpty($r->getValue($instance));
     }
 

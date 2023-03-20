@@ -63,18 +63,15 @@ class CacheSessionPersistenceTest extends TestCase
         $this->currentTime = new DateTimeImmutable(gmdate(Http::DATE_FORMAT));
     }
 
-    /** @param mixed $expected */
-    private function assertAttributeSame($expected, string $property, object $instance): void
+    private function assertAttributeSame(mixed $expected, string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $r->setAccessible(true);
         $this->assertSame($expected, $r->getValue($instance));
     }
 
     private function assertAttributeNotEmpty(string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $r->setAccessible(true);
         $this->assertNotEmpty($r->getValue($instance));
     }
 

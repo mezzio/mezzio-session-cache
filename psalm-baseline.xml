@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.1.0@4defa177c89397c5e14737a80fe4896584130674">
+<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
   <file src="src/CacheSessionPersistence.php">
-    <MixedArgumentTypeCoercion occurrences="1">
+    <MixedArgumentTypeCoercion>
       <code>$sessionData</code>
     </MixedArgumentTypeCoercion>
-    <MixedInferredReturnType occurrences="1">
+    <MixedInferredReturnType>
       <code>array</code>
     </MixedInferredReturnType>
-    <MixedReturnStatement occurrences="2">
-      <code>$item-&gt;get() ?: []</code>
-      <code>$item-&gt;get() ?: []</code>
+    <MixedReturnStatement>
+      <code><![CDATA[$item->get() ?: []]]></code>
+      <code><![CDATA[$item->get() ?: []]]></code>
     </MixedReturnStatement>
   </file>
   <file src="src/CacheSessionPersistenceFactory.php">
-    <MixedArgument occurrences="12">
+    <MixedArgument>
       <code>$cacheExpire</code>
       <code>$cacheLimiter</code>
       <code>$cacheService</code>
-      <code>$container-&gt;get($cacheService)</code>
+      <code><![CDATA[$container->get($cacheService)]]></code>
       <code>$cookieDomain</code>
       <code>$cookieHttpOnly</code>
       <code>$cookieName</code>
@@ -27,21 +27,21 @@
       <code>$lastModified</code>
       <code>$persistent</code>
     </MixedArgument>
-    <MixedArrayAccess occurrences="12">
-      <code>$config['cache_expire']</code>
-      <code>$config['cache_item_pool_service']</code>
-      <code>$config['cache_limiter']</code>
-      <code>$config['cookie_domain']</code>
-      <code>$config['cookie_http_only']</code>
-      <code>$config['cookie_name']</code>
-      <code>$config['cookie_path']</code>
-      <code>$config['cookie_same_site']</code>
-      <code>$config['cookie_secure']</code>
-      <code>$config['last_modified']</code>
-      <code>$config['mezzio-session-cache']</code>
-      <code>$config['persistent']</code>
+    <MixedArrayAccess>
+      <code><![CDATA[$config['cache_expire']]]></code>
+      <code><![CDATA[$config['cache_item_pool_service']]]></code>
+      <code><![CDATA[$config['cache_limiter']]]></code>
+      <code><![CDATA[$config['cookie_domain']]]></code>
+      <code><![CDATA[$config['cookie_http_only']]]></code>
+      <code><![CDATA[$config['cookie_name']]]></code>
+      <code><![CDATA[$config['cookie_path']]]></code>
+      <code><![CDATA[$config['cookie_same_site']]]></code>
+      <code><![CDATA[$config['cookie_secure']]]></code>
+      <code><![CDATA[$config['last_modified']]]></code>
+      <code><![CDATA[$config['mezzio-session-cache']]]></code>
+      <code><![CDATA[$config['persistent']]]></code>
     </MixedArrayAccess>
-    <MixedAssignment occurrences="13">
+    <MixedAssignment>
       <code>$cacheExpire</code>
       <code>$cacheLimiter</code>
       <code>$cacheService</code>
