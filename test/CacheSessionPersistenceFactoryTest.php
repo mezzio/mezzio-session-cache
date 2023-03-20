@@ -81,7 +81,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $factory      = new CacheSessionPersistenceFactory();
         $lastModified = time();
         $cachePool    = $this->createMock(CacheItemPoolInterface::class);
-        $container = new InMemoryContainer();
+        $container    = new InMemoryContainer();
         $container->setService(CacheItemPoolInterface::class, $cachePool);
         $container->setService('config', [
             'mezzio-session-cache' => [
@@ -136,7 +136,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
     public function testFactoryRaisesExceptionIfNamedCacheAdapterServiceIsUnavailable(): void
     {
-        $factory = new CacheSessionPersistenceFactory();
+        $factory   = new CacheSessionPersistenceFactory();
         $container = new InMemoryContainer();
         $container->setService('config', [
             'mezzio-session-cache' => [

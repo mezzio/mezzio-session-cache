@@ -6,10 +6,7 @@ namespace MezzioTest\Session\Cache;
 
 use Exception;
 use Psr\Container\ContainerInterface;
-
 use Psr\Container\NotFoundExceptionInterface;
-
-use Throwable;
 
 use function array_key_exists;
 
@@ -20,7 +17,7 @@ final class InMemoryContainer implements ContainerInterface
     public function get(string $id): mixed
     {
         if (! $this->has($id)) {
-            throw new class('Not Found') extends Exception implements NotFoundExceptionInterface {
+            throw new class ('Not Found') extends Exception implements NotFoundExceptionInterface {
             };
         }
 
