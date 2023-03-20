@@ -66,4 +66,10 @@
       <code>requestWasReceived</code>
     </PossiblyUnusedMethod>
   </file>
+  <file src="test/CacheSessionPersistenceTest.php">
+    <PossiblyUnusedMethod>
+      <code>cacheHeaders</code>
+      <code>validCacheLimiters</code>
+    </PossiblyUnusedMethod>
+  </file>
 </files>

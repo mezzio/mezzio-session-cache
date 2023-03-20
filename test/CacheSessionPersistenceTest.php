@@ -13,6 +13,7 @@ use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Session;
 use Mezzio\Session\SessionCookiePersistenceInterface;
 use Mezzio\Session\SessionIdentifierAwareInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
@@ -317,7 +318,7 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @psalm-return array<string, array{string}>
      */
-    public function validCacheLimiters(): array
+    public static function validCacheLimiters(): array
     {
         return [
             'nocache'           => ['nocache'],
@@ -327,9 +328,7 @@ class CacheSessionPersistenceTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testConstructorAllowsProvidingAllArguments(string $cacheLimiter): void
     {
         $lastModified = time() - 3600;
@@ -460,9 +459,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionWithNoIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session([], '');
@@ -493,9 +490,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionWithIdentifierAndPopulatedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session     = new Session(['foo' => 'bar'], 'identifier');
@@ -522,9 +517,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionRequestingRegenerationPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -562,9 +555,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionRequestingRegenerationRemovesPreviousSession(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -602,9 +593,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionWithIdentifierAndChangedDataPersistsDataAndSetsHeaders(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -641,9 +630,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertCacheHeaders($cacheLimiter, $result);
     }
 
-    /**
-     * @dataProvider validCacheLimiters
-     */
+    #[DataProvider('validCacheLimiters')]
     public function testPersistSessionDeletesPreviousSessionIfItExists(string $cacheLimiter): void
     {
         $session = new Session(['foo' => 'bar'], 'identifier');
@@ -683,16 +670,14 @@ class CacheSessionPersistenceTest extends TestCase
     /**
      * @psalm-return iterable<string, array{string}>
      */
-    public function cacheHeaders(): iterable
+    public static function cacheHeaders(): iterable
     {
         foreach (self::CACHE_HEADERS as $header) {
             yield $header => [$header];
         }
     }
 
-    /**
-     * @dataProvider cacheHeaders
-     */
+    #[DataProvider('cacheHeaders')]
     public function testPersistSessionWithAnyExistingCacheHeadersDoesNotRepopulateCacheHeaders(string $header): void
     {
         $session = new Session([], '');
