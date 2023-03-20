@@ -11,6 +11,9 @@
       <code><![CDATA[$item->get() ?: []]]></code>
       <code><![CDATA[$item->get() ?: []]]></code>
     </MixedReturnStatement>
+    <UnusedProperty>
+      <code>$persistent</code>
+    </UnusedProperty>
   </file>
   <file src="src/CacheSessionPersistenceFactory.php">
     <MixedArgument>
@@ -56,5 +59,11 @@
       <code>$lastModified</code>
       <code>$persistent</code>
     </MixedAssignment>
+  </file>
+  <file src="test/Asset/TestHandler.php">
+    <PossiblyUnusedMethod>
+      <code>receivedRequest</code>
+      <code>requestWasReceived</code>
+    </PossiblyUnusedMethod>
   </file>
 </files>
