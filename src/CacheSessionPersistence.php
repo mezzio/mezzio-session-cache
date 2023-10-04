@@ -139,8 +139,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         // Regenerate the session if:
         // - we have no session identifier
         // - the session is marked as regenerated
-        // - the session has changed (data is different)
-        if ('' === $id || $session->isRegenerated() || $session->hasChanged()) {
+        if ('' === $id || $session->isRegenerated()) {
             $id = $this->regenerateSession($id);
         }
 
