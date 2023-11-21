@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f962705b3ab99ca98c5cb7e31416577b",
+    "content-hash": "0943486a7cd15ce2ba643d288fb4c723",
     "packages": [
         {
             "name": "dflydev/fig-cookies",
@@ -70,22 +70,22 @@
         },
         {
             "name": "mezzio/mezzio-session",
-            "version": "1.13.0",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mezzio/mezzio-session.git",
-                "reference": "6fda1a10abf5c1e83e21a08beac199c670c8be34"
+                "reference": "e115c7b4f9c8f3f7b53003ac03198a4c83988ca9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio-session/zipball/6fda1a10abf5c1e83e21a08beac199c670c8be34",
-                "reference": "6fda1a10abf5c1e83e21a08beac199c670c8be34",
+                "url": "https://api.github.com/repos/mezzio/mezzio-session/zipball/e115c7b4f9c8f3f7b53003ac03198a4c83988ca9",
+                "reference": "e115c7b4f9c8f3f7b53003ac03198a4c83988ca9",
                 "shasum": ""
             },
             "require": {
                 "dflydev/fig-cookies": "^3.0",
                 "ext-json": "*",
-                "php": "~8.1.0 || ~8.2.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "psr/container": "^1.0 || ^2.0",
                 "psr/http-server-middleware": "^1.0"
             },
@@ -94,10 +94,10 @@
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~2.5.0",
-                "laminas/laminas-diactoros": "^2.24",
-                "phpunit/phpunit": "^10.0.16",
+                "laminas/laminas-diactoros": "^3.3.0",
+                "phpunit/phpunit": "^10.4.2",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.8"
+                "vimeo/psalm": "^5.15"
             },
             "suggest": {
                 "mezzio/mezzio-csrf": "^1.0 || ^1.0-dev for CSRF protection capabilities",
@@ -142,7 +142,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-03-20T16:09:29+00:00"
+            "time": "2023-11-21T14:54:48+00:00"
         },
         {
             "name": "psr/cache",
