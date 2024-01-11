@@ -144,7 +144,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             $id = $this->regenerateSession($id);
         }
 
-        $this->persistSessionDataToCache($id, $session->toArray());
+        $this->persistSessionDataToCache($id, $session->toArray(), $this->getSessionCookieLifetime($session));
 
         $response = $this->addSessionCookieHeaderToResponse($response, $id, $session);
         $response = $this->addCacheHeadersToResponse($response);
@@ -184,11 +184,15 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         return $item->get() ?: [];
     }
 
-    private function persistSessionDataToCache(string $id, array $data): void
+    private function persistSessionDataToCache(string $id, array $data, int $ttl = 0): void
     {
+        if ($ttl <= 0) {
+            $ttl = $this->cacheExpire;
+        }
+
         $item = $this->cache->getItem($id);
         $item->set($data);
-        $item->expiresAfter($this->cacheExpire);
+        $item->expiresAfter($ttl);
         $this->cache->save($item);
     }
 }
