@@ -752,7 +752,7 @@ class CacheSessionPersistenceTest extends TestCase
                 && $value['foo'] === 'bar'
                 && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                 && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200));
-        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with(1200);
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
             ->method('getItem')
@@ -899,7 +899,7 @@ class CacheSessionPersistenceTest extends TestCase
                 && $value['foo'] === 'bar'
                 && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                 && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0));
-        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with($this->isType('int'));
+        $cacheItem->expects($this->atLeastOnce())->method('expiresAfter')->with(600);
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
             ->method('getItem')
