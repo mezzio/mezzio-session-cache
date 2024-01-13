@@ -4,7 +4,7 @@ show_file_content: true
 
 <!-- markdownlint-disable MD001 MD041 -->
 ## Cache Implementation Required
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
 
 To use this component, a PSR-6 `CacheItemPoolInterface` implementation is required.
 [laminas-cache](https://docs.laminas.dev/laminas-cache/) provides the PSR-6 implementations, install it and choose one of the cache adapters.
