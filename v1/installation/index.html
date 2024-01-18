@@ -13,10 +13,10 @@
     <meta name="docsearch:language" content="en">
     <meta name="docsearch:component" content="mezzio-session-cache">
 
-    <link rel="canonical" href="https://docs.mezzio.dev/mezzio-session-cache/v1/manual/">
+    <link rel="canonical" href="https://docs.mezzio.dev/mezzio-session-cache/v1/installation/">
     <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
 
-    <title>Manual Usage - mezzio-session-cache - Laminas Docs</title>
+    <title>Installation - mezzio-session-cache - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
     
@@ -150,8 +150,8 @@
                     
                     
                         
-                            <li class="subnavigation__list-item ">
-                                <a href="../installation/" class="subnavigation__link">Installation</a>
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Installation</a>
                             </li>
                         
                     
@@ -178,8 +178,8 @@
                     
                     
                         
-                            <li class="subnavigation__list-item subnavigation__list-item--active">
-                                <a href="./" class="subnavigation__link">Manual Usage</a>
+                            <li class="subnavigation__list-item ">
+                                <a href="../manual/" class="subnavigation__link">Manual Usage</a>
                             </li>
                         
                     
@@ -265,7 +265,7 @@
 
                 
 
-                <li class="breadcrumb-item active" aria-current="page">Manual Usage</li>
+                <li class="breadcrumb-item active" aria-current="page">Installation</li>
             
         
     </ol>
@@ -275,76 +275,144 @@
 
 
 
+    <h1>Installation</h1>
+<div class="toc">
+    <h6 class="toc__headline">On this page</h6>
+    <ul class="toc__list">
+        <li class="toc__entry">
+            <a href="#standard-installation" class="toc__link nav-link">Standard Installation</a>
+        </li>
 
+        
+        <li class="toc__entry">
+            <a href="#installation-for-mezzio-and-laminas-mvc-application" class="toc__link nav-link">
+                Installation for a
+                Mezzio
+                
+                
+                Application
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<h2 id="standard-installation">Standard Installation</h2>
+<p>To install the library use <a href="https://getcomposer.org/">Composer</a>:</p>
+<pre><code class="language-bash">$ composer require mezzio/mezzio-session-cache</code></pre>
+
+
+
+<h2 id="installation-for-mezzio-and-laminas-mvc-application">
+    Installation for a
+    Mezzio
     
     
+    Application
+</h2>
 
-    <h1 id="manual-usage">Manual usage</h1>
-<p>The following details the constructor of the <code>Mezzio\Session\Cache\CacheSessionPersistence</code> class:</p>
-<pre class="highlight"><code class="language-php">/**
- * Prepare session cache and default HTTP caching headers.
- *
- * @param CacheItemPoolInterface $cache The cache pool instance
- * @param string $cookieName The name of the cookie
- * @param string $cacheLimiter The cache limiter setting is used to
- *     determine how to send HTTP client-side caching headers. Those
- *     headers will be added programmatically to the response along with
- *     the session set-cookie header when the session data is persisted.
- * @param int $cacheExpire Number of seconds until the session cookie
- *     should expire; defaults to 180 minutes (180m * 60s/m = 10800s),
- *     which is the default of the PHP session.cache_expire setting. This
- *     is also used to set the TTL for session data.
- * @param null|int $lastModified Timestamp when the application was last
- *     modified. If not provided, this will look for each of
- *     public/index.php, index.php, and finally the current working
- *     directory, using the filemtime() of the first found.
- * @param bool $persistent Whether or not to create a persistent cookie. If
- *     provided, this sets the Expires directive for the cookie based on
- *     the value of $cacheExpire. Developers can also set the expiry at
- *     runtime via the Session instance, using its persistSessionFor()
- *     method; that value will be honored even if global persistence
- *     is toggled true here.
- * @param string|null $cookieDomain The domain for the cookie. If not set,
- *     the current domain is used.
- * @param bool $cookieSecure Whether or not the cookie should be required
- *     to be set over an encrypted connection
- * @param bool $cookieHttpOnly Whether or not the cookie may be accessed
- *     by client-side apis (e.g., Javascript). An http-only cookie cannot
- *     be accessed by client-side apis.
- * @param string $cookieSameSite The same-site rule to apply to the persisted
- *    cookie. Options include "Lax", "Strict", and "None".
- *    Available since 1.4.0
- *
- * @todo reorder these arguments so they make more sense and are in an
- *     order of importance
- */
-public function __construct(
-    CacheItemPoolInterface $cache,
-    string $cookieName,
-    string $cookiePath = '/',
-    string $cacheLimiter = 'nocache',
-    int $cacheExpire = 10800,
-    ?int $lastModified = null,
-    bool $persistent = false,
-    string $cookieDomain = null,
-    bool $cookieSecure = false,
-    bool $cookieHttpOnly = false,
-    string $cookieSameSite = 'Lax'
-) {</code></pre>
-<p>Pass all required values and any optional values when creating an instance:</p>
-<pre class="highlight"><code class="language-php">use Cache\Adapter\Predis\PredisCachePool;
-use Mezzio\Session\Cache\CacheSessionPersistence;
-use Mezzio\Session\SessionMiddleware;
+<h3>Installation and Automated Configuration</h3>
+<p>
+    The <a href="https://docs.laminas.dev/laminas-component-installer/">laminas-component-installer</a>
+    is the recommended installation method when using in
+    a Mezzio-based
+    
+     application.
+    It will automatically inject
+    the config-provider
+    
+    
+    in the configuration during the installation process.
+</p>
 
-$cachePool = new PredisCachePool('tcp://localhost:6379');
-$persistence = new CacheSessionPersistence(
-    $cachePool,
-    'MYSITE'
-    '/',
-    'public',
-    60 * 60 * 24 * 30 // 30 days
-);
-$middleware = new SessionMiddleware($persistence);</code></pre>
+<blockquote>
+    <h3>Installation Requirements</h3>
+    <p>
+        The following descriptions depends on the laminas-component-installer component,
+         so be sure to have it installed before getting started.
+    </p>
+
+    <h4>Global Installation</h4>
+    <p>
+        With a <a href="https://docs.laminas.dev/laminas-component-installer/#global-installation">global installation</a>
+        of laminas-component-installer it can be used for all projects without a
+        reinstallation.
+    </p>
+    <pre><code class="language-bash">$ composer global require laminas/laminas-component-installer</code></pre>
+    <h4>As Development Dependency</h4>
+    <pre><code class="language-bash">$ composer require --dev laminas/laminas-component-installer</code></pre>
+</blockquote>
+
+<h4>Install mezzio-session-cache and Inject Configuration</h4>
+<p>To install the library use Composer:</p>
+<pre><code class="language-bash">$ composer require mezzio/mezzio-session-cache</code></pre>
+<p>
+    This will install an initial set of dependencies and it will also prompt to
+    inject the component configuration.
+</p>
+<ul>
+    
+    <li>For a Mezzio application, choose <code>config/config.php</code>.</li>
+    
+    
+</ul>
+<p>
+    If additional dependencies are to be installed, the option for other packages
+    can be remembered.
+</p>
+
+<details><summary>Installation and Manual Configuration</summary>
+<p>
+    If the installer is not used, the manual configuration is needed to add the
+    component to the application.
+</p>
+
+<h4>Install mezzio-session-cache</h4>
+<p>To install the library use Composer:</p>
+<pre><code class="language-bash">$ composer require mezzio/mezzio-session-cache</code></pre>
+
+
+    <h4>Manual Configuration for a Mezzio-based Application</h4>
+    <p>
+        Add the configuration provider of mezzio-session-cache to the configuration file,
+        e.g. <code>config/config.php</code>:
+    </p>
+
+<pre data-line="5"><code class="language-php">
+$aggregator = new Laminas\ConfigAggregator\ConfigAggregator([
+    // …
+    Mezzio\ConfigProvider::class,
+    Mezzio\Router\ConfigProvider::class,
+    Mezzio\Session\Cache\ConfigProvider, // Add this line
+    // …
+]);
+</code></pre>
+
+
+
+</details>
+
+
+    
+        <!-- markdownlint-disable MD001 MD041 -->
+<h2 id="cache-implementation-required">Cache Implementation Required</h2>
+<!-- markdownlint-restore -->
+
+<p>To use this component, a PSR-6 <code>CacheItemPoolInterface</code> implementation is required.
+<a href="https://docs.laminas.dev/laminas-cache/">laminas-cache</a> provides the PSR-6 implementations, install it and choose one of the cache adapters.</p>
+<h3 id="install-laminas-cache-and-a-cache-adapter">Install laminas-cache and a Cache Adapter</h3>
+<p>Install laminas-cache via <a href="https://getcomposer.org/">Composer</a>:</p>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-cache</code></pre>
+<p>laminas-cache is shipped without a specific cache adapter to allow free choice of storage backends and their dependencies.
+For example, install the <a href="https://docs.laminas.dev/laminas-cache/v3/storage/adapter/#filesystem-adapter">laminas-cache <code>Filesystem</code> adapter</a>:</p>
+<pre class="highlight"><code class="language-bash">$ composer require laminas/laminas-cache-storage-adapter-filesystem</code></pre>
+<h3 id="read-more-in-the-laminas-cache-documentation">Read More in the laminas-cache Documentation</h3>
+<ul>
+<li><a href="https://docs.laminas.dev/laminas-cache/v3/psr6/">PSR-6</a></li>
+<li><a href="https://docs.laminas.dev/laminas-cache/v3/storage/adapter/">Cache Adapters</a></li>
+</ul>
+    
 
 
 
@@ -355,16 +423,22 @@ $middleware = new SessionMiddleware($persistence);</code></pre>
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../config/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../intro/">
                     <small class="page-nav__label">Previous</small>
                     <i class="fa fa-chevron-left"></i>
-                    Configuration
+                    Introduction
                 </a>
             
         </li>
 
         
         <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../config/">
+                    <small class="page-nav__label">Next</small>
+                    Configuration
+                    <i class="fa fa-chevron-right"></i>
+                </a>
             
         </li>
     </ul>
@@ -423,8 +497,8 @@ $middleware = new SessionMiddleware($persistence);</code></pre>
                     
                     
                         
-                            <li class="subnavigation__list-item ">
-                                <a href="../installation/" class="subnavigation__link">Installation</a>
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Installation</a>
                             </li>
                         
                     
@@ -451,8 +525,8 @@ $middleware = new SessionMiddleware($persistence);</code></pre>
                     
                     
                         
-                            <li class="subnavigation__list-item subnavigation__list-item--active">
-                                <a href="./" class="subnavigation__link">Manual Usage</a>
+                            <li class="subnavigation__list-item ">
+                                <a href="../manual/" class="subnavigation__link">Manual Usage</a>
                             </li>
                         
                     
