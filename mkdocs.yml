@@ -3,6 +3,7 @@ site_dir: docs/html
 nav:
     - Home: index.md
     - Introduction: v1/intro.md
+    - Installation: v1/installation.md
     - Configuration: v1/config.md
     - "Manual Usage": v1/manual.md
 site_name: mezzio-session-cache
@@ -10,3 +11,5 @@ site_description: 'PSR-6 session persistence adapter for mezzio-session.'
 repo_url: 'https://github.com/mezzio/mezzio-session-cache'
 extra:
     project: Mezzio
+    installation:
+        config_provider_class: 'Mezzio\Session\Cache\ConfigProvider'
