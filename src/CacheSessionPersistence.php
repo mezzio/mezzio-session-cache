@@ -107,7 +107,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
 
         $this->cacheExpire = $cacheExpire;
 
-        $this->lastModified = $lastModified
+        $this->lastModified = $lastModified !== null
             ? gmdate(Http::DATE_FORMAT, $lastModified)
             : $this->getLastModified();
 
