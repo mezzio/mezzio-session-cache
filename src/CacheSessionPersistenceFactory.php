@@ -43,12 +43,12 @@ class CacheSessionPersistenceFactory
             $cacheLimiter,
             $cacheExpire,
             $lastModified,
-            $persistent,
+            (bool) $persistent,
             $cookieDomain,
-            $cookieSecure,
-            $cookieHttpOnly,
+            (bool) $cookieSecure,
+            (bool) $cookieHttpOnly,
             $cookieSameSite,
-            $autoRegenerate
+            (bool) $autoRegenerate
         );
     }
 }

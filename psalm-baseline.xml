@@ -22,14 +22,10 @@
       <code>$cacheService</code>
       <code><![CDATA[$container->get($cacheService)]]></code>
       <code>$cookieDomain</code>
-      <code>$cookieHttpOnly</code>
       <code>$cookieName</code>
       <code>$cookiePath</code>
       <code>$cookieSameSite</code>
-      <code>$cookieSecure</code>
       <code>$lastModified</code>
-      <code>$persistent</code>
-      <code>$autoRegenerate</code>
     </MixedArgument>
     <MixedArrayAccess>
       <code><![CDATA[$config['cache_expire']]]></code>
