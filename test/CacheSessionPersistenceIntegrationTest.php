@@ -143,8 +143,8 @@ final class CacheSessionPersistenceIntegrationTest extends TestCase
         $item  = $this->cache->getItem('foo');
         $value = $item->get();
         self::assertSame([
-            'foo' => 'bar',
-            'something' => 'groovy'
-        ],$value, 'The session data should have been updated');
+            'foo'       => 'bar',
+            'something' => 'groovy',
+        ], $value, 'The session data should have been updated');
     }
 }
