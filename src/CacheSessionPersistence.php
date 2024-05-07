@@ -34,6 +34,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     private CacheItemPoolInterface $cache;
 
     private bool $persistent;
+    private bool $autoRegenerate;
 
     /**
      * Prepare session cache and default HTTP caching headers.
@@ -67,6 +68,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      *                       be accessed by client-side apis.
      * @param string                 $cookieSameSite The same-site rule to apply to the persisted
      *                    cookie. Options include "Lax", "Strict", and "None".
+     * @param bool                   $autoRegenerate Whether or not the session ID should be
+     *                       regenerated on session data changes
      * @todo reorder the constructor arguments
      */
     public function __construct(
@@ -80,7 +83,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         ?string $cookieDomain = null,
         bool $cookieSecure = false,
         bool $cookieHttpOnly = false,
-        string $cookieSameSite = 'Lax'
+        string $cookieSameSite = 'Lax',
+        bool $autoRegenerate = true
     ) {
         $this->cache = $cache;
 
@@ -112,6 +116,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             : $this->getLastModified();
 
         $this->persistent = $persistent;
+
+        $this->autoRegenerate = $autoRegenerate;
     }
 
     public function initializeSessionFromRequest(ServerRequestInterface $request): SessionInterface
@@ -139,8 +145,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         // Regenerate the session if:
         // - we have no session identifier
         // - the session is marked as regenerated
-        // - the session has changed (data is different)
-        if ('' === $id || $session->isRegenerated() || $session->hasChanged()) {
+        // - the session has changed (data is different) and autoRegenerate is turned off in the configuration
+        if ('' === $id || $session->isRegenerated() || ($this->autoRegenerate && $session->hasChanged())) {
             $id = $this->regenerateSession($id);
         }
 
