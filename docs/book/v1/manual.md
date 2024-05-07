@@ -36,7 +36,10 @@ The following details the constructor of the `Mezzio\Session\Cache\CacheSessionP
  * @param string $cookieSameSite The same-site rule to apply to the persisted
  *    cookie. Options include "Lax", "Strict", and "None".
  *    Available since 1.4.0
- *
+ * @param bool $autoRegenerate Whether or not the session ID should be
+ *    regenerated on session data changes
+ *    Available since 1.13.0
+ * 
  * @todo reorder these arguments so they make more sense and are in an
  *     order of importance
  */
@@ -51,7 +54,8 @@ public function __construct(
     string $cookieDomain = null,
     bool $cookieSecure = false,
     bool $cookieHttpOnly = false,
-    string $cookieSameSite = 'Lax'
+    string $cookieSameSite = 'Lax',
+    bool $autoRegenerate = true,
 ) {
 ```
 

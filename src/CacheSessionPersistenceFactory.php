@@ -34,6 +34,7 @@ class CacheSessionPersistenceFactory
         $cacheExpire    = $config['cache_expire'] ?? 10800;
         $lastModified   = $config['last_modified'] ?? null;
         $persistent     = $config['persistent'] ?? false;
+        $autoRegenerate = $config['auto_regenerate'] ?? true;
 
         return new CacheSessionPersistence(
             $container->get($cacheService),
@@ -42,11 +43,12 @@ class CacheSessionPersistenceFactory
             $cacheLimiter,
             $cacheExpire,
             $lastModified,
-            $persistent,
+            (bool) $persistent,
             $cookieDomain,
-            $cookieSecure,
-            $cookieHttpOnly,
-            $cookieSameSite
+            (bool) $cookieSecure,
+            (bool) $cookieHttpOnly,
+            $cookieSameSite,
+            (bool) $autoRegenerate
         );
     }
 }
