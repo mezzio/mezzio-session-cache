@@ -29,6 +29,7 @@
       <code>$cookieSecure</code>
       <code>$lastModified</code>
       <code>$persistent</code>
+      <code>$autoRegenerate</code>
     </MixedArgument>
     <MixedArrayAccess>
       <code><![CDATA[$config['cache_expire']]]></code>
@@ -43,6 +44,7 @@
       <code><![CDATA[$config['last_modified']]]></code>
       <code><![CDATA[$config['mezzio-session-cache']]]></code>
       <code><![CDATA[$config['persistent']]]></code>
+      <code><![CDATA[$config['auto_regenerate']]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
       <code>$cacheExpire</code>
@@ -58,6 +60,7 @@
       <code>$cookieSecure</code>
       <code>$lastModified</code>
       <code>$persistent</code>
+      <code>$autoRegenerate</code>
     </MixedAssignment>
   </file>
   <file src="test/Asset/TestHandler.php">
