@@ -74,6 +74,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
         $this->assertAttributeNotEmpty('lastModified', $persistence);
         $this->assertAttributeSame(false, 'persistent', $persistence);
+        $this->assertAttributeSame(true, 'autoRegenerate', $persistence);
     }
 
     public function testFactoryAllowsConfiguringAllConstructorArguments(): void
@@ -95,6 +96,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
                 'cache_expire'     => 300,
                 'last_modified'    => $lastModified,
                 'persistent'       => true,
+                'auto_regenerate'  => false,
             ],
         ]);
 
@@ -115,6 +117,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
             $persistence
         );
         $this->assertAttributeSame(true, 'persistent', $persistence);
+        $this->assertAttributeSame(false, 'autoRegenerate', $persistence);
     }
 
     public function testFactoryAllowsConfiguringCacheAdapterServiceName(): void
