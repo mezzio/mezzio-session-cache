@@ -112,7 +112,7 @@ final class CacheSessionPersistenceIntegrationTest extends TestCase
         self::assertNull($value, 'The previous session data should have been deleted');
     }
 
-    public function testThatAChangedSessionWillNotCauseRegenerationAndASetCookieHeader(): void
+    public function testThatAChangedSessionWillNotCauseRegenerationWhenAutoRegenerateIsFalse(): void
     {
         $this->storage = new CacheSessionPersistence(
             $this->cache,
