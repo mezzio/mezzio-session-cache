@@ -3,6 +3,7 @@
   <file src="src/CacheSessionPersistence.php">
     <MixedArgumentTypeCoercion>
       <code>$sessionData</code>
+      <code><![CDATA[$session->toArray()]]></code>
     </MixedArgumentTypeCoercion>
     <MixedInferredReturnType>
       <code>array</code>
@@ -14,6 +15,9 @@
     <UnusedProperty>
       <code>$persistent</code>
     </UnusedProperty>
+    <UndefinedInterfaceMethod>
+      <code>getId</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/CacheSessionPersistenceFactory.php">
     <MixedArgument>
@@ -70,5 +74,10 @@
       <code>cacheHeaders</code>
       <code>validCacheLimiters</code>
     </PossiblyUnusedMethod>
+    <UndefinedInterfaceMethod>
+      <code>getId</code>
+      <code>getId</code>
+      <code>getId</code>
+    </UndefinedInterfaceMethod>
   </file>
 </files>

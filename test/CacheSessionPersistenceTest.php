@@ -956,4 +956,45 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertNotSame($response, $result);
         $this->assertCookieHasNoExpiryDirective($result);
     }
+
+    public function testInitializeIdReturnsSessionWithId(): void
+    {
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool,
+            'test',
+        );
+        $session     = new Session(['foo' => 'bar']);
+        $actual      = $persistence->initializeId($session);
+
+        $this->assertNotSame($session, $actual);
+        $this->assertNotEmpty($actual->getId());
+        $this->assertSame(['foo' => 'bar'], $actual->toArray());
+    }
+
+    public function testInitializeIdRegeneratesSessionId(): void
+    {
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool,
+            'test',
+        );
+        $session     = new Session(['foo' => 'bar'], 'original-id');
+        $session     = $session->regenerate();
+        $actual      = $persistence->initializeId($session);
+
+        $this->assertNotEmpty($actual->getId());
+        $this->assertNotSame('original-id', $actual->getId());
+        $this->assertFalse($actual->isRegenerated());
+    }
+
+    public function testInitializeIdReturnsSessionUnaltered(): void
+    {
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool,
+            'test',
+        );
+        $session     = new Session(['foo' => 'bar'], 'original-id');
+        $actual      = $persistence->initializeId($session);
+
+        $this->assertSame($session, $actual);
+    }
 }
