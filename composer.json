@@ -40,8 +40,8 @@
         "psr/container": "^1.0 || ^2.0 || ^3.0"
     },
     "require-dev": {
-        "laminas/laminas-cache": "^3.9.1",
-        "laminas/laminas-cache-storage-adapter-apcu": "^2.4",
+        "laminas/laminas-cache": "^4.0.0",
+        "laminas/laminas-cache-storage-adapter-apcu": "^3.0",
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-diactoros": "^3.3",
         "phpunit/phpunit": "^10.5.10",
