@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1667ac13488735c2d7d80254f53d327a",
+    "content-hash": "83544c80296c42d2504c9fb17a790498",
     "packages": [
         {
             "name": "dflydev/fig-cookies",
@@ -146,20 +146,20 @@
         },
         {
             "name": "psr/cache",
-            "version": "1.0.1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/cache.git",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=8.0.0"
             },
             "type": "library",
             "extra": {
@@ -179,7 +179,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for caching libraries",
@@ -189,9 +189,9 @@
                 "psr-6"
             ],
             "support": {
-                "source": "https://github.com/php-fig/cache/tree/master"
+                "source": "https://github.com/php-fig/cache/tree/3.0.0"
             },
-            "time": "2016-08-06T20:24:11+00:00"
+            "time": "2021-02-03T23:26:27+00:00"
         },
         {
             "name": "psr/container",
@@ -573,6 +573,55 @@
                 }
             ],
             "time": "2024-04-13T18:00:56+00:00"
+        },
+        {
+            "name": "brick/varexporter",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/varexporter.git",
+                "reference": "2fd038f7c9d12d468130c6e1b3ce06e4160a7dbb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/varexporter/zipball/2fd038f7c9d12d468130c6e1b3ce06e4160a7dbb",
+                "reference": "2fd038f7c9d12d468130c6e1b3ce06e4160a7dbb",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^4.0",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^8.5 || ^9.0",
+                "vimeo/psalm": "5.15.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\VarExporter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A powerful alternative to var_export(), which can export closures and objects without __set_state()",
+            "keywords": [
+                "var_export"
+            ],
+            "support": {
+                "issues": "https://github.com/brick/varexporter/issues",
+                "source": "https://github.com/brick/varexporter/tree/0.4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/BenMorel",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-09-01T21:10:07+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -1141,30 +1190,30 @@
         },
         {
             "name": "laminas/laminas-cache",
-            "version": "3.9.1",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache.git",
-                "reference": "2bade057889a97880e02e5a85d3f383b25f41dfc"
+                "reference": "512dc92dead683f7713e6e40162fe40e619dd2ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/2bade057889a97880e02e5a85d3f383b25f41dfc",
-                "reference": "2bade057889a97880e02e5a85d3f383b25f41dfc",
+                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/512dc92dead683f7713e6e40162fe40e619dd2ad",
+                "reference": "512dc92dead683f7713e6e40162fe40e619dd2ad",
                 "shasum": ""
             },
             "require": {
-                "laminas/laminas-cache-storage-implementation": "1.0",
                 "laminas/laminas-eventmanager": "^3.4",
-                "laminas/laminas-servicemanager": "^3.11.1",
+                "laminas/laminas-servicemanager": "^4.1",
                 "laminas/laminas-stdlib": "^3.6",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
-                "psr/cache": "^1.0",
-                "psr/simple-cache": "^1.0",
-                "stella-maris/clock": "^0.1.5",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "psr/cache": "^2.0 || ^3.0",
+                "psr/clock": "^1.0",
+                "psr/simple-cache": "^2.0 || ^3.0",
                 "webmozart/assert": "^1.9"
             },
             "conflict": {
+                "laminas/laminas-serializer": "<3.0",
                 "symfony/console": "<5.1"
             },
             "provide": {
@@ -1172,20 +1221,13 @@
                 "psr/simple-cache-implementation": "1.0"
             },
             "require-dev": {
-                "laminas/laminas-cache-storage-adapter-apcu": "^2.0",
-                "laminas/laminas-cache-storage-adapter-blackhole": "^2.0",
-                "laminas/laminas-cache-storage-adapter-filesystem": "^2.0",
-                "laminas/laminas-cache-storage-adapter-memory": "^2.0",
-                "laminas/laminas-cache-storage-adapter-test": "^2.3",
-                "laminas/laminas-cli": "^1.0",
-                "laminas/laminas-coding-standard": "~2.4.0",
-                "laminas/laminas-config-aggregator": "^1.5",
-                "laminas/laminas-feed": "^2.14",
-                "laminas/laminas-serializer": "^2.6.1",
-                "phpbench/phpbench": "^1.0",
-                "phpunit/phpunit": "^9.5.23",
-                "psalm/plugin-phpunit": "^0.18.0",
-                "vimeo/psalm": "^5.0"
+                "laminas/laminas-cli": "^1.7",
+                "laminas/laminas-coding-standard": "~2.5.0",
+                "laminas/laminas-config-aggregator": "^1.13",
+                "laminas/laminas-serializer": "^3.0",
+                "phpunit/phpunit": "^9.5.27",
+                "psalm/plugin-phpunit": "^0.19.0",
+                "vimeo/psalm": "^5.24"
             },
             "suggest": {
                 "laminas/laminas-cache-storage-adapter-apcu": "APCu implementation",
@@ -1237,35 +1279,36 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-03-31T18:54:12+00:00"
+            "time": "2024-06-15T21:40:37+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-apcu",
-            "version": "2.4.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-apcu.git",
-                "reference": "89561dee942fbdb76647ec939f0dfa6a1db6f9f4"
+                "reference": "1011f7ca3f0722bf92e4a2914126e0f0e5df5a39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-apcu/zipball/89561dee942fbdb76647ec939f0dfa6a1db6f9f4",
-                "reference": "89561dee942fbdb76647ec939f0dfa6a1db6f9f4",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-apcu/zipball/1011f7ca3f0722bf92e4a2914126e0f0e5df5a39",
+                "reference": "1011f7ca3f0722bf92e4a2914126e0f0e5df5a39",
                 "shasum": ""
             },
             "require": {
                 "ext-apcu": "^5.1.10",
-                "laminas/laminas-cache": "^3.0",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0"
+                "laminas/laminas-cache": "^4.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "provide": {
-                "laminas/laminas-cache-storage-implementation": "1.0"
+                "laminas/laminas-cache-storage-implementation": "2.0"
             },
             "require-dev": {
-                "laminas/laminas-cache-storage-adapter-test": "^2.0",
-                "laminas/laminas-coding-standard": "~2.4.0",
-                "psalm/plugin-phpunit": "^0.18.0",
-                "vimeo/psalm": "^5.0.0"
+                "laminas/laminas-cache": "4.0.x-dev || ^4.0",
+                "laminas/laminas-cache-storage-adapter-test": "3.0.x-dev || ^3.0",
+                "laminas/laminas-coding-standard": "~2.5.0",
+                "psalm/plugin-phpunit": "^0.19.0",
+                "vimeo/psalm": "^5.18"
             },
             "type": "library",
             "extra": {
@@ -1301,7 +1344,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-12-05T11:22:35+00:00"
+            "time": "2024-06-16T01:35:00+00:00"
         },
         {
             "name": "laminas/laminas-coding-standard",
@@ -1514,59 +1557,58 @@
         },
         {
             "name": "laminas/laminas-servicemanager",
-            "version": "3.15.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-servicemanager.git",
-                "reference": "65910ef6a8066b0369fab77fbec9e030be59c866"
+                "reference": "ae01570ecdf4559aef2f15d4e79e8c36874f7416"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-servicemanager/zipball/65910ef6a8066b0369fab77fbec9e030be59c866",
-                "reference": "65910ef6a8066b0369fab77fbec9e030be59c866",
+                "url": "https://api.github.com/repos/laminas/laminas-servicemanager/zipball/ae01570ecdf4559aef2f15d4e79e8c36874f7416",
+                "reference": "ae01570ecdf4559aef2f15d4e79e8c36874f7416",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^2.0",
-                "laminas/laminas-stdlib": "^3.2.1",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
-                "psr/container": "^1.1 || ^2.0.2"
+                "brick/varexporter": "^0.3.8 || ^0.4.0",
+                "laminas/laminas-stdlib": "^3.17",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "psr/container": "^1.1 || ^2.0"
             },
             "conflict": {
-                "ext-psr": "*",
-                "laminas/laminas-code": "<3.3.1",
-                "zendframework/zend-code": "<3.3.1",
-                "zendframework/zend-servicemanager": "*"
+                "laminas/laminas-code": "<4.10.0",
+                "zendframework/zend-code": "<3.3.1"
             },
             "provide": {
-                "psr/container-implementation": "^1.1 || ^2.0"
-            },
-            "replace": {
-                "container-interop/container-interop": "^1.2.0"
+                "psr/container-implementation": "^1.0 || ^2.0"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~2.3.0",
-                "laminas/laminas-container-config-test": "^0.6",
-                "mikey179/vfsstream": "^1.6.10@alpha",
-                "ocramius/proxy-manager": "^2.11",
-                "phpbench/phpbench": "^1.1",
-                "phpspec/prophecy-phpunit": "^2.0",
-                "phpunit/phpunit": "^9.5.5",
-                "psalm/plugin-phpunit": "^0.17.0",
-                "vimeo/psalm": "^4.8"
+                "boesing/psalm-plugin-stringf": "^1.4",
+                "composer/package-versions-deprecated": "^1.11.99.5",
+                "friendsofphp/proxy-manager-lts": "^1",
+                "laminas/laminas-cli": "^1.8",
+                "laminas/laminas-coding-standard": "~2.5.0",
+                "laminas/laminas-container-config-test": "^1.0",
+                "lctrs/psalm-psr-container-plugin": "^1.9",
+                "mikey179/vfsstream": "^1.6.11@alpha",
+                "phpbench/phpbench": "^1.2.7",
+                "phpunit/phpunit": "^10.4",
+                "psalm/plugin-phpunit": "^0.18.4",
+                "symfony/console": "^6.0",
+                "vimeo/psalm": "^5.22"
             },
             "suggest": {
-                "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
+                "friendsofphp/proxy-manager-lts": "To handle lazy initialization of services",
+                "laminas/laminas-cli": "To consume CLI commands provided by this component"
             },
-            "bin": [
-                "bin/generate-deps-for-config-factory",
-                "bin/generate-factory-for-class"
-            ],
             "type": "library",
+            "extra": {
+                "laminas": {
+                    "config-provider": "Laminas\\ServiceManager\\ConfigProvider",
+                    "module": "Laminas\\ServiceManager"
+                }
+            },
             "autoload": {
-                "files": [
-                    "src/autoload.php"
-                ],
                 "psr-4": {
                     "Laminas\\ServiceManager\\": "src/"
                 }
@@ -1588,11 +1630,9 @@
             ],
             "support": {
                 "chat": "https://laminas.dev/chat",
-                "docs": "https://docs.laminas.dev/laminas-servicemanager/",
                 "forum": "https://discourse.laminas.dev",
                 "issues": "https://github.com/laminas/laminas-servicemanager/issues",
-                "rss": "https://github.com/laminas/laminas-servicemanager/releases.atom",
-                "source": "https://github.com/laminas/laminas-servicemanager"
+                "source": "https://github.com/laminas/laminas-servicemanager/tree/4.1.0"
             },
             "funding": [
                 {
@@ -1600,7 +1640,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-07-18T21:18:56+00:00"
+            "time": "2024-04-03T20:39:36+00:00"
         },
         {
             "name": "laminas/laminas-stdlib",
@@ -1663,16 +1703,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.11.1",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "7284c22080590fb39f2ffa3e9057f10a4ddd0e0c"
+                "reference": "3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/7284c22080590fb39f2ffa3e9057f10a4ddd0e0c",
-                "reference": "7284c22080590fb39f2ffa3e9057f10a4ddd0e0c",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c",
+                "reference": "3a6b9a42cd8f8771bd4295d13e1423fa7f3d942c",
                 "shasum": ""
             },
             "require": {
@@ -1680,11 +1720,12 @@
             },
             "conflict": {
                 "doctrine/collections": "<1.6.8",
-                "doctrine/common": "<2.13.3 || >=3,<3.2.2"
+                "doctrine/common": "<2.13.3 || >=3 <3.2.2"
             },
             "require-dev": {
                 "doctrine/collections": "^1.6.8",
                 "doctrine/common": "^2.13.3 || ^3.2.2",
+                "phpspec/prophecy": "^1.10",
                 "phpunit/phpunit": "^7.5.20 || ^8.5.23 || ^9.5.13"
             },
             "type": "library",
@@ -1710,7 +1751,7 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                "source": "https://github.com/myclabs/DeepCopy/tree/1.11.1"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.12.0"
             },
             "funding": [
                 {
@@ -1718,7 +1759,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-08T13:26:56+00:00"
+            "time": "2024-06-12T14:39:25+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
@@ -2477,16 +2518,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.20",
+            "version": "10.5.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "547d314dc24ec1e177720d45c6263fb226cc2ae3"
+                "reference": "ac837816fa52078f7a5e17ed774f256a72a51af6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/547d314dc24ec1e177720d45c6263fb226cc2ae3",
-                "reference": "547d314dc24ec1e177720d45c6263fb226cc2ae3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ac837816fa52078f7a5e17ed774f256a72a51af6",
+                "reference": "ac837816fa52078f7a5e17ed774f256a72a51af6",
                 "shasum": ""
             },
             "require": {
@@ -2558,7 +2599,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.20"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.21"
             },
             "funding": [
                 {
@@ -2574,7 +2615,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-24T06:32:35+00:00"
+            "time": "2024-06-15T09:13:15+00:00"
         },
         {
             "name": "psalm/plugin-phpunit",
@@ -2791,25 +2832,25 @@
         },
         {
             "name": "psr/simple-cache",
-            "version": "1.0.1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/simple-cache.git",
-                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
+                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
-                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/764e0b3939f5ca87cb904f570ef9be2d78a07865",
+                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=8.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -2824,7 +2865,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interfaces for simple caching",
@@ -2836,9 +2877,9 @@
                 "simple-cache"
             ],
             "support": {
-                "source": "https://github.com/php-fig/simple-cache/tree/master"
+                "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
             },
-            "time": "2017-10-23T01:57:42+00:00"
+            "time": "2021-10-29T13:26:27+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -3964,53 +4005,6 @@
                 }
             ],
             "time": "2024-05-22T21:24:41+00:00"
-        },
-        {
-            "name": "stella-maris/clock",
-            "version": "0.1.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/stella-maris-solutions/clock.git",
-                "reference": "fa23ce16019289a18bb3446fdecd45befcdd94f8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/stella-maris-solutions/clock/zipball/fa23ce16019289a18bb3446fdecd45befcdd94f8",
-                "reference": "fa23ce16019289a18bb3446fdecd45befcdd94f8",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0|^8.0",
-                "psr/clock": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "StellaMaris\\Clock\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Andreas Heigl",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "A pre-release of the proposed PSR-20 Clock-Interface",
-            "homepage": "https://gitlab.com/stella-maris/clock",
-            "keywords": [
-                "clock",
-                "datetime",
-                "point in time",
-                "psr20"
-            ],
-            "support": {
-                "source": "https://github.com/stella-maris-solutions/clock/tree/0.1.7"
-            },
-            "time": "2022-11-25T16:15:06+00:00"
         },
         {
             "name": "symfony/console",
