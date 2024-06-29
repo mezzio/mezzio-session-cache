@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mezzio\Session\Cache;
 
+use Mezzio\Session\InitializePersistenceIdInterface;
 use Mezzio\Session\Persistence\CacheHeadersGeneratorTrait;
 use Mezzio\Session\Persistence\Http;
 use Mezzio\Session\Persistence\SessionCookieAwareTrait;
@@ -26,7 +27,7 @@ use function random_bytes;
  * During persistence, if the session regeneration flag is true, a new session
  * identifier is created, and the session re-started.
  */
-class CacheSessionPersistence implements SessionPersistenceInterface
+class CacheSessionPersistence implements InitializePersistenceIdInterface, SessionPersistenceInterface
 {
     use CacheHeadersGeneratorTrait;
     use SessionCookieAwareTrait;
@@ -196,5 +197,14 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         $item->set($data);
         $item->expiresAfter($this->cacheExpire);
         $this->cache->save($item);
+    }
+
+    public function initializeId(SessionInterface $session): SessionInterface
+    {
+        if ($session->getId() === '' || $session->isRegenerated()) {
+            $session = new Session($session->toArray(), $this->generateSessionId());
+        }
+
+        return $session;
     }
 }
