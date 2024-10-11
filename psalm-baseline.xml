@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="src/CacheSessionPersistence.php">
+    <DeprecatedInterface>
+      <code><![CDATA[SessionInterface&SessionIdentifierAwareInterface]]></code>
+    </DeprecatedInterface>
     <MixedArgumentTypeCoercion>
-      <code>$sessionData</code>
       <code><![CDATA[$session->toArray()]]></code>
+      <code><![CDATA[$sessionData]]></code>
     </MixedArgumentTypeCoercion>
     <MixedInferredReturnType>
-      <code>array</code>
+      <code><![CDATA[array]]></code>
     </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$item->get() ?: []]]></code>
       <code><![CDATA[$item->get() ?: []]]></code>
     </MixedReturnStatement>
-    <UnusedProperty>
-      <code>$persistent</code>
-    </UnusedProperty>
     <UndefinedInterfaceMethod>
-      <code>getId</code>
+      <code><![CDATA[getId]]></code>
     </UndefinedInterfaceMethod>
+    <UnusedProperty>
+      <code><![CDATA[$persistent]]></code>
+    </UnusedProperty>
   </file>
   <file src="src/CacheSessionPersistenceFactory.php">
     <MixedArgument>
-      <code>$cacheExpire</code>
-      <code>$cacheLimiter</code>
-      <code>$cacheService</code>
+      <code><![CDATA[$cacheExpire]]></code>
+      <code><![CDATA[$cacheLimiter]]></code>
+      <code><![CDATA[$cacheService]]></code>
       <code><![CDATA[$container->get($cacheService)]]></code>
-      <code>$cookieDomain</code>
-      <code>$cookieName</code>
-      <code>$cookiePath</code>
-      <code>$cookieSameSite</code>
-      <code>$lastModified</code>
+      <code><![CDATA[$cookieDomain]]></code>
+      <code><![CDATA[$cookieName]]></code>
+      <code><![CDATA[$cookiePath]]></code>
+      <code><![CDATA[$cookieSameSite]]></code>
+      <code><![CDATA[$lastModified]]></code>
     </MixedArgument>
     <MixedArrayAccess>
+      <code><![CDATA[$config['auto_regenerate']]]></code>
       <code><![CDATA[$config['cache_expire']]]></code>
       <code><![CDATA[$config['cache_item_pool_service']]]></code>
       <code><![CDATA[$config['cache_limiter']]]></code>
@@ -44,40 +48,39 @@
       <code><![CDATA[$config['last_modified']]]></code>
       <code><![CDATA[$config['mezzio-session-cache']]]></code>
       <code><![CDATA[$config['persistent']]]></code>
-      <code><![CDATA[$config['auto_regenerate']]]></code>
     </MixedArrayAccess>
     <MixedAssignment>
-      <code>$cacheExpire</code>
-      <code>$cacheLimiter</code>
-      <code>$cacheService</code>
-      <code>$config</code>
-      <code>$config</code>
-      <code>$cookieDomain</code>
-      <code>$cookieHttpOnly</code>
-      <code>$cookieName</code>
-      <code>$cookiePath</code>
-      <code>$cookieSameSite</code>
-      <code>$cookieSecure</code>
-      <code>$lastModified</code>
-      <code>$persistent</code>
-      <code>$autoRegenerate</code>
+      <code><![CDATA[$autoRegenerate]]></code>
+      <code><![CDATA[$cacheExpire]]></code>
+      <code><![CDATA[$cacheLimiter]]></code>
+      <code><![CDATA[$cacheService]]></code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$config]]></code>
+      <code><![CDATA[$cookieDomain]]></code>
+      <code><![CDATA[$cookieHttpOnly]]></code>
+      <code><![CDATA[$cookieName]]></code>
+      <code><![CDATA[$cookiePath]]></code>
+      <code><![CDATA[$cookieSameSite]]></code>
+      <code><![CDATA[$cookieSecure]]></code>
+      <code><![CDATA[$lastModified]]></code>
+      <code><![CDATA[$persistent]]></code>
     </MixedAssignment>
   </file>
   <file src="test/Asset/TestHandler.php">
     <PossiblyUnusedMethod>
-      <code>receivedRequest</code>
-      <code>requestWasReceived</code>
+      <code><![CDATA[receivedRequest]]></code>
+      <code><![CDATA[requestWasReceived]]></code>
     </PossiblyUnusedMethod>
   </file>
   <file src="test/CacheSessionPersistenceTest.php">
     <PossiblyUnusedMethod>
-      <code>cacheHeaders</code>
-      <code>validCacheLimiters</code>
+      <code><![CDATA[cacheHeaders]]></code>
+      <code><![CDATA[validCacheLimiters]]></code>
     </PossiblyUnusedMethod>
     <UndefinedInterfaceMethod>
-      <code>getId</code>
-      <code>getId</code>
-      <code>getId</code>
+      <code><![CDATA[getId]]></code>
+      <code><![CDATA[getId]]></code>
+      <code><![CDATA[getId]]></code>
     </UndefinedInterfaceMethod>
   </file>
 </files>
