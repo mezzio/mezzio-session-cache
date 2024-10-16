@@ -2,27 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.mezzio.dev/mezzio-session-cache/</loc>
-         <lastmod>2024-06-29</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2024-10-16</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-session-cache/v1/config/</loc>
-         <lastmod>2024-06-29</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2024-10-16</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-session-cache/v1/installation/</loc>
-         <lastmod>2024-06-29</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2024-10-16</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-session-cache/v1/intro/</loc>
-         <lastmod>2024-06-29</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2024-10-16</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-session-cache/v1/manual/</loc>
-         <lastmod>2024-06-29</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2024-10-16</lastmod>
     </url>
 </urlset>
