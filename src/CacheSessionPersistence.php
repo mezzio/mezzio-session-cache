@@ -32,10 +32,7 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
     use CacheHeadersGeneratorTrait;
     use SessionCookieAwareTrait;
 
-    private CacheItemPoolInterface $cache;
-
     private bool $persistent;
-    private bool $autoRegenerate;
 
     /**
      * Prepare session cache and default HTTP caching headers.
@@ -74,7 +71,7 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
      * @todo reorder the constructor arguments
      */
     public function __construct(
-        CacheItemPoolInterface $cache,
+        private CacheItemPoolInterface $cache,
         string $cookieName,
         string $cookiePath = '/',
         string $cacheLimiter = 'nocache',
@@ -85,10 +82,8 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
         bool $cookieSecure = false,
         bool $cookieHttpOnly = false,
         string $cookieSameSite = 'Lax',
-        bool $autoRegenerate = true
+        private bool $autoRegenerate = true
     ) {
-        $this->cache = $cache;
-
         if (empty($cookieName)) {
             throw new Exception\InvalidArgumentException('Session cookie name must not be empty');
         }
@@ -117,8 +112,6 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
             : $this->getLastModified();
 
         $this->persistent = $persistent;
-
-        $this->autoRegenerate = $autoRegenerate;
     }
 
     public function initializeSessionFromRequest(ServerRequestInterface $request): SessionInterface
