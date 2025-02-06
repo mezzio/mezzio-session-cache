@@ -115,7 +115,8 @@ class CacheSessionPersistenceTest extends TestCase
 
         $compare = $this->currentTime->add(new DateInterval(sprintf('PT%dS', $expiry)));
 
-        $value       = array_shift($parts);
+        $value = array_shift($parts);
+        self::assertIsString($value);
         [, $expires] = explode('=', $value);
         $expiresDate = new DateTimeImmutable($expires);
 
