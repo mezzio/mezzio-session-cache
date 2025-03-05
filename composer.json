@@ -44,9 +44,9 @@
         "laminas/laminas-cache-storage-adapter-apcu": "^3.1.0",
         "laminas/laminas-coding-standard": "~3.0.1",
         "laminas/laminas-diactoros": "^3.5.0",
-        "phpunit/phpunit": "^10.5.44",
+        "phpunit/phpunit": "^10.5.45",
         "psalm/plugin-phpunit": "^0.19.2",
-        "vimeo/psalm": "^6.4.0"
+        "vimeo/psalm": "^6.8.8"
     },
     "suggest": {
         "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
