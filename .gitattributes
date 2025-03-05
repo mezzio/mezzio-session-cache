@@ -10,3 +10,5 @@
 /test/ export-ignore
 /renovate.json export-ignore
 /.laminas-ci.json export-ignore
+/Makefile export-ignore
+/tools/ export-ignore
