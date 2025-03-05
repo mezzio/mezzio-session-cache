@@ -10,6 +10,7 @@ use RuntimeException;
 
 use function sprintf;
 
+/** @final */
 class MissingDependencyException extends RuntimeException implements ExceptionInterface
 {
     public static function forService(string $serviceName): self

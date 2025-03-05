@@ -42,7 +42,7 @@ use function trim;
 
 use const CASE_LOWER;
 
-class CacheSessionPersistenceTest extends TestCase
+final class CacheSessionPersistenceTest extends TestCase
 {
     public const GMDATE_REGEXP = '/[a-z]{3}, \d+ [a-z]{3} \d{4} \d{2}:\d{2}:\d{2} \w+$/i';
 

@@ -7,6 +7,7 @@ namespace Mezzio\Session\Cache;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 
+/** @final */
 class CacheSessionPersistenceFactory
 {
     /**

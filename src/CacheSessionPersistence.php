@@ -26,6 +26,8 @@ use function random_bytes;
  * Session identifiers are generated using random_bytes (and casting to hex).
  * During persistence, if the session regeneration flag is true, a new session
  * identifier is created, and the session re-started.
+ *
+ * @final
  */
 class CacheSessionPersistence implements InitializePersistenceIdInterface, SessionPersistenceInterface
 {

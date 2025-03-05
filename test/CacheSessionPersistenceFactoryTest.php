@@ -17,7 +17,7 @@ use ReflectionProperty;
 use function gmdate;
 use function time;
 
-class CacheSessionPersistenceFactoryTest extends TestCase
+final class CacheSessionPersistenceFactoryTest extends TestCase
 {
     /** @var ContainerInterface&MockObject */
     private ContainerInterface $container;

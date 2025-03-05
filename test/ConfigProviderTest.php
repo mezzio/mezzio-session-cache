@@ -7,7 +7,7 @@ namespace MezzioTest\Session\Cache;
 use Mezzio\Session\Cache\ConfigProvider;
 use PHPUnit\Framework\TestCase;
 
-class ConfigProviderTest extends TestCase
+final class ConfigProviderTest extends TestCase
 {
     private ConfigProvider $provider;
 

@@ -6,6 +6,7 @@ namespace Mezzio\Session\Cache\Exception;
 
 use InvalidArgumentException as PhpInvalidArgumentException;
 
+/** @final */
 class InvalidArgumentException extends PhpInvalidArgumentException implements ExceptionInterface
 {
 }
