@@ -41,6 +41,7 @@ clean: ## Clear out caches and documentation assets
 
 static-analysis: ## Run static analysis checks
 	vendor/bin/psalm --no-cache
+	vendor/bin/phpstan analyze
 .PHONY: static-analysis
 
 coding-standards: ## Run coding standards checks

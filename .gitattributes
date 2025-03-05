@@ -12,3 +12,5 @@
 /.laminas-ci.json export-ignore
 /Makefile export-ignore
 /tools/ export-ignore
+/phpstan.neon export-ignore
+/phpstan-baseline.neon export-ignore
