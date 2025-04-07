@@ -18,6 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 use function bin2hex;
 use function gmdate;
+use function is_array;
 use function random_bytes;
 
 /**
@@ -26,6 +27,8 @@ use function random_bytes;
  * Session identifiers are generated using random_bytes (and casting to hex).
  * During persistence, if the session regeneration flag is true, a new session
  * identifier is created, and the session re-started.
+ *
+ * @final
  */
 class CacheSessionPersistence implements InitializePersistenceIdInterface, SessionPersistenceInterface
 {
@@ -84,7 +87,7 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
         string $cookieSameSite = 'Lax',
         private bool $autoRegenerate = true
     ) {
-        if (empty($cookieName)) {
+        if ($cookieName === '') {
             throw new Exception\InvalidArgumentException('Session cookie name must not be empty');
         }
         $this->cookieName = $cookieName;
@@ -117,7 +120,7 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
     public function initializeSessionFromRequest(ServerRequestInterface $request): SessionInterface
     {
         $id          = $this->getSessionCookieValueFromRequest($request);
-        $sessionData = $id ? $this->getSessionDataFromCache($id) : [];
+        $sessionData = $id !== '' ? $this->getSessionDataFromCache($id) : [];
         return new Session($sessionData, $id);
     }
 
@@ -175,15 +178,19 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
         return bin2hex(random_bytes(16));
     }
 
+    /** @return array<string, mixed> */
     private function getSessionDataFromCache(string $id): array
     {
         $item = $this->cache->getItem($id);
         if (! $item->isHit()) {
             return [];
         }
-        return $item->get() ?: [];
+        $value = $item->get();
+
+        return is_array($value) ? $value : [];
     }
 
+    /** @param array<string, mixed> $data */
     private function persistSessionDataToCache(string $id, array $data): void
     {
         $item = $this->cache->getItem($id);
@@ -194,7 +201,10 @@ class CacheSessionPersistence implements InitializePersistenceIdInterface, Sessi
 
     public function initializeId(SessionInterface $session): SessionInterface
     {
-        if ($session->getId() === '' || $session->isRegenerated()) {
+        if (
+            ($session instanceof SessionIdentifierAwareInterface && $session->getId() === '')
+            || $session->isRegenerated()
+        ) {
             $session = new Session($session->toArray(), $this->generateSessionId());
         }
 

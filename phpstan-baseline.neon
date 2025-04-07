@@ -1,0 +1,79 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Mezzio\\Session\\Cache\\CacheSessionPersistence\:\:getSessionDataFromCache\(\) should return array\<string, mixed\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/CacheSessionPersistence.php
+
+		-
+			message: '#^Parameter \#1 \$data of class Mezzio\\Session\\Session constructor expects array\<string, mixed\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistence.php
+
+		-
+			message: '#^Parameter \#2 \$data of method Mezzio\\Session\\Cache\\CacheSessionPersistence\:\:persistSessionDataToCache\(\) expects array\<string, mixed\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistence.php
+
+		-
+			message: '#^Property Mezzio\\Session\\Cache\\CacheSessionPersistence\:\:\$persistent is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/CacheSessionPersistence.php
+
+		-
+			message: '#^Parameter \#1 \$cache of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects Psr\\Cache\\CacheItemPoolInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#1 \$serviceName of static method Mezzio\\Session\\Cache\\Exception\\MissingDependencyException\:\:forService\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#11 \$cookieSameSite of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#2 \$cookieName of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#3 \$cookiePath of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#4 \$cacheLimiter of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#5 \$cacheExpire of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#6 \$lastModified of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php
+
+		-
+			message: '#^Parameter \#8 \$cookieDomain of class Mezzio\\Session\\Cache\\CacheSessionPersistence constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/CacheSessionPersistenceFactory.php

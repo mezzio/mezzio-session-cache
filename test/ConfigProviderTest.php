@@ -7,7 +7,7 @@ namespace MezzioTest\Session\Cache;
 use Mezzio\Session\Cache\ConfigProvider;
 use PHPUnit\Framework\TestCase;
 
-class ConfigProviderTest extends TestCase
+final class ConfigProviderTest extends TestCase
 {
     private ConfigProvider $provider;
 
@@ -19,7 +19,7 @@ class ConfigProviderTest extends TestCase
     public function testReturnedArrayContainsDependencies(): void
     {
         $config = ($this->provider)();
-        $this->assertArrayHasKey('dependencies', $config);
-        $this->assertIsArray($config['dependencies']);
+        self::assertArrayHasKey('dependencies', $config);
+        self::assertIsArray($config['dependencies']);
     }
 }

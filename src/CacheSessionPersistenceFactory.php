@@ -7,6 +7,11 @@ namespace Mezzio\Session\Cache;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
 
+use function assert;
+use function is_array;
+use function is_string;
+
+/** @final */
 class CacheSessionPersistenceFactory
 {
     /**
@@ -16,11 +21,13 @@ class CacheSessionPersistenceFactory
     public function __invoke(ContainerInterface $container)
     {
         $config = $container->has('config') ? $container->get('config') : [];
+        assert(is_array($config));
         $config = $config['mezzio-session-cache'] ?? [];
+        assert(is_array($config));
 
         $cacheService = $config['cache_item_pool_service'] ?? CacheItemPoolInterface::class;
 
-        if (! $container->has($cacheService)) {
+        if (! is_string($cacheService) || ! $container->has($cacheService)) {
             throw Exception\MissingDependencyException::forService($cacheService);
         }
 

@@ -47,7 +47,7 @@ final class TestHandler implements RequestHandlerInterface
 
     public function receivedRequest(): ServerRequestInterface
     {
-        if (! $this->request) {
+        if (! $this->request instanceof ServerRequestInterface) {
             throw new RuntimeException('No request has been received');
         }
 

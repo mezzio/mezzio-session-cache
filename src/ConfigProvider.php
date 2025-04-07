@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mezzio\Session\Cache;
 
+/** @final */
 class ConfigProvider
 {
     /** @return array<string, mixed> */

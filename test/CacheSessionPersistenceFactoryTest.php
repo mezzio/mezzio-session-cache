@@ -17,7 +17,7 @@ use ReflectionProperty;
 use function gmdate;
 use function time;
 
-class CacheSessionPersistenceFactoryTest extends TestCase
+final class CacheSessionPersistenceFactoryTest extends TestCase
 {
     /** @var ContainerInterface&MockObject */
     private ContainerInterface $container;
@@ -31,13 +31,13 @@ class CacheSessionPersistenceFactoryTest extends TestCase
     private function assertAttributeSame($expected, string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $this->assertSame($expected, $r->getValue($instance));
+        self::assertSame($expected, $r->getValue($instance));
     }
 
     private function assertAttributeNotEmpty(string $property, object $instance): void
     {
         $r = new ReflectionProperty($instance, $property);
-        $this->assertNotEmpty($r->getValue($instance));
+        self::assertNotEmpty($r->getValue($instance));
     }
 
     public function testFactoryRaisesExceptionIfNoCacheAdapterAvailable(): void
@@ -61,20 +61,20 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $persistence = $factory($container);
 
         // This we provided
-        $this->assertAttributeSame($cachePool, 'cache', $persistence);
+        self::assertAttributeSame($cachePool, 'cache', $persistence);
 
         // These we did not
-        $this->assertAttributeSame('PHPSESSION', 'cookieName', $persistence);
-        $this->assertAttributeSame('/', 'cookiePath', $persistence);
-        $this->assertAttributeSame(null, 'cookieDomain', $persistence);
-        $this->assertAttributeSame(false, 'cookieSecure', $persistence);
-        $this->assertAttributeSame(false, 'cookieHttpOnly', $persistence);
-        $this->assertAttributeSame('Lax', 'cookieSameSite', $persistence);
-        $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
-        $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
-        $this->assertAttributeNotEmpty('lastModified', $persistence);
-        $this->assertAttributeSame(false, 'persistent', $persistence);
-        $this->assertAttributeSame(true, 'autoRegenerate', $persistence);
+        self::assertAttributeSame('PHPSESSION', 'cookieName', $persistence);
+        self::assertAttributeSame('/', 'cookiePath', $persistence);
+        self::assertAttributeSame(null, 'cookieDomain', $persistence);
+        self::assertAttributeSame(false, 'cookieSecure', $persistence);
+        self::assertAttributeSame(false, 'cookieHttpOnly', $persistence);
+        self::assertAttributeSame('Lax', 'cookieSameSite', $persistence);
+        self::assertAttributeSame('nocache', 'cacheLimiter', $persistence);
+        self::assertAttributeSame(10800, 'cacheExpire', $persistence);
+        self::assertAttributeNotEmpty('lastModified', $persistence);
+        self::assertAttributeSame(false, 'persistent', $persistence);
+        self::assertAttributeSame(true, 'autoRegenerate', $persistence);
     }
 
     public function testFactoryAllowsConfiguringAllConstructorArguments(): void
@@ -102,22 +102,22 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $persistence = $factory($container);
 
-        $this->assertAttributeSame($cachePool, 'cache', $persistence);
-        $this->assertAttributeSame('TESTING', 'cookieName', $persistence);
-        $this->assertAttributeSame('/api', 'cookiePath', $persistence);
-        $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
-        $this->assertAttributeSame(true, 'cookieSecure', $persistence);
-        $this->assertAttributeSame(true, 'cookieHttpOnly', $persistence);
-        $this->assertAttributeSame('None', 'cookieSameSite', $persistence);
-        $this->assertAttributeSame('public', 'cacheLimiter', $persistence);
-        $this->assertAttributeSame(300, 'cacheExpire', $persistence);
-        $this->assertAttributeSame(
+        self::assertAttributeSame($cachePool, 'cache', $persistence);
+        self::assertAttributeSame('TESTING', 'cookieName', $persistence);
+        self::assertAttributeSame('/api', 'cookiePath', $persistence);
+        self::assertAttributeSame('example.com', 'cookieDomain', $persistence);
+        self::assertAttributeSame(true, 'cookieSecure', $persistence);
+        self::assertAttributeSame(true, 'cookieHttpOnly', $persistence);
+        self::assertAttributeSame('None', 'cookieSameSite', $persistence);
+        self::assertAttributeSame('public', 'cacheLimiter', $persistence);
+        self::assertAttributeSame(300, 'cacheExpire', $persistence);
+        self::assertAttributeSame(
             gmdate(Http::DATE_FORMAT, $lastModified),
             'lastModified',
             $persistence
         );
-        $this->assertAttributeSame(true, 'persistent', $persistence);
-        $this->assertAttributeSame(false, 'autoRegenerate', $persistence);
+        self::assertAttributeSame(true, 'persistent', $persistence);
+        self::assertAttributeSame(false, 'autoRegenerate', $persistence);
     }
 
     public function testFactoryAllowsConfiguringCacheAdapterServiceName(): void
@@ -134,7 +134,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
 
         $persistence = $factory($container);
 
-        $this->assertAttributeSame($cachePool, 'cache', $persistence);
+        self::assertAttributeSame($cachePool, 'cache', $persistence);
     }
 
     public function testFactoryRaisesExceptionIfNamedCacheAdapterServiceIsUnavailable(): void

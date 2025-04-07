@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="6.4.0@04f312ac6ea48ba1c3e5db4d815bf6d74641c0ee">
+<files psalm-version="6.8.8@1361cd33008feb3ae2b4a93f1860e14e538ec8c2">
   <file src="src/CacheSessionPersistence.php">
     <DeprecatedInterface>
       <code><![CDATA[SessionInterface&SessionIdentifierAwareInterface]]></code>
     </DeprecatedInterface>
     <MixedArgumentTypeCoercion>
       <code><![CDATA[$session->toArray()]]></code>
-      <code><![CDATA[$sessionData]]></code>
+      <code><![CDATA[$session->toArray()]]></code>
     </MixedArgumentTypeCoercion>
-    <MixedReturnStatement>
-      <code><![CDATA[$item->get() ?: []]]></code>
-      <code><![CDATA[$item->get() ?: []]]></code>
-    </MixedReturnStatement>
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[getId]]></code>
-    </UndefinedInterfaceMethod>
+    <MixedAssignment>
+      <code><![CDATA[$value]]></code>
+    </MixedAssignment>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[array<string, mixed>]]></code>
+      <code><![CDATA[is_array($value) ? $value : []]]></code>
+    </MixedReturnTypeCoercion>
     <UnusedProperty>
       <code><![CDATA[$persistent]]></code>
     </UnusedProperty>
@@ -31,27 +31,10 @@
       <code><![CDATA[$cookieSameSite]]></code>
       <code><![CDATA[$lastModified]]></code>
     </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$config['auto_regenerate']]]></code>
-      <code><![CDATA[$config['cache_expire']]]></code>
-      <code><![CDATA[$config['cache_item_pool_service']]]></code>
-      <code><![CDATA[$config['cache_limiter']]]></code>
-      <code><![CDATA[$config['cookie_domain']]]></code>
-      <code><![CDATA[$config['cookie_http_only']]]></code>
-      <code><![CDATA[$config['cookie_name']]]></code>
-      <code><![CDATA[$config['cookie_path']]]></code>
-      <code><![CDATA[$config['cookie_same_site']]]></code>
-      <code><![CDATA[$config['cookie_secure']]]></code>
-      <code><![CDATA[$config['last_modified']]]></code>
-      <code><![CDATA[$config['mezzio-session-cache']]]></code>
-      <code><![CDATA[$config['persistent']]]></code>
-    </MixedArrayAccess>
     <MixedAssignment>
       <code><![CDATA[$autoRegenerate]]></code>
       <code><![CDATA[$cacheExpire]]></code>
       <code><![CDATA[$cacheLimiter]]></code>
-      <code><![CDATA[$cacheService]]></code>
-      <code><![CDATA[$config]]></code>
       <code><![CDATA[$config]]></code>
       <code><![CDATA[$cookieDomain]]></code>
       <code><![CDATA[$cookieHttpOnly]]></code>
@@ -74,10 +57,5 @@
       <code><![CDATA[cacheHeaders]]></code>
       <code><![CDATA[validCacheLimiters]]></code>
     </PossiblyUnusedMethod>
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[getId]]></code>
-      <code><![CDATA[getId]]></code>
-      <code><![CDATA[getId]]></code>
-    </UndefinedInterfaceMethod>
   </file>
 </files>
