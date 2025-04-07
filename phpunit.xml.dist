@@ -10,6 +10,12 @@
          displayDetailsOnTestsThatTriggerWarnings="true"
          displayDetailsOnIncompleteTests="true"
          displayDetailsOnSkippedTests="true"
+         displayDetailsOnPhpunitDeprecations="true"
+         failOnDeprecation="true"
+         failOnNotice="true"
+         failOnWarning="true"
+         failOnEmptyTestSuite="true"
+         failOnPhpunitDeprecation="true"
 >
     <source>
         <include>
@@ -17,7 +23,7 @@
         </include>
     </source>
     <testsuites>
-        <testsuite name="mezzio-session-cache">
+        <testsuite name="Tests">
             <directory>./test</directory>
         </testsuite>
     </testsuites>
