@@ -476,7 +476,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'bar']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool
             ->method('getItem')
             ->with(self::matchesRegularExpression('/^[a-f0-9]{32}$/'))
@@ -506,7 +506,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'bar']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
         $this->cachePool->expects(self::atLeastOnce())->method('save')->with($cacheItem);
 
@@ -535,7 +535,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'bar']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
 
         // This emulates a scenario when the session does not exist in the cache
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
@@ -573,7 +573,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'bar']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
 
         // This emulates an existing session existing.
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(true);
@@ -610,7 +610,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'baz']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
 
         // This emulates a scenario when the session does not exist in the cache
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
@@ -647,7 +647,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'baz']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
 
         // This emulates an existing session existing.
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(true);
@@ -693,7 +693,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'bar']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool
             ->method('getItem')
             ->with(self::matchesRegularExpression('/^[a-f0-9]{32}$/'))
@@ -723,7 +723,7 @@ final class CacheSessionPersistenceTest extends TestCase
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects(self::atLeastOnce())->method('set')->with(['foo' => 'bar']);
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
         $this->cachePool->expects(self::atLeastOnce())->method('save')->with($cacheItem);
 
@@ -752,7 +752,7 @@ final class CacheSessionPersistenceTest extends TestCase
                 && $value['foo'] === 'bar'
                 && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                 && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200));
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
             ->method('getItem')
@@ -789,7 +789,7 @@ final class CacheSessionPersistenceTest extends TestCase
                 && $value['foo'] === 'bar'
                 && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                 && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 1200));
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
             ->method('getItem')
@@ -824,7 +824,7 @@ final class CacheSessionPersistenceTest extends TestCase
                 && $value['foo'] === 'bar'
                 && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                 && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0));
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
             ->method('getItem')
@@ -863,7 +863,7 @@ final class CacheSessionPersistenceTest extends TestCase
             ->with(self::callback(static fn(array $value) => array_key_exists('foo', $value)
                 && $value['foo'] === 'bar'
                 && ! array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)));
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool->method('getItem')->with('identifier')->willReturn($cacheItem);
         $this->cachePool->expects(self::atLeastOnce())->method('save')->with($cacheItem);
@@ -899,7 +899,7 @@ final class CacheSessionPersistenceTest extends TestCase
                 && $value['foo'] === 'bar'
                 && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                 && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0));
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
             ->method('getItem')
@@ -941,7 +941,7 @@ final class CacheSessionPersistenceTest extends TestCase
                 && $value['foo'] === 'baz'
                 && array_key_exists(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value)
                 && $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY] === 0));
-        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isType('int'));
+        $cacheItem->expects(self::atLeastOnce())->method('expiresAfter')->with(self::isInt());
         $this->cachePool->method('hasItem')->with('identifier')->willReturn(false);
         $this->cachePool
             ->method('getItem')
