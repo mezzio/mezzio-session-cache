@@ -2,8 +2,8 @@
 
 PHP_VERSION="$1"
 
-if ! [[ "${PHP_VERSION}" =~ 8\.5 ]]; then
-  echo "APCu is only installed from pecl for PHP 8.5, ${PHP_VERSION} detected."
+if ! [[ "${PHP_VERSION}" =~ 8\.6 ]]; then
+  echo "APCu is only installed from pecl for PHP 8.6, ${PHP_VERSION} detected."
   exit 0;
 fi
 
