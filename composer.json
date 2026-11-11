@@ -21,7 +21,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "8.2.99"
+            "php": "8.3.99"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
@@ -34,7 +34,7 @@
         }
     },
     "require": {
-        "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+        "php": "~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
         "dflydev/fig-cookies": "^3.0.0",
         "mezzio/mezzio-session": "^1.4",
         "psr/cache": "^1.0 || ^2.0 || ^3.0",
@@ -42,17 +42,18 @@
         "psr/http-message": "^2.0"
     },
     "require-dev": {
-        "laminas/laminas-cache": "^4.1.0",
-        "laminas/laminas-cache-storage-adapter-apcu": "^3.1.0",
+        "laminas/internal-tooling": "^1.1.1",
+        "laminas/laminas-cache": "^4.3.0",
+        "laminas/laminas-cache-storage-adapter-apcu": "^3.2.0",
         "laminas/laminas-coding-standard": "~3.1.0",
-        "laminas/laminas-diactoros": "^3.6.0",
+        "laminas/laminas-diactoros": "^3.10.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.31",
-        "phpstan/phpstan-phpunit": "^2.0.7",
-        "phpstan/phpstan-strict-rules": "^2.0.7",
-        "phpunit/phpunit": "^11.5.42",
-        "psalm/plugin-phpunit": "^0.19.5",
-        "vimeo/psalm": "^6.13.1"
+        "phpstan/phpstan": "^2.3.5",
+        "phpstan/phpstan-phpunit": "^2.1.1",
+        "phpstan/phpstan-strict-rules": "^2.1.1",
+        "phpunit/phpunit": "^11.5.57",
+        "psalm/plugin-phpunit": "^0.19.7",
+        "vimeo/psalm": "^6.20.10"
     },
     "suggest": {
         "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."

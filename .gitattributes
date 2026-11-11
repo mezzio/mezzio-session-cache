@@ -14,3 +14,4 @@
 /tools/ export-ignore
 /phpstan.neon export-ignore
 /phpstan-baseline.neon export-ignore
+php.ini export-ignore
