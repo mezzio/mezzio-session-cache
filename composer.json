@@ -52,7 +52,7 @@
         "phpstan/phpstan-strict-rules": "^2.0.7",
         "phpunit/phpunit": "^11.5.42",
         "psalm/plugin-phpunit": "^0.22.0",
-        "vimeo/psalm": "^6.13.1"
+        "vimeo/psalm": "^7.0.0"
     },
     "suggest": {
         "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
