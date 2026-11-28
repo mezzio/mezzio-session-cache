@@ -6,7 +6,7 @@ namespace MezzioTest\Session\Cache;
 
 use Dflydev\FigCookies\SetCookies;
 use Laminas\Cache\Psr\CacheItemPool\CacheItemPoolDecorator;
-use Laminas\Cache\Storage\Adapter\Apcu;
+use Laminas\Cache\Storage\Adapter\Memory;
 use Laminas\Diactoros\ServerRequest;
 use Mezzio\Session\Cache\CacheSessionPersistence;
 use Mezzio\Session\SessionMiddleware;
@@ -23,7 +23,7 @@ final class CacheSessionPersistenceIntegrationTest extends TestCase
     {
         parent::setUp();
 
-        $this->cache   = new CacheItemPoolDecorator(new Apcu());
+        $this->cache   = new CacheItemPoolDecorator(new Memory());
         $this->storage = new CacheSessionPersistence(
             $this->cache,
             'Session',
